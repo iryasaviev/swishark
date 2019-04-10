@@ -247,6 +247,42 @@ var validation = {
 };
 
 
+var formData = {
+    /**
+    * @function formData.Build
+    * @description collects form data
+    * 
+    * @param {object} form form with inputs
+    * @param {array} exceptions array of exceptions
+    * 
+    * @returns {object} data of form.
+    **/
+    Build: function (form, exceptions) {
+        let inputs = form.getElementsByClassName('inp');
+
+        var data = {};
+        for (let input of inputs) {
+            if (input.hasAttribute('name')) {
+
+                let contin = true;
+                if (exceptions !== undefined) {
+                    for (let exception of exceptions) {
+                        if (input.getAttribute('name') === exception) {
+                            contin = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (contin)
+                    data[input.getAttribute('name')] = input.value;
+            }
+        }
+        return data;
+    }
+};
+
+
 
 
 var account = {
@@ -344,33 +380,15 @@ var account = {
 
 var project = {
     /**
-    * @function ProjectAdd
+    * @function project.Add
     * @description отправка данных с формы добавления проекта
+    * 
+    * @param {object} click ...
+    * @param {object} target ...
     **/
-    Add: function () {
-        var form = document.getElementById('form'),
-            inpWrappers = form.getElementsByClassName('InputWrapper'),
-            input;
-
-        var formData = {
-            Name: null,
-            Description: null
-        };
-
-        for (let a = 0; inpWrappers.length > a; a++) {
-            input = inpWrappers[a].getElementsByClassName('inp')[0];
-
-            switch (input.getAttribute('name')) {
-                case 'Name':
-                    formData.Name = input.value;
-                    break;
-
-                case 'City':
-                    formData.Description = input.value;
-                    break;
-            }
-        }
-
-        var response = ajax.SendAndRecive(convert.ToJson(formData), 'Data', 'add');
+    Add: function (click, target) {
+        let form = target,
+            data = formData.Build(form),
+            response = ajax.SendAndRecive(convert.ToJson(data), 'Data', 'add');
     }
 };
