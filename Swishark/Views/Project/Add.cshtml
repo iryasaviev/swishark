@@ -1,10 +1,10 @@
 ﻿@{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Project add.";
 }
 
 <div class="pr_wr">
     <div class="pr_bd">
-        <div class="fm fm-pr" id="form" data-controller="Project" data-method="Add">
+        <div class="fm fm-pr" id="form" data-controller="project" data-method="Add">
             <div class="fm_hd">
                 <div class="fm_hd-h">Create a new project</div>
                 <div class="fm_hd-dsc">Project contains tasks and employees list.</div>
@@ -23,32 +23,6 @@
                         <textarea class="inp fm-item--tta" name="Description"></textarea>
                     </label>
                 </div>
-                @*<div class="fm-item fm-pr-item InputWrapper">
-                    <label class="fm-item--lb" for="projectCity">City</label>
-                    <select class="inp" id="projectCity" name="City">
-                        <option value="1">Нижнекамск</option>
-                        <option value="2">Набережные Челны</option>
-                        <option value="3">Казань</option>
-                    </select>
-                </div>*@
-
-                @*<div class="fm-item fm-pr-item InputWrapper">
-            <label class="fm-item--lb" for="projectTryGetVisible">Статус видимости</label>
-            <select class="inp ProjectTryGetVisibleBtn" id="projectTryGetVisible" name="ProjectTryGetVisible">
-                <option value="false">Скрыт</option>
-                <option value="true">Открыт</option>
-            </select>
-        </div>*@
-
-                @*<div class="fm-item fm-pr-item InputWrapper ProjectSquareTypeSliderWrapper">
-            <label class="fm-item--lb" for="projectSquareType">Тип здания</label>
-            <div class="fm-pr-item--sld_wr">
-                <div class="fm-pr-item--sld_bd">
-                    <img class="fm-pr-item--sld_bd--img" />
-                </div>
-            </div>
-            <input class="inp ds-n" name="SquareType" value="10" />
-        </div>*@
 
                 <div class="fm-item fm-pr-item">
                     <button class="btn fm--btn fm-pr-item--btn ButtonTarget" data-target="Add">Добавить</button>

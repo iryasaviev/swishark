@@ -1,5 +1,4 @@
 ﻿'use strict';
-
 let app = document.getElementById('app');
 
 Object.prototype.searchParent = function (parentClass) {
@@ -18,7 +17,6 @@ Object.prototype.searchParent = function (parentClass) {
         }
     }
 };
-
 
 
 var ajax = {
@@ -147,7 +145,6 @@ var ajax = {
 };
 
 
-
 var convert = {
 	ToJson: function(data){
 		return JSON.stringify(data);
@@ -157,7 +154,6 @@ var convert = {
 		return JSON.parse(data);
 	}
 };
-
 
 
 var popUp = {
@@ -184,9 +180,11 @@ var popUp = {
         let target = click.target;
 
         if (target.classList.contains('PopUpCloseButton')) {
+            //...
         }
 
         if (target.classList.contains('PopUpPerformButton')) {
+            //...
         }
 
         if (app.classList.contains('pp-active')) {
@@ -196,8 +194,7 @@ var popUp = {
 };
 
 
-
-let validation = {
+var validation = {
 	Email: function(el){
 		var value = el.target.value,
 		pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/,
@@ -251,94 +248,97 @@ let validation = {
 
 
 
-/**
- * @function SignUp
- * @description отправка данных с формы регистрации
- * 
- * @returns {string} alert message of validation error.
- **/
-function SignUp(){
-	var form = document.getElementById('form'),
-	inpWrappers = form.getElementsByClassName('InputWrapper'),
-	input;
 
-	var formData = {
-		FirstName:null,
-		Email:null,
-		Password:null
-	};
+var account = {
+    /**
+    * @function SignUp
+    * @description отправка данных с формы регистрации
+    *
+    * @returns {string} alert message of validation error.
+    **/
+    SignUp: function () {
+        var form = document.getElementById('form'),
+            inpWrappers = form.getElementsByClassName('InputWrapper'),
+            input;
 
-	for(let a = 0; inpWrappers.length > a; a++){
-		if(inpWrappers[a].classList.contains('fm-item--error')){
-			return alert('Ошибка валидации. Пожалуйста, проверьте поля формы.')
-		}
+        var formData = {
+            FirstName: null,
+            Email: null,
+            Password: null
+        };
 
-		input = inpWrappers[a].getElementsByClassName('inp')[0];
+        for (let a = 0; inpWrappers.length > a; a++) {
+            if (inpWrappers[a].classList.contains('fm-item--error')) {
+                return alert('Ошибка валидации. Пожалуйста, проверьте поля формы.')
+            }
 
-		switch(input.getAttribute('name')){
-			case 'FirstName':
-				formData.FirstName = input.value;
-			break;
+            input = inpWrappers[a].getElementsByClassName('inp')[0];
 
-			case 'Email':
-				formData.Email = input.value;
-			break;
+            switch (input.getAttribute('name')) {
+                case 'FirstName':
+                    formData.FirstName = input.value;
+                    break;
 
-			case 'Password':
-				formData.Password = input.value;
-			break;
-		}
-	}
+                case 'Email':
+                    formData.Email = input.value;
+                    break;
 
-    var response = ajax.SendAndRecive(convert.ToJson(formData), 'Data', 'signup');
-    switch (response) {
-        case '200':
-            page.setUrl('Создание проекта', '/project/add');
-            page.setName('31');
-            page.setData();
-            page.setHandlers();
-            break;
-    }
-}
+                case 'Password':
+                    formData.Password = input.value;
+                    break;
+            }
+        }
 
-/**
- * @function SignIn
- * @description отправка данных с формы авторизации.
- **/
-function SignIn() {
-    var form = document.getElementById('form'),
-        inpWrappers = form.getElementsByClassName('InputWrapper'),
-        input;
-
-    var formData = {
-        Email: null,
-        Password: null
-    };
-
-    for (let a = 0; inpWrappers.length > a; a++) {
-        input = inpWrappers[a].getElementsByClassName('inp')[0];
-
-        switch (input.getAttribute('name')) {
-            case 'Email':
-                formData.Email = input.value;
+        var response = ajax.SendAndRecive(convert.ToJson(formData), 'Data', 'signup');
+        switch (response) {
+            case '200':
+                page.setUrl('Создание проекта', '/project/add');
+                page.setName('31');
+                page.setData();
+                page.setHandlers();
                 break;
+        }
+    },
 
-            case 'Password':
-                formData.Password = input.value;
+    /**
+    * @function SignIn
+    * @description отправка данных с формы авторизации.
+    **/
+    SignIn: function () {
+        var form = document.getElementById('form'),
+            inpWrappers = form.getElementsByClassName('InputWrapper'),
+            input;
+
+        var formData = {
+            Email: null,
+            Password: null
+        };
+
+        for (let a = 0; inpWrappers.length > a; a++) {
+            input = inpWrappers[a].getElementsByClassName('inp')[0];
+
+            switch (input.getAttribute('name')) {
+                case 'Email':
+                    formData.Email = input.value;
+                    break;
+
+                case 'Password':
+                    formData.Password = input.value;
+                    break;
+            }
+        }
+
+        var response = ajax.SendAndRecive(convert.ToJson(formData), 'Data', 'signin');
+        switch (response) {
+            case '200':
+                page.setUrl('Создание проекта', '/project/add');
+                page.setName('31');
+                page.setData();
+                page.setHandlers();
                 break;
         }
     }
-
-    var response = ajax.SendAndRecive(convert.ToJson(formData), 'Data', 'signin');
-    switch (response) {
-        case '200':
-            page.setUrl('Создание проекта', '/project/add');
-            page.setName('31');
-            page.setData();
-            page.setHandlers();
-            break;
-    }
-}
+};
 
 
 
@@ -354,9 +354,7 @@ var project = {
 
         var formData = {
             Name: null,
-            City: null,
-            TryGetVisible: false,
-            SquareType: null
+            Description: null
         };
 
         for (let a = 0; inpWrappers.length > a; a++) {
@@ -368,14 +366,7 @@ var project = {
                     break;
 
                 case 'City':
-                    formData.City = input.value;
-                    break;
-
-                case 'TryGetVisible':
-                    formData.TryGetVisible = input.value;
-                    break;
-                case 'SquareType':
-                    formData.SquareType = input.value;
+                    formData.Description = input.value;
                     break;
             }
         }
@@ -383,8 +374,3 @@ var project = {
         var response = ajax.SendAndRecive(convert.ToJson(formData), 'Data', 'add');
     }
 };
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-});

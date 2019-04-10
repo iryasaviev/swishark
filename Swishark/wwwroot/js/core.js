@@ -25,9 +25,10 @@ document.onclick = function () {
         if (target !== null) {
             if (target.hasAttribute('data-controller')) {
 
-                var method = target.dataset.method;
+                var method = target.dataset.method,
+                    controll = target.dataset.controller;
                 if (method === click.dataset.target) {
-                    Controller(click, method, target);
+                    Controller(click, controll, method, target);
                 }
 
                 break;
@@ -48,11 +49,12 @@ document.onclick = function () {
  * @description Отлавливает событие и отправляет данные в Controller
  * 
  * @param {object} click ...
+ * @param {string} controll ...
  * @param {string} method ...
  * @param {object} target ...
  **/
-function Controller(click, method, target) {
-    if (method !== null) {
-        window[method](click, target);
+function Controller(click, controll, method, target) {
+    if (method !== null && controll !== null) {
+        window[controll][method](click, target);
     }
 }
