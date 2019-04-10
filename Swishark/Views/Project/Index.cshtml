@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="tsk_wr" id="tasksWrapper">
+    <div class="tsk_hd">
+        <div class="tsk_hd-item1">
+            <div class="tsk_hd-h TaskProjectName">Project name</div>
+            <div class="tsk_hd-dsc TaskProjectDescription">Project description.</div>
+        </div>
+        <div class="tsk_hd-item2">
+            <button class="btn tsk_hd-item2--btn" type="button">Сортировка</button>
+        </div>
+    </div>
+    <div class="tsk_bd">
+        <div class="tsk_bd-item Task">
+            <div class="tsk_bd-item--ttl TaskName">Исправить выделение кнопки в главном меню при скролле вверх/вниз в зависимости от раздела.</div>
+            <div class="tsk_bd-item--dsc TaskDescription">Задача.</div>
+        </div>
+        <div class="tsk_bd-item Task">
+            <div class="tsk_bd-item--ttl TaskName">Исправить выделение кнопки в главном меню при скролле вверх/вниз в зависимости от раздела.</div>
+            <div class="tsk_bd-item--dsc TaskDescription">Задача.</div>
+        </div>
+        <div class="tsk_bd-item">
+            <button class="btn tsk_bd-item--btn TaskAddBtn">Добавить задачу</button>
+        </div>
+    </div>
+    <div class="tsk_stg TaskSettingsMenu">
+        <div class="fm_bd">
+            <div class="fm-item tsk_stg-item InputWrapper">
+                <label class="fm-item--lb" for="taskName">State</label>
+                <select class="inp">
+                    <option>Выполнено</option>
+                    <option>Не выполнено</option>
+                </select>
+            </div>
+            <div class="fm-item tsk_stg-item InputWrapper">
+                <label class="fm-item--lb" for="taskName">Finish date</label>
+                <input class="inp" id="taskName" name="Name" type="date">
+            </div>
+            <div class="fm-item tsk_stg-item">
+                <label class="fm-item--lb">Mark</label>
+                <div class="tsk_stg-item--mrk_wr tsk_stg-item--mrk_wr-active">
+                    <input class="inp tsk_stg-item--mrk bcg-clr--yellow" name="Mark" type="text">
+                    <input class="inp tsk_stg-item--mrk bcg-clr--green1" name="Mark" type="text">
+                    <input class="inp tsk_stg-item--mrk bcg-clr--green2" name="Mark" type="text">
+                    <input class="inp tsk_stg-item--mrk bcg-clr--orange1" name="Mark" type="text">
+                    <input class="inp tsk_stg-item--mrk bcg-clr--orange2" name="Mark" type="text">
+                    <input class="inp tsk_stg-item--mrk bcg-clr--pink1" name="Mark" type="text">
+                    <input class="inp tsk_stg-item--mrk bcg-clr--pink2" name="Mark" type="text">
+                    <input class="inp tsk_stg-item--mrk bcg-clr--blue1" name="Mark" type="text">
+                    <input class="inp tsk_stg-item--mrk bcg-clr--blue2" name="Mark" type="text">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/tasks.js"></script>

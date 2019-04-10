@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+    <div class="app_wr" id="app">
+
+        <div class="app_wr-mn_wr" id="appLeftMenu">
+            <div class="app_wr-mn_bd AppLeftMenuBody">
+                <a href="/project/add">
+                    <div class="app_wr-mn_bd-item_wr">
+                        <div class="btn app_wr-mn_bd-item app_wr-mn_bd-item-add"></div>
+                        <div class="app_wr-mn_bd-item-add--txt">Добавить проект</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="app_bd">
+
+            <div class="pp" id="popUp">
+                <div class="pp_bcg"></div>
+                <div class="pp_wr">
+                    <div class="pp_hd PopUpHead"></div>
+                    <div class="pp_bd PopUpBody"></div>
+                    <div class="pp_ft PopUpFooter">
+                        <div class="pp_ft-item pp_ft-item1">
+                            <button class="btn pp_ft-item--btn PopUpButton PopUpCloseButton">Отмена</button>
+                        </div>
+                        <div class="pp_ft-item pp_ft-item2">
+                            <button class="btn pp_ft-item--btn pp_ft-item--btn1 PopUpButton PopUpPerformButton">Выполнить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @RenderBody()
+        </div>
+    </div>
+    <script src="~/js/app.js"></script>
+    <script src="~/js/core.js"></script>
+</body>
+</html>
