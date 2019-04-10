@@ -12,21 +12,19 @@ using System.Threading.Tasks;
 
 namespace Swishark.Controllers
 {
-	// [Route("[controller]")]
 	public class AccountController : Controller
     {
-		[HttpGet]
-		[Route("signup")]
-		public HtmlResult SignUp(PageModel pModel)
-		{
-			pModel.Num = (int)Pages.Nums.SignUp;
-			return new HtmlResult($"<input class='ds-n' id='pageNum' value='{pModel.Num}'/>");
-		}
+        [HttpGet]
+        [Route("signup")]
+        public ActionResult SignUp()
+        {
+            return View();
+        }
 
-		[HttpPost]
+        [HttpPost]
         [Route("signup")]
         public async Task<JsonResult> SignUp(PageModel pModel, string s)
-		{
+        {
             AccountHelper helper = new AccountHelper();
             var code = helper.Create(pModel.Data);
 
@@ -36,17 +34,16 @@ namespace Swishark.Controllers
             }
 
             return new JsonResult(code);
-		}
+        }
 
 
 
-		[HttpGet]
-		[Route("signin")]
-		public HtmlResult SignIn(PageModel pModel)
-		{
-			pModel.Num = (int)Pages.Nums.SignIn;
-			return new HtmlResult($"<input class='ds-n' id='pageNum' value='{pModel.Num}'/>");
-		}
+        [HttpGet]
+        [Route("signin")]
+        public ActionResult SignIn()
+        {
+            return View();
+        }
 
         [HttpPost]
         [Route("signin")]
@@ -62,27 +59,6 @@ namespace Swishark.Controllers
 
             return new JsonResult(code);
         }
-
-
-
-        // <summary>
-        // Часть API. Возвращает страницу.
-        //</summary>
-        [Route("api/account/{pageUrl}")]
-		[HttpGet("{pageUrl}")]
-		public HtmlResult Get(string pageUrl, PageModel model)
-		{
-			switch(pageUrl.ToLower()){
-				case "signup":
-					model.Num = (int)Pages.Nums.SignUp;
-				break;
-
-				case "signin":
-					model.Num = (int)Pages.Nums.SignIn;
-				break;
-			}
-			return new HtmlResult($"<input class='ds-n' id='pageNum' value='{model.Num}'/>");
-		}
 
 
 

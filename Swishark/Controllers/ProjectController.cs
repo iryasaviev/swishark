@@ -15,17 +15,21 @@ namespace Swishark.Controllers
     {
         [HttpGet]
         [Route("add")]
-        public ActionResult Add(PageModel pModel)
+        public ActionResult Add()
         {
             return View();
         }
 
-        [HttpGet]
-        [Route("index")]
-        public ActionResult Index(PageModel pModel)
+        [HttpPost]
+        [Route("add")]
+        public JsonResult Add(PageModel pModel)
         {
-            return View();
+            ProjectHelper helper = new ProjectHelper();
+            var code = helper.Create(pModel.Data);
+
+            return new JsonResult(code);
         }
+
 
         //[HttpGet]
         //[Route("add")]
@@ -33,16 +37,6 @@ namespace Swishark.Controllers
         //{
         //    pModel.Num = (int)Pages.Nums.AppProjectAdd;
         //    return new HtmlResult($"<input class='ds-n' id='pageNum' value='{pModel.Num}'/>");
-        //}
-
-        //[HttpPost]
-        //[Route("add")]
-        //public JsonResult Add(PageModel pModel, string s)
-        //{
-        //    ProjectHelper helper = new ProjectHelper();
-        //    var code = helper.Create(pModel.Data);
-
-        //    return new JsonResult(code);
         //}
     }
 }

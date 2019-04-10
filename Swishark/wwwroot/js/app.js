@@ -290,89 +290,36 @@ var account = {
     * @function SignUp
     * @description отправка данных с формы регистрации
     *
+    * @param {object} click submit button
+    * @param {object} target is form
+    * 
     * @returns {string} alert message of validation error.
     **/
-    SignUp: function () {
-        var form = document.getElementById('form'),
-            inpWrappers = form.getElementsByClassName('InputWrapper'),
-            input;
-
-        var formData = {
-            FirstName: null,
-            Email: null,
-            Password: null
-        };
+    SignUp: function (click, target) {
+        var form = target,
+            inpWrappers = form.getElementsByClassName('InputWrapper');
 
         for (let a = 0; inpWrappers.length > a; a++) {
             if (inpWrappers[a].classList.contains('fm-item--error')) {
-                return alert('Ошибка валидации. Пожалуйста, проверьте поля формы.')
-            }
-
-            input = inpWrappers[a].getElementsByClassName('inp')[0];
-
-            switch (input.getAttribute('name')) {
-                case 'FirstName':
-                    formData.FirstName = input.value;
-                    break;
-
-                case 'Email':
-                    formData.Email = input.value;
-                    break;
-
-                case 'Password':
-                    formData.Password = input.value;
-                    break;
+                return alert('Ошибка валидации. Пожалуйста, проверьте поля формы.');
             }
         }
 
-        var response = ajax.SendAndRecive(convert.ToJson(formData), 'Data', 'signup');
-        switch (response) {
-            case '200':
-                page.setUrl('Создание проекта', '/project/add');
-                page.setName('31');
-                page.setData();
-                page.setHandlers();
-                break;
-        }
+        var data = formData.Build(form),
+            response = ajax.SendAndRecive(convert.ToJson(data), 'Data', 'signup');
     },
 
     /**
     * @function SignIn
-    * @description отправка данных с формы авторизации.
+    * @description отправка данных с формы авторизации
+    * 
+    * @param {object} click submit button
+    * @param {object} target is form
     **/
-    SignIn: function () {
+    SignIn: function (click, target) {
         var form = document.getElementById('form'),
-            inpWrappers = form.getElementsByClassName('InputWrapper'),
-            input;
-
-        var formData = {
-            Email: null,
-            Password: null
-        };
-
-        for (let a = 0; inpWrappers.length > a; a++) {
-            input = inpWrappers[a].getElementsByClassName('inp')[0];
-
-            switch (input.getAttribute('name')) {
-                case 'Email':
-                    formData.Email = input.value;
-                    break;
-
-                case 'Password':
-                    formData.Password = input.value;
-                    break;
-            }
-        }
-
-        var response = ajax.SendAndRecive(convert.ToJson(formData), 'Data', 'signin');
-        switch (response) {
-            case '200':
-                page.setUrl('Создание проекта', '/project/add');
-                page.setName('31');
-                page.setData();
-                page.setHandlers();
-                break;
-        }
+            data = formData.Build(form),
+            response = ajax.SendAndRecive(convert.ToJson(data), 'Data', 'signup');
     }
 };
 
@@ -383,8 +330,8 @@ var project = {
     * @function project.Add
     * @description отправка данных с формы добавления проекта
     * 
-    * @param {object} click ...
-    * @param {object} target ...
+    * @param {object} click submit button
+    * @param {object} target is form
     **/
     Add: function (click, target) {
         let form = target,
