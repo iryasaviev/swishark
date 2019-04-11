@@ -49,7 +49,7 @@ namespace Swishark
                     options.LoginPath = $"/signin";
                     options.LogoutPath = $"/signout";
                     options.SlidingExpiration = true;
-                    options.ExpireTimeSpan = System.TimeSpan.FromDays(30);
+                    options.ExpireTimeSpan = TimeSpan.FromDays(30);
                 });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -71,6 +71,7 @@ namespace Swishark
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

@@ -361,9 +361,9 @@ var account = {
     * @param {object} target is form
     **/
     SignIn: function (click, target) {
-        var form = document.getElementById('form'),
+        var form = target,
             data = formData.Build(form),
-            response = ajax.SendAndRecive(convert.ToJson(data), 'Data', 'signup');
+            response = ajax.SendAndRecive(convert.ToJson(data), 'Data', 'signin');
     }
 };
 
