@@ -13,12 +13,12 @@ namespace Swishark.Controllers
     [Route("[controller]")]
     public class TaskController : ControllerBase
     {
-        [HttpGet]
-        [Route("add")]
-        public HtmlResult Add(PageModel pModel)
-        {
-            pModel.Num = (int)Pages.Nums.AppTaskAdd;
-            return new HtmlResult($"<input class='ds-n' id='pageNum' value='{pModel.Num}'/>");
-        }
+        //[HttpGet]
+        //[Route("add")]
+        //public HtmlResult Add(PageModel pModel)
+        //{
+        //    pModel.Num = (int)Pages.Nums.AppTaskAdd;
+        //    return new HtmlResult($"<input class='ds-n' id='pageNum' value='{pModel.Num}'/>");
+        //}
     }
 }

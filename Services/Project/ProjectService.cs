@@ -1,4 +1,6 @@
-﻿namespace Services.Project
+﻿using System.Linq;
+
+namespace Services.Project
 {
     public class ProjectService
     {
@@ -22,6 +24,29 @@
         public void Update(Infrastructure.Entities.Project project)
         {
             _repo.Update(project);
+        }
+
+        /// <summary>
+        /// Возвращает проект.
+        /// </summary>
+        public Infrastructure.Entities.Project GetProject(int id)
+        {
+            return _repo.GetItems<Infrastructure.Entities.Project>().FirstOrDefault(x => x.Id.Equals(id));
+        }
+
+        /// <summary>
+        /// Проверяет наличие проекта в базе.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool CheckProject(int id)
+        {
+            bool result = true;
+
+            if (_repo.GetItems<Infrastructure.Entities.Project>().FirstOrDefault(p => p.Id == id) == null)
+                result = false;
+
+            return result;
         }
     }
 }

@@ -1,4 +1,32 @@
 ﻿'use strict';
+
+const ENUMS = {
+    States: {
+        Success: '200',
+
+        ErrorValidationLimitMin: '4611',
+        ErrorValidationLimitMax: '4631',
+        ErrorValidationEmail: '461503',
+        ErrorValidationPassword: '461504',
+
+        ErrorAccountDoesNotExist: '4604',
+        ErrorAccountEmailIsBusy: '4609',
+        ErrorAccountIncorrectPassword: '4616'
+    },
+
+    Pages: {
+        Home: '1',
+        SignIn: '2',
+        SignUp: '3',
+
+        Profile: '11',
+
+        Project: '21',
+        ProjectAdd: '22'
+    }
+};
+
+
 let app = document.getElementById('app');
 
 Object.prototype.searchParent = function (parentClass) {
@@ -17,6 +45,13 @@ Object.prototype.searchParent = function (parentClass) {
         }
     }
 };
+
+
+//var page = {
+//    GetNum: function () {
+//        return document.getElementById('pageNum');
+//    }
+//};
 
 
 var ajax = {
@@ -46,10 +81,10 @@ var ajax = {
 
         if (xhr.status !== 200) {
             // обработать ошибку
-            alert(xhr.status + ': ' + xhr.statusText); // пример вывода: 404: Not Found
+            //alert(xhr.status + ': ' + xhr.statusText); // пример вывода: 404: Not Found
         } else {
             // вывести результат
-            alert(xhr.responseText); // responseText -- текст ответа.
+            //alert(xhr.responseText); // responseText -- текст ответа.
         }
     },
 
@@ -351,6 +386,11 @@ var account = {
 
         var data = formData.Build(form),
             response = ajax.SendAndRecive(convert.ToJson(data), 'Data', 'signup');
+
+        if (response === ENUMS.States.Success) {
+            // Временное способ, потом тут будет решение для SPA.
+            document.location.href = '/project/add';
+        }
     },
 
     /**
@@ -364,6 +404,11 @@ var account = {
         var form = target,
             data = formData.Build(form),
             response = ajax.SendAndRecive(convert.ToJson(data), 'Data', 'signin');
+
+        if (response === ENUMS.States.Success) {
+            // Временное способ, потом тут будет решение для SPA.
+            document.location.href = '/project/add';
+        }
     }
 };
 
@@ -381,6 +426,14 @@ var project = {
         let form = target,
             data = formData.Build(form),
             response = ajax.SendAndRecive(convert.ToJson(data), 'Data', 'add');
+    },
+
+    Get: function () {
+        var url = location.pathname.split('/'),
+            data = {
+                id: url[url.length - 1]
+            },
+            response = ajax.SendAndRecive(convert.ToJson(data), 'Data', 'api/GetItem');
     }
 };
 

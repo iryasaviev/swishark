@@ -32,23 +32,14 @@
 
 
             /// <summary>
-            /// Страница карты с организациями
+            /// Страница проекта
             /// </summary>
-            AppMap = 21,
-
+            Project = 21,
 
             /// <summary>
             /// Страница добавления проекта
             /// </summary>
-            AppProjectAdd = 31,
-
-
-
-            /// <summary>
-            /// Страница добавления задач
-            /// </summary>
-            AppTaskAdd = 41,
-
+            ProjectAdd = 22
         }
     }
 }

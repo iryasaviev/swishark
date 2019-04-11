@@ -68,6 +68,7 @@ namespace Swishark
                 app.UseHsts();
             }
 
+            app.UseStatusCodePages();
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseHttpsRedirection();

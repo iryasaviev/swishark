@@ -245,6 +245,7 @@ a{
 	border-radius:2px;
 }
 .fm-item--tta{
+    font-family:'Noto Sans', sans-serif;
     overflow:hidden;
     height:120px;
     resize:none;
@@ -398,8 +399,6 @@ a{
 }
 .tsk_stg-active .tsk_stg{
     display:block;
-}
-.tsk_stg-item{
 }
 .tsk_stg-item--h{
     color:#443a3a;

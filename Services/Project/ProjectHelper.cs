@@ -29,6 +29,7 @@ namespace Services.Project
             Dictionary<string, string> data = _json.From(dataStr);
 
             _project.Name = data["Name"];
+            _project.Description = data["Description"];
 
             _service.Add(_project);
             return Codes.States.Success;

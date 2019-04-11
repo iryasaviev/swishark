@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Index";
 }
-
+<input class="ds-n" id="pageNum" value="21" />
 <div class="tsk_wr" id="tasksWrapper">
     <div class="tsk_hd">
         <div class="tsk_hd-item1">
@@ -56,3 +56,8 @@
     </div>
 </div>
 <script src="~/js/tasks.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        project.Get();
+    });
+</script>
