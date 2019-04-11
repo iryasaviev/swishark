@@ -296,10 +296,6 @@ a{
 	border:1px solid red;
 	outline:none;
 }
-.fm-item--error .inp:focus{
-	box-shadow:0 0 10px red,
-	0 0 15px #5b61b3;
-}
 
 
 .pr_wr{

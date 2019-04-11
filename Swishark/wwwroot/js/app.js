@@ -195,8 +195,16 @@ var popUp = {
 
 
 var validation = {
-	Email: function(el){
-		var value = el.target.value,
+    /**
+    * @function validation.Email
+    * @description validation for input by email type
+    * 
+    * @param {object} click ...
+    * 
+    * @returns {array} [0] {boolean} - error state, [1] {string} - error message.
+    **/
+    Email: function (click){
+        var value = click.target.value,
 		pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/,
 		result = [true];
 
@@ -207,12 +215,20 @@ var validation = {
 			}
 		}
 		
-		validation.OutputResult(el.target, result);
+        validation.OutputResult(click.target, result);
         return result;
 	},
 
-	Password: function(el){
-		var value = el.target.value,
+    /**
+    * @function validation.Password
+    * @description validation for input by password type
+    * 
+    * @param {object} click ...
+    * 
+    * @returns {array} [0] {boolean} - error state, [1] {string} - error message.
+    **/
+	Password: function(click){
+        var value = click.target.value,
 		pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/,
 		result = [true];
 
@@ -223,7 +239,7 @@ var validation = {
 			}
 		}
 
-		validation.OutputResult(el.target, result);
+        validation.OutputResult(click.target, result);
         return result;
 	},
 
@@ -243,7 +259,35 @@ var validation = {
 				itemWrapper.classList.add('fm-item--error');
 			}
 		}
-	}
+    },
+
+    /**
+    * @function validation.SetEvents
+    * @description sets event on input by type
+    **/
+    SetEvents: function () {
+        let items = app.getElementsByClassName('InputWrapper');
+
+        var input,
+            type;
+
+        if (items.length > 0)
+            for (let item of items) {
+                if (item.classList.contains('ValidationTrue')) {
+                    input = item.getElementsByClassName('inp')[0];
+                    type = input.getAttribute('type');
+
+                    switch (type) {
+                        case 'email':
+                            input.oninput = validation.Email;
+                            break;
+                        case 'password':
+                            input.oninput = validation.Password;
+                            break;
+                    }
+                }
+            }
+    }
 };
 
 
@@ -339,3 +383,9 @@ var project = {
             response = ajax.SendAndRecive(convert.ToJson(data), 'Data', 'add');
     }
 };
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    validation.SetEvents();
+});
