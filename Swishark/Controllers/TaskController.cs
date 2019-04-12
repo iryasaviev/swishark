@@ -1,24 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Infrastructure.Enums;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Account;
+using Services.ProjectTask;
 using Swishark.Models;
-using Swishark.Util;
 
 namespace Swishark.Controllers
 {
     [Route("[controller]")]
     public class TaskController : ControllerBase
     {
-        //[HttpGet]
-        //[Route("add")]
-        //public HtmlResult Add(PageModel pModel)
-        //{
-        //    pModel.Num = (int)Pages.Nums.AppTaskAdd;
-        //    return new HtmlResult($"<input class='ds-n' id='pageNum' value='{pModel.Num}'/>");
-        //}
+        [HttpPost]
+        [Route("api/AddItem")]
+        [Authorize]
+        public JsonResult Add(PageModel pModel)
+        {
+            TaskHelper helper = new TaskHelper();
+            AccountService aService = new AccountService();
+
+            var code = helper.Create(pModel.Data, aService.GetCurrentUser(User.Identity.Name));
+
+            return new JsonResult(code);
+        }
     }
 }

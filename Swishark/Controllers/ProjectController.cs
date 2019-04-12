@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Infrastructure.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Account;
 using Services.Project;
 using Swishark.Models;
-using Swishark.Util;
 
 namespace Swishark.Controllers
 {
@@ -24,7 +20,7 @@ namespace Swishark.Controllers
         }
 
         [HttpPost]
-        [Route("add")]
+        [Route("api/AddItem")]
         [Authorize]
         public JsonResult Add(PageModel pModel)
         {

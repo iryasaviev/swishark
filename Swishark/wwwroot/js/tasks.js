@@ -11,7 +11,7 @@ var task = {
         },
 
         OpenPopUpForm: function () {
-            popUp.Open('Добавление задачи', '<div class="fm"><div class="fm-item InputWrapper"><label class="fm-item--lb" for="taskTitle">Task title</label><input class="inp" id="taskTitle" name="Title" type="text"></div><div class="fm-item InputWrapper"><label class="fm-item--lb" for="taskDescription">Description</label><textarea class="inp fm-item--tta" id="taskDescription" name="Description"></textarea></div></div>');
+            popUp.Open('Добавление задачи', '<div class="fm"><div class="fm-item InputWrapper"><label class="fm-item--lb">Заголовок задачи<input class="inp" name="Title" type="text"></label></div><div class="fm-item tsk_stg-item InputWrapper"><label class="fm-item--lb">Дата окончания<input class="inp" name="FinishDate" type="datetime-local"></label></div><div class="fm-item InputWrapper"><label class="fm-item--lb">Описание<textarea class="inp fm-item--tta" name="Description"></textarea></label></div></div>');
         }
     }
 };

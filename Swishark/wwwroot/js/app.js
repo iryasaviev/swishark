@@ -192,7 +192,7 @@ var convert = {
 
 
 var popUp = {
-    Open: function (headText, bodyContent) {
+    Open: function (headText, bodyContent, func) {
         let wrapper = document.getElementById('popUp'),
             head = wrapper.getElementsByClassName('PopUpHead')[0],
             body = wrapper.getElementsByClassName('PopUpBody')[0];
@@ -205,23 +205,17 @@ var popUp = {
         }
 
         for (let btn of wrapper.getElementsByClassName('PopUpButton')) {
-            btn.onclick = popUp.Close;
-        }
+            btn.addEventListener('click', popUp.Close);
 
-        wrapper.getElementsByClassName('PopUpCloseButton')[0].onclick = popUp.Close;
+            if (btn.classList.contains('PopUpPerformButton')) {
+                if (func !== undefined) {
+                    btn.addEventListener('click', func);
+                }
+            }
+        }
     },
 
-    Close: function (click) {
-        let target = click.target;
-
-        if (target.classList.contains('PopUpCloseButton')) {
-            //...
-        }
-
-        if (target.classList.contains('PopUpPerformButton')) {
-            //...
-        }
-
+    Close: function () {
         if (app.classList.contains('pp-active')) {
             app.classList.remove('pp-active');
         }
@@ -425,7 +419,7 @@ var project = {
     Add: function (click, target) {
         let form = target,
             data = formData.Build(form),
-            response = ajax.SendAndRecive(convert.ToJson(data), 'Data', 'add');
+            response = ajax.SendAndRecive(convert.ToJson(data), 'Data', 'api/AddItem');
     },
 
     Get: function () {
@@ -443,6 +437,31 @@ var project = {
             name.innerText = data['name'];
             description.innerText = data['description'];
         }
+    }
+};
+
+
+
+var task = {
+    OpenSettings: function (click) {
+        let wrapper = document.getElementById('tasksWrapper');
+
+        wrapper.classList.toggle('tsk_stg-active');
+    },
+
+    OpenPopUpForm: function () {
+        popUp.Open('Добавление задачи',
+            '<div class="fm" data-controller="task" data-method="Add"><div class="fm-item InputWrapper"><label class="fm-item--lb">Заголовок задачи<input class="inp" name="Title" type="text"></label></div><div class="fm-item tsk_stg-item InputWrapper"><label class="fm-item--lb">Дата окончания<input class="inp" name="FinishDate" type="datetime-local"></label></div><div class="fm-item InputWrapper"><label class="fm-item--lb">Описание<textarea class="inp fm-item--tta" name="Description"></textarea></label></div></div>',
+            task.Add);
+    },
+
+    Add: function (click) {
+        let form = document.getElementById('popUp').getElementsByClassName('fm')[0],
+            data = formData.Build(form);
+
+        data['ProjectId'] = location.pathname.split('/')[location.pathname.split('/').length - 1];
+
+        let response = ajax.SendAndRecive(convert.ToJson(data), 'Data', '/task/api/AddItem');
     }
 };
 
