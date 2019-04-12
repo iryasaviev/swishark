@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Services.ProjectTask
 {
@@ -32,6 +33,14 @@ namespace Services.ProjectTask
         public Infrastructure.Entities.ProjectTask GetTask(int id)
         {
             return _repo.GetItems<Infrastructure.Entities.ProjectTask>().FirstOrDefault(x => x.Id.Equals(id));
+        }
+
+        /// <summary>
+        /// Возвращает список задач.
+        /// </summary>
+        public List<Infrastructure.Entities.ProjectTask> GetTasks(int projectId)
+        {
+            return _repo.GetItems<Infrastructure.Entities.ProjectTask>().Where(x => x.ProjectId.Equals(projectId)).ToList();
         }
     }
 }

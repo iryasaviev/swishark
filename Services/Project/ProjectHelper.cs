@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Entities;
 using Infrastructure.Enums;
+using Services.ProjectTask;
 using Services.Validation;
 using System;
 using System.Collections.Generic;
@@ -37,9 +38,11 @@ namespace Services.Project
         }
 
 
-        public Infrastructure.Entities.Project Get(int id)
+        public object Get(int id)
         {
-            return _service.GetProject(id);
+            TaskService tService = new TaskService();
+
+            return new { project = _service.GetProject(id), tasks = tService.GetTasks(id) };
         }
     }
 }

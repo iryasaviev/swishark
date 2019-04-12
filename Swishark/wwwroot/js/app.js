@@ -431,11 +431,16 @@ var project = {
 
         let data = convert.FromJson(response);
         if (data !== null) {
-            var name = app.getElementsByClassName('TaskProjectName')[0],
+            var body = app.getElementsByClassName('TasksBody')[0],
+                name = app.getElementsByClassName('TaskProjectName')[0],
                 description = app.getElementsByClassName('TaskProjectDescription')[0];
 
-            name.innerText = data['name'];
-            description.innerText = data['description'];
+            name.innerText = data.project.name;
+            description.innerText = data.project.description;
+
+            for (let a = 0; data.tasks.length > a; a++) {
+                body.insertAdjacentHTML('afterbegin', '<div class="tsk_bd-item Task"><div class="tsk_bd-item--ttl TaskName">' + data.tasks[a].title + '</div><div class="tsk_bd-item--dsc TaskDescription">' + data.tasks[a].description + '</div></div>');
+            }
         }
     }
 };

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Account;
 using Services.Project;
+using Services.ProjectTask;
 using Swishark.Models;
 
 namespace Swishark.Controllers
@@ -48,7 +49,8 @@ namespace Swishark.Controllers
 
         [HttpPost]
         [Route("api/GetItem")]
-        public JsonResult GetData(PageModel pModel)
+        [Authorize]
+        public JsonResult GetItem(PageModel pModel)
         {
             ProjectService service = new ProjectService();
             Services.Json json = new Services.Json();
@@ -56,9 +58,11 @@ namespace Swishark.Controllers
             Dictionary<string, string> jData = json.From(pModel.Data);
             int id = Convert.ToInt32(jData["id"]);
 
+            ProjectHelper helper = new ProjectHelper();
+            
             if (service.CheckProject(id))
             {
-                return new JsonResult(service.GetProject(id));
+                return new JsonResult(helper.Get(id));
             }
             else
             {

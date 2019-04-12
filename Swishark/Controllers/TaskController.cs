@@ -21,5 +21,18 @@ namespace Swishark.Controllers
 
             return new JsonResult(code);
         }
+
+        [HttpPost]
+        [Route("api/GetItem")]
+        [Authorize]
+        public JsonResult GetItem(PageModel pModel)
+        {
+            TaskHelper helper = new TaskHelper();
+            AccountService aService = new AccountService();
+
+            var code = helper.Create(pModel.Data, aService.GetCurrentUser(User.Identity.Name));
+
+            return new JsonResult(code);
+        }
     }
 }
