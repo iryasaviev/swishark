@@ -430,10 +430,19 @@ var project = {
 
     Get: function () {
         var url = location.pathname.split('/'),
-            data = {
+            dataTo = {
                 id: url[url.length - 1]
             },
-            response = ajax.SendAndRecive(convert.ToJson(data), 'Data', 'api/GetItem');
+            response = ajax.SendAndRecive(convert.ToJson(dataTo), 'Data', 'api/GetItem');
+
+        let data = convert.FromJson(response);
+        if (data !== null) {
+            var name = app.getElementsByClassName('TaskProjectName')[0],
+                description = app.getElementsByClassName('TaskProjectDescription')[0];
+
+            name.innerText = data['name'];
+            description.innerText = data['description'];
+        }
     }
 };
 

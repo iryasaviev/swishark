@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Infrastructure.Entities
 {
@@ -14,10 +13,9 @@ namespace Infrastructure.Entities
         public string Members { get; set; }
         public int State { get; set; }
 
-        public int ProjectId { get; set; }
         public int CretedUserId { get; set; }
 
+        public int ProjectId { get; set; }
         public Project Projects { get; set; }
-        public User Users { get; set; }
     }
 }

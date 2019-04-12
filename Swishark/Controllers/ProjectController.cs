@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Infrastructure.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Services.Account;
 using Services.Project;
 using Swishark.Models;
 using Swishark.Util;
@@ -28,7 +29,9 @@ namespace Swishark.Controllers
         public JsonResult Add(PageModel pModel)
         {
             ProjectHelper helper = new ProjectHelper();
-            var code = helper.Create(pModel.Data);
+            AccountService aService = new AccountService();
+
+            var code = helper.Create(pModel.Data, aService.GetCurrentUser(User.Identity.Name));
 
             return new JsonResult(code);
         }
@@ -61,8 +64,11 @@ namespace Swishark.Controllers
             {
                 return new JsonResult(service.GetProject(id));
             }
-
-            return new JsonResult("");
+            else
+            {
+                // TODO: Сделать вывод номера ошибки.
+                return new JsonResult("Такого проекта не существует.");
+            }
         }
     }
 }

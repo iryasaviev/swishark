@@ -24,15 +24,22 @@ namespace Services.Project
 
 
 
-        public Codes.States Create(string dataStr)
+        public Codes.States Create(string dataStr, User user)
         {
             Dictionary<string, string> data = _json.From(dataStr);
 
             _project.Name = data["Name"];
             _project.Description = data["Description"];
+            _project.UserId = user.Id;
 
             _service.Add(_project);
             return Codes.States.Success;
+        }
+
+
+        public Infrastructure.Entities.Project Get(int id)
+        {
+            return _service.GetProject(id);
         }
     }
 }

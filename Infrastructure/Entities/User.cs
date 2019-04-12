@@ -13,9 +13,6 @@ namespace Infrastructure.Entities
         public string Role { get; set; }
         public string Color { get; set; }
 
-        public int? ProjectId { get; set; }
-
-        public Project Project { get; set; }
-        public ICollection<ProjectTask> ProjectTasks { get; set; }
+        public ICollection<Project> Projects { get; set; }
     }
 }

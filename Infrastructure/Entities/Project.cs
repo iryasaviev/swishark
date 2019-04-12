@@ -9,7 +9,9 @@ namespace Infrastructure.Entities
         public string Description { get; set; }
         public string Members { get; set; }
 
+        public int UserId { get; set; }
+        public User User { get; set; }
+
         public ICollection<ProjectTask> ProjectTasks { get; set; }
-        public ICollection<User> Users { get; set; }
     }
 }

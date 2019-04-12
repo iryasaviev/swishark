@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(SwisharkContext))]
-    [Migration("20190410205507_Initial")]
-    partial class Initial
+    [Migration("20190412141534_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,7 +32,11 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<int>("UserId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Projects");
                 });
@@ -60,13 +64,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Title");
 
-                    b.Property<int?>("UsersId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectId");
-
-                    b.HasIndex("UsersId");
 
                     b.ToTable("ProjectTasks");
                 });
@@ -88,15 +88,19 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Password");
 
-                    b.Property<int?>("ProjectId");
-
                     b.Property<string>("Role");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId");
-
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Infrastructure.Entities.Project", b =>
+                {
+                    b.HasOne("Infrastructure.Entities.User", "User")
+                        .WithMany("Projects")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.ProjectTask", b =>
@@ -105,17 +109,6 @@ namespace Infrastructure.Migrations
                         .WithMany("ProjectTasks")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Infrastructure.Entities.User", "Users")
-                        .WithMany("ProjectTasks")
-                        .HasForeignKey("UsersId");
-                });
-
-            modelBuilder.Entity("Infrastructure.Entities.User", b =>
-                {
-                    b.HasOne("Infrastructure.Entities.Project", "Project")
-                        .WithMany("Users")
-                        .HasForeignKey("ProjectId");
                 });
 #pragma warning restore 612, 618
         }

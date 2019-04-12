@@ -355,6 +355,9 @@ a{
     font-size:28px;
     padding:8px 0;
 }
+.tsk_hd-dsc{
+    margin-bottom:20px;
+}
 .tsk_hd-dsc,
 .tsk_bd-item--dsc{
     color:#8e8e8e;
@@ -389,6 +392,9 @@ a{
 }
 .tsk_bd-item--btn{
     height:30px;
+}
+.tsk_bd-item-add{
+    box-shadow:none;
 }
 .tsk_stg{
     float:right;
