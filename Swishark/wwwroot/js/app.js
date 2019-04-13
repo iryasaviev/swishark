@@ -47,13 +47,6 @@ Object.prototype.searchParent = function (parentClass) {
 };
 
 
-//var page = {
-//    GetNum: function () {
-//        return document.getElementById('pageNum');
-//    }
-//};
-
-
 var ajax = {
 
     Send: function (data, modelProperty, page) {
@@ -409,6 +402,11 @@ var account = {
 
 
 var project = {
+
+    data: {
+        
+    },
+
     /**
     * @function project.Add
     * @description отправка данных с формы добавления проекта
@@ -431,6 +429,8 @@ var project = {
 
         let data = convert.FromJson(response);
         if (data !== null) {
+            project.data = data;
+
             var body = app.getElementsByClassName('TasksBody')[0],
                 name = app.getElementsByClassName('TaskProjectName')[0],
                 description = app.getElementsByClassName('TaskProjectDescription')[0];
@@ -467,6 +467,12 @@ var task = {
         data['ProjectId'] = location.pathname.split('/')[location.pathname.split('/').length - 1];
 
         let response = ajax.SendAndRecive(convert.ToJson(data), 'Data', '/task/api/AddItem');
+
+        if (response === ENUMS.States.Success) {
+            var body = app.getElementsByClassName('TasksBody')[0];
+
+            body.insertAdjacentHTML('afterbegin', '<div class="tsk_bd-item Task"><div class="tsk_bd-item--ttl TaskName">' + data.Title + '</div><div class="tsk_bd-item--dsc TaskDescription">' + data.Description + '</div></div>');
+        }
     }
 };
 
