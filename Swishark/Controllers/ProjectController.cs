@@ -47,6 +47,16 @@ namespace Swishark.Controllers
             return View();
         }
 
+        [HttpGet]
+        [Route("list")]
+        //[Authorize]
+        public ActionResult List()
+        {
+            return View();
+        }
+
+
+
         [HttpPost]
         [Route("api/GetItem")]
         [Authorize]
