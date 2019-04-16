@@ -394,7 +394,7 @@ var account = {
 
         if (response === ENUMS.States.Success) {
             // Временное способ, потом тут будет решение для SPA.
-            document.location.href = '/project/add';
+            document.location.href = '/project/list';
         }
     }
 };
