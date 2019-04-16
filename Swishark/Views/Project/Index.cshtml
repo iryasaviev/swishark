@@ -2,18 +2,18 @@
     ViewData["Title"] = "Index";
 }
 <input class="ds-n" id="pageNum" value="21" />
-<div class="tsk_wr" id="tasksWrapper">
-    <div class="tsk_hd">
-        <div class="tsk_hd-item1">
-            <div class="tsk_hd-h TaskProjectName"></div>
-            <div class="tsk_hd-dsc TaskProjectDescription"></div>
+<div class="pr_wr" id="tasksWrapper">
+    <div class="pr_hd">
+        <div class="pr_hd-item1">
+            <div class="pr_hd-h TaskProjectName"></div>
+            <div class="pr_hd-dsc TaskProjectDescription"></div>
         </div>
-        <div class="tsk_hd-item2">
-            <button class="btn tsk_hd-item2--btn" type="button">Сортировка</button>
+        <div class="pr_hd-item2">
+            <button class="btn pr_hd-item2--btn" type="button">Сортировка</button>
         </div>
     </div>
-    <div class="tsk_bd TasksBody">
-        <div class="tsk_bd-item tsk_bd-item-add">
+    <div class="pr_bd TasksBody">
+        <div class="pr_bd-item tsk_bd-item-add">
             <button class="btn tsk_bd-item--btn TaskAddBtn">Добавить задачу</button>
         </div>
     </div>
@@ -47,6 +47,8 @@
         </div>
     </div>
 </div>
+<link rel="stylesheet" href="~/css/project.css">
+<link rel="stylesheet" href="~/css/task.css">
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         project.Get();
