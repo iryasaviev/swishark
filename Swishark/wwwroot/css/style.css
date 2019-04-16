@@ -183,8 +183,7 @@ a{
     bottom:0;
     z-index:10000;
     width:60px;
-    background:#ebedf0;
-    border-right:1px solid #e8e8e8;
+    background:#2b2b2b;
     /*box-shadow:0px 0px 25px 0px rgba(0, 0, 0, 0.2);*/
     padding:5px;
 }
@@ -218,11 +217,12 @@ a{
 
 .app_wr-mn_bd-item-add{
     padding:0;
-    background:#fff;
-    border:1px dashed #ddd;
+    background:#4a4a4a;
+    border:1px solid #2b2b2b;
+    box-shadow:rgba(0, 0, 0, 0.06) 0px 2px 4px, rgba(0, 0, 0, 0.05) 0px 0.5px 1px;
 }
 .app_wr-mn_bd-item-add:hover{
-    background:#fff;
+    background:#4a4a4a;
 }
 .app_wr-mn_bd-item-add--txt{
     font-size:10px;
