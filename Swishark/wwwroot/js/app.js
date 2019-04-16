@@ -456,7 +456,7 @@ var project = {
             var body = app.getElementsByClassName('ProjectListBody')[0];
 
             for (let a = 0; data.length > a; a++) {
-                body.insertAdjacentHTML('afterbegin', '<div class="pr_bd-list--item ProjectListItem"><div class="pr_bd-list--item_hd"><div class="pr_bd-list--item_hd-nm ProjectListItemName">' + data[a].name + '</div><div class="pr_bd-list--item_hd-dsc ProjectListItemDescription">'+ data[a].description +'</div></div><div class="pr_bd-list--item_ft"><button class="btn pr_bd-list--item_ft--btn" type="button">Открыть</button></div></div>');
+                body.insertAdjacentHTML('afterbegin', '<div class="pr_bd-list--item ProjectListItem"><div class="pr_bd-list--item_hd"><div class="pr_bd-list--item_hd-nm ProjectListItemName">' + data[a].name + '</div><div class="pr_bd-list--item_hd-dsc ProjectListItemDescription">' + data[a].description + '</div></div><div class="pr_bd-list--item_ft"><a href="' + data[a].id + '"><div class="btn pr_bd-list--item_ft--btn">Открыть</div></a></div></div>');
             }
         }
     }
