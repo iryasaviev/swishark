@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Services.Project
 {
@@ -32,6 +33,14 @@ namespace Services.Project
         public Infrastructure.Entities.Project GetProject(int id)
         {
             return _repo.GetItems<Infrastructure.Entities.Project>().FirstOrDefault(x => x.Id.Equals(id));
+        }
+
+        /// <summary>
+        /// Возвращает список проектов.
+        /// </summary>
+        public List<Infrastructure.Entities.Project> GetProjects(int userId)
+        {
+            return _repo.GetItems<Infrastructure.Entities.Project>().Where(x => x.UserId.Equals(userId)).ToList();
         }
 
         /// <summary>

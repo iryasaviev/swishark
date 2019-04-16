@@ -429,8 +429,6 @@ var project = {
 
         let data = convert.FromJson(response);
         if (data !== null) {
-            project.data = data;
-
             var body = app.getElementsByClassName('TasksBody')[0],
                 name = app.getElementsByClassName('TaskProjectName')[0],
                 description = app.getElementsByClassName('TaskProjectDescription')[0];
@@ -440,6 +438,25 @@ var project = {
 
             for (let a = 0; data.tasks.length > a; a++) {
                 body.insertAdjacentHTML('afterbegin', '<div class="tsk_bd-item Task"><div class="tsk_bd-item--ttl TaskName">' + data.tasks[a].title + '</div><div class="tsk_bd-item--dsc TaskDescription">' + data.tasks[a].description + '</div></div>');
+            }
+        }
+    },
+
+    GetItems: function () {
+        var url = location.pathname.split('/'),
+            dataTo = {
+                id: url[url.length - 1]
+            },
+            response = ajax.SendAndRecive(convert.ToJson(dataTo), 'Data', 'api/GetItems');
+
+        let data = convert.FromJson(response);
+        if (data !== null) {
+            project.data = data;
+
+            var body = app.getElementsByClassName('ProjectListBody')[0];
+
+            for (let a = 0; data.length > a; a++) {
+                body.insertAdjacentHTML('afterbegin', '<div class="pr_bd-list--item ProjectListItem"><div class="pr_bd-list--item_hd"><div class="pr_bd-list--item_hd-nm ProjectListItemName">' + data[a].name + '</div><div class="pr_bd-list--item_hd-dsc ProjectListItemDescription">'+ data[a].description +'</div></div><div class="pr_bd-list--item_ft"><button class="btn pr_bd-list--item_ft--btn" type="button">Открыть</button></div></div>');
             }
         }
     }

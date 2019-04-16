@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Infrastructure.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Account;
@@ -49,7 +50,7 @@ namespace Swishark.Controllers
 
         [HttpGet]
         [Route("list")]
-        //[Authorize]
+        [Authorize]
         public ActionResult List()
         {
             return View();
@@ -79,6 +80,19 @@ namespace Swishark.Controllers
                 // TODO: Сделать вывод номера ошибки.
                 return new JsonResult("Такого проекта не существует.");
             }
+        }
+
+        [HttpPost]
+        [Route("api/GetItems")]
+        [Authorize]
+        public JsonResult GetItems(PageModel pModel)
+        {
+            ProjectService service = new ProjectService();
+            Services.Json json = new Services.Json();
+
+            List<Project> items = service.GetProjects(new AccountService().GetCurrentUser(User.Identity.Name).Id);
+
+            return new JsonResult(items);
         }
     }
 }
