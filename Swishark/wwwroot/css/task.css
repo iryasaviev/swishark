@@ -76,37 +76,9 @@
 .tsks-item-add{
     box-shadow:none;
 }
-.tsk_stg{
-    
-}
-/*.tsk_stg{
-    float:right;
-    width:320px;
-    border:1px solid #eee;
-    display:none;
-}
-.tsk_stg-active .tsk_stg{
-    display:block;
-}
-.tsk_stg-item--h{
-    color:#443a3a;
-    padding:8px 0;
-}
-.tsk_stg-item--mrk_wr{
-    height:0;
-    overflow:hidden;
-}
-.tsk_stg-item--mrk_wr-active{
-    height:auto;
-}
-
 .tsk_stg-item--mrk{
-    border:none;
-    color:#fff;
-    font-weight:600;
-    font-size:16px;
+    max-width:48%;
+    margin:2px;
+    width:100%;
+    float:left;
 }
-.tsk_stg-item--mrk:active,
-.tsk_stg-item--mrk:focus{
-    box-shadow:none;
-}*/

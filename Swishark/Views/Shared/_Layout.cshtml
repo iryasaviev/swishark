@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="~/css/style.css">
 </head>
 <body>
-    <div class="app_wr" id="app">
+    <div class="app_wr pp-active" id="app">
 
         <div class="app_wr-mn_wr" id="appLeftMenu">
             <div class="app_wr-mn_bd AppLeftMenuBody">
@@ -29,17 +29,17 @@
                     <div class="pp_bd PopUpBody">
                         <div class="tsk_stg">
                             <div class="fm">
-                                <div class="fm-item InputWrapper">
+                                <div class="fm-item">
                                     <label class="fm-item--lb">
                                         Заголовок задачи
-                                        <input class="inp" name="Title" type="text">
+                                        <input class="inp TaskSettingsTitle" name="Title" type="text">
                                     </label>
                                 </div>
                                 <div class="fm-item">
                                     <div class="fm-item-l">
                                         <label class="fm-item--lb">
                                             Состояние
-                                            <select class="inp">
+                                            <select class="inp TaskSettingsState">
                                                 <option>Выполнено</option>
                                                 <option>Не выполнено</option>
                                             </select>
@@ -48,28 +48,27 @@
                                     <div class="fm-item-r">
                                         <label class="fm-item--lb">
                                             Дата окончания
-                                            <input class="inp" name="FinishDate" type="datetime-local">
+                                            <input class="inp TaskSettingsFinishDate" name="FinishDate" type="datetime-local">
                                         </label>
                                     </div>
                                 </div>
-                                <div class="fm-item InputWrapper">
+                                <div class="fm-item">
                                     <label class="fm-item--lb">
-                                    Описание
-                                        <textarea class="inp fm-item--tta" name="Description"></textarea>
+                                        Описание
+                                        <textarea class="inp fm-item--tta TaskSettingsDescription" name="Description"></textarea>
                                     </label>
                                 </div>
                                 <div class="fm-item tsk_stg-item">
                                     <label class="fm-item--lb">Mark</label>
                                     <div class="tsk_stg-item--mrk_wr tsk_stg-item--mrk_wr-active">
-                                        <input class="inp tsk_stg-item--mrk bcg-clr--yellow" name="Mark" type="text">
-                                        <input class="inp tsk_stg-item--mrk bcg-clr--green1" name="Mark" type="text">
-                                        <input class="inp tsk_stg-item--mrk bcg-clr--green2" name="Mark" type="text">
-                                        <input class="inp tsk_stg-item--mrk bcg-clr--orange1" name="Mark" type="text">
-                                        <input class="inp tsk_stg-item--mrk bcg-clr--orange2" name="Mark" type="text">
-                                        <input class="inp tsk_stg-item--mrk bcg-clr--pink1" name="Mark" type="text">
-                                        <input class="inp tsk_stg-item--mrk bcg-clr--pink2" name="Mark" type="text">
-                                        <input class="inp tsk_stg-item--mrk bcg-clr--blue1" name="Mark" type="text">
-                                        <input class="inp tsk_stg-item--mrk bcg-clr--blue2" name="Mark" type="text">
+                                        <input class="inp tsk_stg-item--mrk bcg-clr--yellow" name="Mark" type="text" disabled>
+                                        <input class="inp tsk_stg-item--mrk bcg-clr--green1" name="Mark" type="text" disabled>
+                                        <input class="inp tsk_stg-item--mrk bcg-clr--green2" name="Mark" type="text" disabled>
+                                        <input class="inp tsk_stg-item--mrk bcg-clr--orange1" name="Mark" type="text" disabled>
+                                        <input class="inp tsk_stg-item--mrk bcg-clr--orange2" name="Mark" type="text" disabled>
+                                        <input class="inp tsk_stg-item--mrk bcg-clr--pink1" name="Mark" type="text" disabled>
+                                        <input class="inp tsk_stg-item--mrk bcg-clr--pink2" name="Mark" type="text" disabled>
+                                        <input class="inp tsk_stg-item--mrk bcg-clr--blue1" name="Mark" type="text" disabled>
                                     </div>
                                 </div>
                             </div>
