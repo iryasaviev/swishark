@@ -437,7 +437,9 @@ var project = {
             description.innerText = data.project.description;
 
             for (let a = 0; data.tasks.length > a; a++) {
-                body.insertAdjacentHTML('afterbegin', '<div class="tsk_bd-item Task"><div class="tsk_bd-item--ttl TaskName">' + data.tasks[a].title + '</div><div class="tsk_bd-item--dsc TaskDescription">' + data.tasks[a].description + '</div></div>');
+                var ss = new Date(data.tasks[a].finishDate);
+
+                body.insertAdjacentHTML('afterbegin', '<div class="tsks-item Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.tasks[a].title + '</div><div class="tsks-item-ttl--dt TaskDateTime">' + new Date(data.tasks[a].createdDate).toLocaleString() + ' — ' + new Date(data.tasks[a].finishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.tasks[a].description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div></div>');
             }
         }
     },
@@ -488,7 +490,7 @@ var task = {
         if (response === ENUMS.States.Success) {
             var body = app.getElementsByClassName('TasksBody')[0];
 
-            body.insertAdjacentHTML('afterbegin', '<div class="tsk_bd-item Task"><div class="tsk_bd-item--ttl TaskName">' + data.Title + '</div><div class="tsk_bd-item--dsc TaskDescription">' + data.Description + '</div></div>');
+            body.insertAdjacentHTML('afterbegin', '<div class="tsks-item Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.Title + '</div><div class="tsks-item-ttl--dt TaskDateTime">' + new Date(data.CreatedDate).toLocaleString() + ' — ' + new Date(data.FinishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.Description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div></div>');
         }
     }
 };
