@@ -24,6 +24,11 @@
     color:#5a4f4f;
     margin-right:10px;
     display:inline-block;
+    cursor:pointer;
+    transition:0.2s;
+}
+.tsks-item-ttl--nm:hover{
+    color:#000;
 }
 .tsks-item-ttl--dt{
     color:#8e8e8e;
@@ -93,12 +98,10 @@
     font-weight:600;
     font-size:12px;
     border:none;
-    opacity:0.85;
+    opacity:0.8;
     cursor:pointer;
 }
-.tsk_stg-item--mrk:hover{
+.tsk_stg-item--mrk:hover,
+.tsk_stg-item--mrk-active{
     opacity:1;
-}
-.tsk_stg-item--mrk-active .bcg-clr--yellow{
-
 }

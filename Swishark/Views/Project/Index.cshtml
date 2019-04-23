@@ -24,8 +24,8 @@
     document.addEventListener("DOMContentLoaded", function () {
         project.Get();
 
-        if (document.getElementById('tasksWrapper').getElementsByClassName('Task') !== null) {
-            let items = document.getElementById('tasksWrapper').getElementsByClassName('Task');
+        if (document.getElementById('tasksWrapper').getElementsByClassName('TaskName') !== null) {
+            let items = document.getElementById('tasksWrapper').getElementsByClassName('TaskName');
             for (let item of items) {
                 item.onclick = task.OpenSettings;
             }

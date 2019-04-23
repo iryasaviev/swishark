@@ -403,9 +403,7 @@ var account = {
 
 var project = {
 
-    data: {
-        
-    },
+    data: {},
 
     /**
     * @function project.Add
@@ -468,9 +466,11 @@ var project = {
 
 var task = {
     OpenSettings: function (click) {
-        let wrapper = document.getElementById('tasksWrapper');
+        let item = click.target.searchParent('Task');
 
-        wrapper.classList.toggle('tsk_stg-active');
+        popUp.Open('Редактирование задачи',
+            '<div class="fm" data-controller="task" data-method="Edit"><div class="fm-item"><label class="fm-item--lb">Заголовок задачи<input class="inp TaskSettingsTitle" name="Title" type="text" value="' + item.getElementsByClassName('TaskName')[0].innerText + '"></label></div><div class="fm-item"><div class="fm-item-l"><label class="fm-item--lb">Состояние<select class="inp TaskSettingsState"><option>Выполнено</option><option>Не выполнено</option></select></label></div><div class="fm-item-r"><label class="fm-item--lb">Дата окончания<input class="inp TaskSettingsFinishDate" name="FinishDate" type="datetime-local"></label></div></div><div class="fm-item"><label class="fm-item--lb">Описание<textarea class="inp fm-item--tta TaskSettingsDescription" name="Description">' + item.getElementsByClassName('TaskDescription')[0].innerText + '</textarea></label></div><div class="fm-item tsk_stg-item"><label class="fm-item--lb">Mark</label><div class="tsk_stg-item--mrks"><div class="tsk_stg-item--mrks_bd tsk_stg-item--mrks_bd1"><input class="inp tsk_stg-item--mrk bcg-clr--yellow TaskMarkYellow" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--orange1 TaskMarkOrange1" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--orange2 TaskMarkorange2" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--red TaskMarkRed" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--pink1 TaskMarkPink1" name="Mark" type="text" disabled></div><div class="tsk_stg-item--mrks_bd tsk_stg-item--mrks_bd2"><input class="inp tsk_stg-item--mrk bcg-clr--green1 TaskMarkGreen1" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--green2 TaskMarkGreen2" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--blue1 TaskMarkBlue1" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--blue2 TaskMarkBlue2" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--pink2 TaskMarkPink2" name="Mark" type="text" disabled></div></div></div></div>',
+            task.Edit);
     },
 
     OpenPopUpForm: function () {
@@ -492,6 +492,10 @@ var task = {
 
             body.insertAdjacentHTML('afterbegin', '<div class="tsks-item Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.Title + '</div><div class="tsks-item-ttl--dt TaskDateTime">' + new Date(data.CreatedDate).toLocaleString() + ' — ' + new Date(data.FinishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.Description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div></div>');
         }
+    },
+
+    Edit: function () {
+
     }
 };
 
