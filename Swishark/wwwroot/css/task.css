@@ -76,9 +76,29 @@
 .tsks-item-add{
     box-shadow:none;
 }
-.tsk_stg-item--mrk{
-    max-width:48%;
-    margin:2px;
-    width:100%;
+.tsk_stg-item--mrks_bd{
+    width:50%;
+}
+.tsk_stg-item--mrks_bd1{
     float:left;
+    padding:0 5px 0 0;
+}
+.tsk_stg-item--mrks_bd2{
+    float:right;
+    padding:0 0 5px 0;
+}
+.tsk_stg-item--mrk{
+    width:100%;
+    color:#fff;
+    font-weight:600;
+    font-size:12px;
+    border:none;
+    opacity:0.85;
+    cursor:pointer;
+}
+.tsk_stg-item--mrk:hover{
+    opacity:1;
+}
+.tsk_stg-item--mrk-active .bcg-clr--yellow{
+
 }

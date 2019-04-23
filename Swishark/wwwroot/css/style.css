@@ -330,8 +330,11 @@ a{
 .bcg-clr--orange2{
     background:orangered;
 }
+.bcg-clr--red{
+    background:red;
+}
 .bcg-clr--pink1{
-    background:pink;
+    background:hotpink;
 }
 .bcg-clr--pink2{
     background:deeppink;
