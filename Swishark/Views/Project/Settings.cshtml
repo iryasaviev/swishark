@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Настройки проекта";
+}
+
+<div class="pr_wr ProjectSettingsWrapper">
+    <div class="pr_hd">
+        <div class="pr_hd-item1">
+            <div class="pr_hd-h">Настройки проекта</div>
+        </div>
+    </div>
+    <div class="pr_bd pr_stg">
+        <div class="pr_stg-mn_wr">
+            <div class="pr_stg-mn_bd">
+                <div class="btn pr_stg-mn_bd--btn pr_stg-mn_bd--btn-active" style="border-radius:4px 4px 0 0">Основное</div>
+                <div class="btn pr_stg-mn_bd--btn">Задачи</div>
+                <div class="btn pr_stg-mn_bd--btn" style="border-radius:0 0 4px 4px; border:none">Безопасность</div>
+            </div>
+        </div>
+        <div class="fm pr_stg-fm">
+            <div class="fm-item">
+                <label class="fm-item--lb">
+                    Название проекта
+                    <input class="inp ProjectSettingsName" name="Name" type="text">
+                </label>
+            </div>
+            <div class="fm-item fm-pr-item">
+                <label class="fm-item--lb">
+                    Описание
+                    <textarea class="inp fm-item--tta ProjectSettingsDescription" name="Description"></textarea>
+                </label>
+            </div>
+            @*<div class="fm-item">
+                <label class="fm-item--lb">Метки</label>
+                <div class="pr_stg-mrks">
+                    <input class="inp pr_stg-mrks--item bcg-clr--yellow TaskMarkYellow" name="Mark" type="text">
+                    <input class="inp pr_stg-mrks--item bcg-clr--orange1 TaskMarkOrange1" name="Mark" type="text">
+                    <input class="inp pr_stg-mrks--item bcg-clr--orange2 TaskMarkorange2" name="Mark" type="text">
+                    <input class="inp pr_stg-mrks--item bcg-clr--red TaskMarkRed" name="Mark" type="text">
+                    <input class="inp pr_stg-mrks--item bcg-clr--green1 TaskMarkGreen1" name="Mark" type="text">
+                    <input class="inp pr_stg-mrks--item bcg-clr--green2 TaskMarkGreen2" name="Mark" type="text">
+                    <input class="inp pr_stg-mrks--item bcg-clr--blue1 TaskMarkBlue1" name="Mark" type="text">
+                    <input class="inp pr_stg-mrks--item bcg-clr--blue2 TaskMarkBlue2" name="Mark" type="text">
+                    <input class="inp pr_stg-mrks--item bcg-clr--pink1 TaskMarkPink1" name="Mark" type="text">
+                    <input class="inp pr_stg-mrks--item bcg-clr--pink2 TaskMarkPink2" name="Mark" type="text">
+                </div>
+            </div>*@
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="~/css/project.css">

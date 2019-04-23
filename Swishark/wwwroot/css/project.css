@@ -1,11 +1,11 @@
 ﻿.pr_wr{
     width:100%;
     height:100%;
-    overflow:hidden;
+    /*overflow:hidden;*/
 }
 .pr_bd{
     /*display:inline-block;*/
-    overflow:hidden;
+    /*overflow:hidden;*/
 }
 
 .pr_bd-list--item{
@@ -94,4 +94,39 @@
 .pr_hd-dsc,
 .pr_hd-item--dsc{
     color:#8e8e8e;
+}
+
+.pr_stg-mn_wr{
+    float:left;
+    border:1px solid #eee;
+    border-radius:4px;
+    width:100%;
+    max-width:200px;
+}
+.pr_stg-mn_bd--btn{
+    height:35px;
+    line-height:35px;
+    border-radius:0;
+    border:none;
+    border-bottom:1px solid #eee;
+    background:#fff;
+    font-weight:600;
+}
+.pr_stg-mn_bd--btn:hover{
+    position:relative;
+}
+.pr_stg-mn_bd--btn-active{
+    box-shadow:0 3px 8px 0 rgba(0, 0, 0, 0.25);
+    opacity:0.9;
+    background:#eee;
+}
+.pr_stg-fm{
+    max-width:400px;
+}
+
+.pr_stg-mrks--item{
+    border:none;
+    color:#fff;
+    font-weight:600;
+    font-size:12px;
 }
