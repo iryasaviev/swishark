@@ -112,11 +112,12 @@
     background:#fff;
     font-weight:600;
 }
-.pr_stg-mn_bd--btn:hover{
-    position:relative;
+.pr_stg-mn_bd--btn:hover,
+.pr_stg-mn_bd--btn:active,
+.pr_stg-mn_bd--btn:focus{
+    box-shadow:none;
 }
 .pr_stg-mn_bd--btn-active{
-    box-shadow:0 3px 8px 0 rgba(0, 0, 0, 0.25);
     opacity:0.9;
     background:#eee;
 }

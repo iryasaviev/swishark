@@ -55,14 +55,6 @@ namespace Swishark.Controllers
             return View();
         }
 
-        [HttpGet]
-        [Route("settings")]
-        [Authorize]
-        public ActionResult Settings()
-        {
-            return View();
-        }
-
 
 
         [HttpPost]
