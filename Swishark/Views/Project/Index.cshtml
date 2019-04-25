@@ -2,36 +2,17 @@
     ViewData["Title"] = "Index";
 }
 <input class="ds-n" id="pageNum" value="21" />
-<div class="pr_wr" id="tasksWrapper">
-    <div class="pr_hd">
-        <div class="pr_hd-item1">
-            <div class="pr_hd-h TaskProjectName"></div>
-            <div class="pr_hd-dsc TaskProjectDescription"></div>
-        </div>
-        <div class="pr_hd-item2">
-            <button class="btn pr_hd-item2--btn" type="button">Сортировка</button>
-        </div>
+<div class="app_bd_hd">
+    <div class="app_bd_hd-item1">
+        <div class="app_bd_hd-h TaskProjectName"></div>
+        <div class="app_bd_hd-dsc TaskProjectDescription"></div>
     </div>
+    <div class="app_bd_hd-item2">
+        <button class="btn app_bd_hd-item2--btn" type="button">Сортировка</button>
+    </div>
+</div>
+<div class="pr_wr" id="tasksWrapper">
     <div class="pr_bd TasksBody">
-        <div class="tsks-item Task">
-            <div class="tsks-item-ttl">
-                <div class="tsks-item-ttl--nm TaskName">Доделать редактирование задач</div>
-                <div class="tsks-item-ttl--dt TaskDateTime">18.04.2019 08:00 — 31.05.2019 23:59</div>
-            </div>
-            <div class="tsks-item--dsc TaskDescription">SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS</div>
-            <div class="tsks-item_ft">
-                <div class="tsks-item_ft-usrs TaskUsers">
-                    @*<div class="tsks-item_ft-usrs-item">
-                        <a>
-                            <img class="tsks-item_ft-usrs-item--img" />
-                        </a>
-                    </div>*@
-                </div>
-                <div class="tsks-item--mrks TaskMarks">
-                    @*<div class="tsks-item--mrk bcg-clr--green2">Дизайн</div>*@
-                </div>
-            </div>
-        </div>
         <div class="pr_bd-item tsks-item-add">
             <button class="btn tsks-item--btn TaskAddBtn">Добавить задачу</button>
         </div>
@@ -46,8 +27,8 @@
     document.addEventListener("DOMContentLoaded", function () {
         project.Get();
 
-        if (document.getElementById('tasksWrapper').getElementsByClassName('Task') !== null) {
-            let items = document.getElementById('tasksWrapper').getElementsByClassName('Task');
+        if (document.getElementById('tasksWrapper').getElementsByClassName('TaskName') !== null) {
+            let items = document.getElementById('tasksWrapper').getElementsByClassName('TaskName');
             for (let item of items) {
                 item.onclick = task.OpenSettings;
             }

@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Project";
+}
+
+<div class="app_bd_hd">
+    <div class="app_bd_hd-item1">
+        <div class="app_bd_hd-h">Настройки проекта</div>
+    </div>
+</div>
+<div class="stg_wr ProjectSettingsWrapper">
+    <div class="stg-mn_wr">
+        <div class="stg-mn_bd">
+            <div class="btn stg-mn_bd--btn">Аккаунт</div>
+            <div class="btn stg-mn_bd--btn stg-mn_bd--btn-active">Проект</div>
+        </div>
+    </div>
+    <div class="stg_bd">
+        <div class="fm stg-fm">
+            <div class="fm_hd">
+                <div class="fm_hd-h">Основное</div>
+                <div class="fm_hd-dsc">Настройка имени, описания проекта.</div>
+            </div>
+            <div class="fm_bd">
+                <div class="fm-item">
+                    <label class="fm-item--lb">
+                        Название проекта
+                        <input class="inp ProjectSettingsName" name="Name" type="text">
+                    </label>
+                </div>
+                <div class="fm-item">
+                    <label class="fm-item--lb">
+                        Описание
+                        <textarea class="inp fm-item--tta ProjectSettingsDescription" name="Description"></textarea>
+                    </label>
+                </div>
+                <div class="fm-item">
+                    <button class="btn fm--btn fl-r ButtonTarget" data-target="">Сохранить</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="fm stg-fm">
+            <div class="fm_hd">
+                <div class="fm_hd-h">Метки проекта</div>
+                <div class="fm_hd-dsc">Создать новую, редактировать.</div>
+            </div>
+            <div class="fm_bd">
+                <div class="fm-item">
+                    <label class="fm-item--lb">Метки</label>
+                    <div class="pr_stg-mrks">
+                        <input class="inp pr_stg-mrks--item bcg-clr--yellow TaskMarkYellow" name="Mark" type="text">
+                        <input class="inp pr_stg-mrks--item bcg-clr--orange1 TaskMarkOrange1" name="Mark" type="text">
+                        <input class="inp pr_stg-mrks--item bcg-clr--orange2 TaskMarkorange2" name="Mark" type="text">
+                        <input class="inp pr_stg-mrks--item bcg-clr--red TaskMarkRed" name="Mark" type="text">
+                        <input class="inp pr_stg-mrks--item bcg-clr--green1 TaskMarkGreen1" name="Mark" type="text">
+                        <input class="inp pr_stg-mrks--item bcg-clr--green2 TaskMarkGreen2" name="Mark" type="text">
+                        <input class="inp pr_stg-mrks--item bcg-clr--blue1 TaskMarkBlue1" name="Mark" type="text">
+                        <input class="inp pr_stg-mrks--item bcg-clr--blue2 TaskMarkBlue2" name="Mark" type="text">
+                        <input class="inp pr_stg-mrks--item bcg-clr--pink1 TaskMarkPink1" name="Mark" type="text">
+                        <input class="inp pr_stg-mrks--item bcg-clr--pink2 TaskMarkPink2" name="Mark" type="text">
+                    </div>
+                </div>
+                <div class="fm-item">
+                    <button class="btn fm--btn fl-r ButtonTarget" data-target="">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="~/css/project.css">
+<link rel="stylesheet" href="~/css/settings.css">
