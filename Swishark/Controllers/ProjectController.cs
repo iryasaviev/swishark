@@ -93,5 +93,16 @@ namespace Swishark.Controllers
 
             return new JsonResult(items);
         }
+
+        [HttpPost]
+        [Route("{id:int}/api/Update")]
+        [Authorize]
+        public JsonResult Update(PageModel pModel, int id)
+        {
+            ProjectHelper helper = new ProjectHelper();
+            helper.Update(pModel.Data, id);
+
+            return new JsonResult("");
+        }
     }
 }

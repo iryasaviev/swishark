@@ -472,9 +472,9 @@ var project = {
             data['Form'] = 1;
         }
 
-        // TODO: Нужно вернуть id проекта.
+        // 
 
-        let response = ajax.SendAndRecive(convert.ToJson(data), 'Data', 'api/ProjectUpdate');
+        let response = ajax.SendAndRecive(convert.ToJson(data), 'Data', '/project/' + project.data.project.id + '/api/Update');
     }
 };
 
@@ -490,7 +490,7 @@ var settings = {
             let data = { id: location.pathname.split('/')[location.pathname.split('/').length - 1] },
                 response = ajax.SendAndRecive(convert.ToJson(data), 'Data', '/project/api/GetItem');
 
-            data = convert.FromJson(response);
+            project.data = data = convert.FromJson(response);
 
             let dataWr = app.getElementsByClassName('ProjectSettingsDataWrapper')[0];
 
@@ -499,7 +499,9 @@ var settings = {
 
             let marksWr = app.getElementsByClassName('ProjectSettingsMarksWrapper');
 
-
+            if (data.project.marks !== null) {
+                //...
+            }
         }
     }
 };
