@@ -495,10 +495,21 @@ var settings = {
             dataWr.getElementsByClassName('ProjectSettingsName')[0].value = data.project.name;
             dataWr.getElementsByClassName('ProjectSettingsDescription')[0].innerText = data.project.description;
 
-            let marksWr = app.getElementsByClassName('ProjectSettingsMarksWrapper');
+            let marksWr = app.getElementsByClassName('ProjectSettingsMarksWrapper')[0],
+                mItems = marksWr.getElementsByClassName('ProjectSettingsMark');
 
             if (data.project.marks !== null) {
                 var marks = convert.FromJson(data.project.marks);
+
+                for (let a = 0; mItems.length > a; a++) {
+                    for (let mark of marks) {
+                        if (mItems[a].classList.contains(mark.Color)) {
+                            mItems[a].value = mark.Text;
+
+                            break;
+                        }
+                    }
+                }
             }
         }
     }
