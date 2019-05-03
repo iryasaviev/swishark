@@ -68,11 +68,12 @@ namespace Services.Project
             if (data["Form"] == "1")
             {
                 List<object> marks = new List<object>();
-                Marks mark = new Marks();
 
                 foreach (var m in data)
                     if (m.Key != "Form")
                     {
+                        Marks mark = new Marks();
+
                         mark.Num = m.Key.Substring(4);
                         mark.Text = m.Value;
 

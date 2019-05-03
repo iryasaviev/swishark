@@ -472,8 +472,6 @@ var project = {
             data['Form'] = 1;
         }
 
-        // 
-
         let response = ajax.SendAndRecive(convert.ToJson(data), 'Data', '/project/' + project.data.project.id + '/api/Update');
     }
 };
@@ -500,7 +498,7 @@ var settings = {
             let marksWr = app.getElementsByClassName('ProjectSettingsMarksWrapper');
 
             if (data.project.marks !== null) {
-                //...
+                var marks = convert.FromJson(data.project.marks);
             }
         }
     }
