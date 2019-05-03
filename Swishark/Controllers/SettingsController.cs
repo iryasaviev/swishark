@@ -4,11 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace Swishark.Controllers
 {
     [Route("[controller]")]
-    [ApiController]
     public class SettingsController : Controller
     {
         [HttpGet]
-        [Route("account")]
+        [Route("account/{id:int}")]
         [Authorize]
         public ActionResult Account()
         {
@@ -16,7 +15,7 @@ namespace Swishark.Controllers
         }
 
         [HttpGet]
-        [Route("project")]
+        [Route("project/{id:int}")]
         [Authorize]
         public ActionResult Project()
         {
