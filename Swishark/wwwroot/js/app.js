@@ -459,6 +459,48 @@ var project = {
                 body.insertAdjacentHTML('afterbegin', '<div class="pr_bd-list--item ProjectListItem"><div class="pr_bd-list--item_hd"><div class="pr_bd-list--item_hd-nm ProjectListItemName">' + data[a].name + '</div><div class="pr_bd-list--item_hd-dsc ProjectListItemDescription">' + data[a].description + '</div></div><div class="pr_bd-list--item_ft"><a href="' + data[a].id + '"><div class="btn pr_bd-list--item_ft--btn">Открыть</div></a></div></div>');
             }
         }
+    },
+
+    Update: function (click) {
+        let form = click.searchParent('fm'),
+            data = formData.Build(form);
+
+        if (form.classList.contains('ProjectSettingsDataWrapper'))
+            data['Form'] = 0;
+
+        if (form.classList.contains('ProjectSettingsMarksWrapper')) {
+            data['Form'] = 1;
+        }
+
+        // TODO: Нужно вернуть id проекта.
+
+        let response = ajax.SendAndRecive(convert.ToJson(data), 'Data', 'api/ProjectUpdate');
+    }
+};
+
+
+
+var settings = {
+    Account: function () {
+
+    },
+
+    project: {
+        GetItem: function () {
+            let data = { id: location.pathname.split('/')[location.pathname.split('/').length - 1] },
+                response = ajax.SendAndRecive(convert.ToJson(data), 'Data', '/project/api/GetItem');
+
+            data = convert.FromJson(response);
+
+            let dataWr = app.getElementsByClassName('ProjectSettingsDataWrapper')[0];
+
+            dataWr.getElementsByClassName('ProjectSettingsName')[0].value = data.project.name;
+            dataWr.getElementsByClassName('ProjectSettingsDescription')[0].innerText = data.project.description;
+
+            let marksWr = app.getElementsByClassName('ProjectSettingsMarksWrapper');
+
+
+        }
     }
 };
 

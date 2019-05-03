@@ -1,16 +1,11 @@
 using Infrastructure.Entities;
 using Infrastructure.Enums;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using Microsoft.AspNetCore.Http;
 using Services.Validation;
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Account
 {

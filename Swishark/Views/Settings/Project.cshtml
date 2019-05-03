@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="stg_bd">
-        <div class="fm stg-fm">
+        <div class="fm stg-fm ProjectSettingsDataWrapper" data-controller="project" data-method="Update">
             <div class="fm_hd">
                 <div class="fm_hd-h">Основное</div>
                 <div class="fm_hd-dsc">Настройка имени, описания проекта.</div>
@@ -34,12 +34,12 @@
                     </label>
                 </div>
                 <div class="fm-item">
-                    <button class="btn fm--btn fl-r ButtonTarget" data-target="">Сохранить</button>
+                    <button class="btn fm--btn fl-r ButtonTarget" data-target="Update">Сохранить</button>
                 </div>
             </div>
         </div>
 
-        <div class="fm stg-fm">
+        <div class="fm stg-fm ProjectSettingsMarksWrapper" data-controller="project" data-method="Update">
             <div class="fm_hd">
                 <div class="fm_hd-h">Метки проекта</div>
                 <div class="fm_hd-dsc">Создать новую, редактировать.</div>
@@ -47,21 +47,21 @@
             <div class="fm_bd">
                 <div class="fm-item">
                     <label class="fm-item--lb">Метки</label>
-                    <div class="pr_stg-mrks">
-                        <input class="inp pr_stg-mrks--item bcg-clr--yellow TaskMarkYellow" name="Mark" type="text">
-                        <input class="inp pr_stg-mrks--item bcg-clr--orange1 TaskMarkOrange1" name="Mark" type="text">
-                        <input class="inp pr_stg-mrks--item bcg-clr--orange2 TaskMarkorange2" name="Mark" type="text">
-                        <input class="inp pr_stg-mrks--item bcg-clr--red TaskMarkRed" name="Mark" type="text">
-                        <input class="inp pr_stg-mrks--item bcg-clr--green1 TaskMarkGreen1" name="Mark" type="text">
-                        <input class="inp pr_stg-mrks--item bcg-clr--green2 TaskMarkGreen2" name="Mark" type="text">
-                        <input class="inp pr_stg-mrks--item bcg-clr--blue1 TaskMarkBlue1" name="Mark" type="text">
-                        <input class="inp pr_stg-mrks--item bcg-clr--blue2 TaskMarkBlue2" name="Mark" type="text">
-                        <input class="inp pr_stg-mrks--item bcg-clr--pink1 TaskMarkPink1" name="Mark" type="text">
-                        <input class="inp pr_stg-mrks--item bcg-clr--pink2 TaskMarkPink2" name="Mark" type="text">
+                    <div class="pr_stg-mrks ProjectSettingsMarks">
+                        <input class="inp pr_stg-mrks--item bcg-clr--yellow ProjectSettingsMark Yellow" name="Mark1" type="text">
+                        <input class="inp pr_stg-mrks--item bcg-clr--orange1 ProjectSettingsTaskMark Orange1" name="Mark2" type="text">
+                        <input class="inp pr_stg-mrks--item bcg-clr--orange2 ProjectSettingsTaskMark Orange2" name="Mark3" type="text">
+                        <input class="inp pr_stg-mrks--item bcg-clr--red ProjectSettingsTaskMark Red" name="Mark4" type="text">
+                        <input class="inp pr_stg-mrks--item bcg-clr--green1 ProjectSettingsTaskMark Green1" name="Mark5" type="text">
+                        <input class="inp pr_stg-mrks--item bcg-clr--green2 ProjectSettingsTaskMark Green2" name="Mark6" type="text">
+                        <input class="inp pr_stg-mrks--item bcg-clr--blue1 ProjectSettingsTaskMark Blue1" name="Mark7" type="text">
+                        <input class="inp pr_stg-mrks--item bcg-clr--blue2 ProjectSettingsTaskMark Blue2" name="Mark8" type="text">
+                        <input class="inp pr_stg-mrks--item bcg-clr--pink1 ProjectSettingsTaskMark Pink1" name="Mark9" type="text">
+                        <input class="inp pr_stg-mrks--item bcg-clr--pink2 ProjectSettingsTaskMark Pink2" name="Mark10" type="text">
                     </div>
                 </div>
                 <div class="fm-item">
-                    <button class="btn fm--btn fl-r ButtonTarget" data-target="">Сохранить</button>
+                    <button class="btn fm--btn fl-r ButtonTarget" data-target="Update">Сохранить</button>
                 </div>
             </div>
         </div>
@@ -69,3 +69,9 @@
 </div>
 <link rel="stylesheet" href="~/css/project.css">
 <link rel="stylesheet" href="~/css/settings.css">
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        settings.project.GetItem();
+    });
+</script>
