@@ -4,25 +4,25 @@
     {
         public enum Marks
         {
-            Green1 = 1,
+            Yellow = 1,
 
-            Green2 = 2,
+            Orange1 = 2,
 
-            Yellow = 3,
+            Orange2 = 3,
 
-            Orange1 = 4,
+            Red = 4,
 
-            Orange2 = 5,
+            Green1 = 5,
 
-            Red = 6,
+            Green2 = 6,
 
-            Pink1 = 7,
+            Blue1 = 7,
 
-            Pink2 = 8,
+            Blue2 = 8,
 
-            Blue1 = 9,
+            Pink1 = 9,
 
-            Blue2 = 10
+            Pink2 = 10
         }
 
         public enum States

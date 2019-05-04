@@ -1,5 +1,7 @@
 ﻿'use strict';
 
+
+
 const ENUMS = {
     States: {
         Success: '200',
@@ -23,6 +25,21 @@ const ENUMS = {
 
         Project: '21',
         ProjectAdd: '22'
+    },
+
+    Project: {
+        Marks: {
+            Yellow: 1,
+            Orange1: 2,
+            Orange2: 3,
+            Red: 4,
+            Green1: 5,
+            Green2: 6,
+            Blue1: 7,
+            Blue2: 8,
+            Pink1: 9,
+            Pink2: 10,
+        }
     }
 };
 
@@ -425,7 +442,7 @@ var project = {
             },
             response = ajax.SendAndRecive(convert.ToJson(dataTo), 'Data', 'api/GetItem');
 
-        let data = convert.FromJson(response);
+        let data = project.data = convert.FromJson(response);
         if (data !== null) {
             var body = app.getElementsByClassName('TasksBody')[0],
                 name = app.getElementsByClassName('TaskProjectName')[0],
@@ -437,7 +454,7 @@ var project = {
             for (let a = 0; data.tasks.length > a; a++) {
                 var ss = new Date(data.tasks[a].finishDate);
 
-                body.insertAdjacentHTML('afterbegin', '<div class="tsks-item Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.tasks[a].title + '</div><div class="tsks-item-ttl--dt TaskDateTime">' + new Date(data.tasks[a].createdDate).toLocaleString() + ' — ' + new Date(data.tasks[a].finishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.tasks[a].description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div></div>');
+                body.insertAdjacentHTML('afterbegin', '<div class="tsks-item Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.tasks[a].title + '</div><div class="tsks-item-ttl--dt TaskDateTime">' + new Date(data.tasks[a].createdDate).toLocaleString() + ' — ' + new Date(data.tasks[a].finishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.tasks[a].description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div><input class="ds-n TaskId" value="' + data.tasks[a].id + '"></div>');
             }
         }
     },
@@ -522,8 +539,21 @@ var task = {
         let item = click.target.searchParent('Task');
 
         popUp.Open('Редактирование задачи',
-            '<div class="fm" data-controller="task" data-method="Edit"><div class="fm-item"><label class="fm-item--lb">Заголовок задачи<input class="inp TaskSettingsTitle" name="Title" type="text" value="' + item.getElementsByClassName('TaskName')[0].innerText + '"></label></div><div class="fm-item"><div class="fm-item-l"><label class="fm-item--lb">Состояние<select class="inp TaskSettingsState"><option>Не выполнено</option><option>Выполнено</option></select></label></div><div class="fm-item-r"><label class="fm-item--lb">Дата окончания<input class="inp TaskSettingsFinishDate" name="FinishDate" type="datetime-local"></label></div></div><div class="fm-item"><label class="fm-item--lb">Описание<textarea class="inp fm-item--tta TaskSettingsDescription" name="Description">' + item.getElementsByClassName('TaskDescription')[0].innerText + '</textarea></label></div><div class="fm-item tsk_stg-item"><label class="fm-item--lb">Mark</label><div class="tsk_stg-item--mrks"><div class="tsk_stg-item--mrks_bd tsk_stg-item--mrks_bd1"><input class="inp tsk_stg-item--mrk bcg-clr--yellow TaskMarkYellow" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--orange1 TaskMarkOrange1" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--orange2 TaskMarkorange2" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--red TaskMarkRed" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--pink1 TaskMarkPink1" name="Mark" type="text" disabled></div><div class="tsk_stg-item--mrks_bd tsk_stg-item--mrks_bd2"><input class="inp tsk_stg-item--mrk bcg-clr--green1 TaskMarkGreen1" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--green2 TaskMarkGreen2" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--blue1 TaskMarkBlue1" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--blue2 TaskMarkBlue2" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--pink2 TaskMarkPink2" name="Mark" type="text" disabled></div></div></div></div>',
+            '<div class="fm ProjectTaskEditWrapper" data-controller="task" data-method="Edit"><div class="fm-item"><label class="fm-item--lb">Заголовок задачи<input class="inp TaskSettingsTitle" name="Title" type="text" value="' + item.getElementsByClassName('TaskName')[0].innerText + '"></label></div><div class="fm-item"><div class="fm-item-l"><label class="fm-item--lb">Состояние<select class="inp TaskSettingsState"><option>Не выполнено</option><option>Выполнено</option></select></label></div><div class="fm-item-r"><label class="fm-item--lb">Дата окончания<input class="inp TaskSettingsFinishDate" name="FinishDate" type="datetime-local"></label></div></div><div class="fm-item"><label class="fm-item--lb">Описание<textarea class="inp fm-item--tta TaskSettingsDescription" name="Description">' + item.getElementsByClassName('TaskDescription')[0].innerText + '</textarea></label></div><div class="fm-item tsk_stg-item ProjectTaskMarksWrapper"><label class="fm-item--lb">Mark</label><div class="tsk_stg-item--mrks"><div class="tsk_stg-item--mrks_bd tsk_stg-item--mrks_bd1"><input class="inp tsk_stg-item--mrk bcg-clr--yellow TaskMark Yellow" name="Mark1" type="text" readonly><input class="inp tsk_stg-item--mrk bcg-clr--orange1 TaskMark Orange1" name="Mark2" type="text" readonly><input class="inp tsk_stg-item--mrk bcg-clr--orange2 TaskMark Orange2" name="Mark3" type="text" readonly><input class="inp tsk_stg-item--mrk bcg-clr--red TaskMark Red" name="Mark4" type="text" readonly><input class="inp tsk_stg-item--mrk bcg-clr--pink1 TaskMark Pink1" name="Mark5" type="text" readonly></div><div class="tsk_stg-item--mrks_bd tsk_stg-item--mrks_bd2"><input class="inp tsk_stg-item--mrk bcg-clr--green1 TaskMark Green1" name="Mark6" type="text" readonly><input class="inp tsk_stg-item--mrk bcg-clr--green2 TaskMark Green2" name="Mark7" type="text" readonly><input class="inp tsk_stg-item--mrk bcg-clr--blue1 TaskMark Blue1" name="Mark8" type="text" readonly><input class="inp tsk_stg-item--mrk bcg-clr--blue2 TaskMark Blue2" name="Mark9" type="text" readonly><input class="inp tsk_stg-item--mrk bcg-clr--pink2 TaskMark Pink2" name="Mark10" type="text" readonly></div></div></div><input class="ds-n TaskEditId" value="' + item.getElementsByClassName('TaskId')[0].value + '"></div>',
             task.Edit);
+
+        let pMarks = convert.FromJson(project.data.project.marks),
+            mrksWrapper = app.getElementsByClassName('ProjectTaskMarksWrapper')[0],
+            wrItems = mrksWrapper.getElementsByClassName('TaskMark');
+
+        for (let a = 0; wrItems.length > a; a++) {
+            for (let mark of pMarks) {
+                if (wrItems[a].classList.contains(mark.Color)) {
+                    wrItems[a].value = mark.Text;
+                }
+            }
+            wrItems[a].addEventListener('click', task.ChoiceMark);
+        }
     },
 
     OpenPopUpForm: function () {
@@ -547,8 +577,38 @@ var task = {
         }
     },
 
-    Edit: function () {
+    ChoiceMark: function (click) {
+        let item = click.target;
 
+        item.classList.toggle('tsk_stg-item--mrk-active');
+    },
+
+    Edit: function () {
+        let wrapper = app.getElementsByClassName('ProjectTaskEditWrapper')[0],
+            marks = wrapper.getElementsByClassName('TaskMark'),
+            taskId = wrapper.getElementsByClassName('TaskEditId')[0].value;
+
+        let newMarks = [];
+        for (let item of project.data.tasks) {
+            if (item.id === Number(taskId)) {
+                item.marks = [];
+
+                for (let mark of marks) {
+                    if (mark.classList.contains('tsk_stg-item--mrk-active')) {
+
+                        let prMarks = convert.FromJson(project.data.project.marks);
+                        for (let prMark of prMarks) {
+                            if (prMark.Num === mark.getAttribute('name').substring(4)) {
+                                newMarks[newMarks.length] = prMark;
+                            }
+                        }
+                    }
+                }
+
+                item.marks = convert.ToJson(newMarks);
+                break;
+            }
+        }
     }
 };
 
