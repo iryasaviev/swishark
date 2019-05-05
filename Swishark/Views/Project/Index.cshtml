@@ -27,12 +27,12 @@
         if (document.getElementById('tasksWrapper').getElementsByClassName('TaskName') !== null) {
             let items = document.getElementById('tasksWrapper').getElementsByClassName('TaskName');
             for (let item of items) {
-                item.onclick = task.OpenSettings;
+                item.onclick = task.settings.OpenForm;
             }
         }
 
         if (document.getElementById('tasksWrapper').getElementsByClassName('TaskAddBtn') !== null) {
-            document.getElementById('tasksWrapper').getElementsByClassName('TaskAddBtn')[0].onclick = task.OpenPopUpForm;
+            document.getElementById('tasksWrapper').getElementsByClassName('TaskAddBtn')[0].onclick = task.add.OpenForm;
         }
     });
 </script>
