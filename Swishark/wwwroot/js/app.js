@@ -455,9 +455,13 @@ var project = {
             description.innerText = data.project.description;
 
             for (let a = 0; data.tasks.length > a; a++) {
-                var ss = new Date(data.tasks[a].finishDate);
-
                 body.insertAdjacentHTML('afterbegin', '<div class="tsks-item Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.tasks[a].title + '</div><div class="tsks-item-ttl--dt TaskDateTime">' + new Date(data.tasks[a].createdDate).toLocaleString() + ' — ' + new Date(data.tasks[a].finishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.tasks[a].description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div><input class="ds-n TaskId" value="' + data.tasks[a].id + '"></div>');
+
+                if (data.tasks[a].marks !== null) {
+                    for (let mark of convert.FromJson(data.tasks[a].marks)) {
+                        body.getElementsByClassName('Task')[0].getElementsByClassName('TaskMarks')[0].insertAdjacentHTML('beforeend', '<div class="tsks-item--mrk ' + mark.Color + '">' + mark.Text + '<div>');
+                    }
+                }
             }
         }
     },
@@ -553,7 +557,7 @@ var task = {
             }
 
             popUp.Open('Редактирование задачи',
-                '<div class="fm ProjectTaskEditWrapper" data-controller="task" data-method="Edit"><div class="fm-item"><label class="fm-item--lb">Заголовок задачи<input class="inp TaskSettingsTitle" name="Title" type="text" value="' + task.settings.current.title + '"></label></div><div class="fm-item"><div class="fm-item-l"><label class="fm-item--lb">Состояние<select class="inp TaskSettingsState"><option>Не выполнено</option><option>Выполнено</option></select></label></div><div class="fm-item-r"><label class="fm-item--lb">Дата окончания<input class="inp TaskSettingsFinishDate" name="FinishDate" type="datetime-local"></label></div></div><div class="fm-item"><label class="fm-item--lb">Описание<textarea class="inp fm-item--tta TaskSettingsDescription" name="Description">' + task.settings.current.description + '</textarea></label></div><div class="fm-item tsk_stg-item ProjectTaskMarksWrapper"><label class="fm-item--lb">Mark</label><div class="tsk_stg-item--mrks"><div class="tsk_stg-item--mrks_bd tsk_stg-item--mrks_bd1"><input class="inp tsk_stg-item--mrk TaskMark Yellow" name="Mark1" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Orange1" name="Mark2" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Orange2" name="Mark3" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Red" name="Mark4" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Pink1" name="Mark9" type="text" readonly></div><div class="tsk_stg-item--mrks_bd tsk_stg-item--mrks_bd2"><input class="inp tsk_stg-item--mrk TaskMark Green1" name="Mark5" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Green2" name="Mark6" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Blue1" name="Mark7" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Blue2" name="Mark8" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Pink2" name="Mark10" type="text" readonly></div></div></div><input class="ds-n TaskEditId" value="' + task.settings.current.id + '"></div>',
+                '<div class="fm ProjectTaskEditWrapper" data-controller="task" data-method="Edit"><div class="fm-item"><label class="fm-item--lb">Заголовок задачи<input class="inp TaskSettingsTitle" name="Title" type="text" value="' + task.settings.current.title + '"></label></div><div class="fm-item"><div class="fm-item-l"><label class="fm-item--lb">Состояние<select class="inp TaskSettingsState"><option>Не выполнено</option><option>Выполнено</option></select></label></div><div class="fm-item-r"><label class="fm-item--lb">Дата окончания<input class="inp TaskSettingsFinishDate" name="FinishDate" type="datetime-local" value="' + task.settings.current.finishDate + '"></label></div></div><div class="fm-item"><label class="fm-item--lb">Описание<textarea class="inp fm-item--tta TaskSettingsDescription" name="Description">' + task.settings.current.description + '</textarea></label></div><div class="fm-item tsk_stg-item ProjectTaskMarksWrapper"><label class="fm-item--lb">Mark</label><div class="tsk_stg-item--mrks"><div class="tsk_stg-item--mrks_bd tsk_stg-item--mrks_bd1"><input class="inp tsk_stg-item--mrk TaskMark Yellow" name="Mark1" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Orange1" name="Mark2" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Orange2" name="Mark3" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Red" name="Mark4" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Pink1" name="Mark9" type="text" readonly></div><div class="tsk_stg-item--mrks_bd tsk_stg-item--mrks_bd2"><input class="inp tsk_stg-item--mrk TaskMark Green1" name="Mark5" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Green2" name="Mark6" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Blue1" name="Mark7" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Blue2" name="Mark8" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Pink2" name="Mark10" type="text" readonly></div></div></div><input class="ds-n TaskEditId" value="' + task.settings.current.id + '"></div>',
                 task.settings.CloseForm);
 
             let wrapper = app.getElementsByClassName('ProjectTaskEditWrapper')[0],
@@ -588,44 +592,52 @@ var task = {
         },
 
         CloseForm: function () {
-            let wrapper = app.getElementsByClassName('ProjectTaskEditWrapper')[0];
+            let wrapper = app.getElementsByClassName('ProjectTaskEditWrapper')[0],
+                data = {},
+                fData = formData.Build(wrapper);
 
-            let title = wrapper.getElementsByClassName('TaskSettingsTitle')[0],
-                description = wrapper.getElementsByClassName('TaskSettingsDescription')[0],
-                state = wrapper.getElementsByClassName('TaskSettingsState')[0],
-                finishDate = wrapper.getElementsByClassName('TaskSettingsFinishDate')[0];
+            let newMarks = [],
+                marks = wrapper.getElementsByClassName('TaskMark');
 
+            task.settings.current.marks = [];
 
-            let marks = wrapper.getElementsByClassName('TaskMark'),
-                taskId = wrapper.getElementsByClassName('TaskEditId')[0].value;
+            // Сбор выделенных марок.
+            for (let mark of marks) {
+                if (mark.classList.contains('tsk_stg-item--mrk-active')) {
 
-            let newMarks = [];
-            for (let item of project.data.tasks) {
-                if (item.id === Number(taskId)) {
-                    item.marks = [];
-
-                    for (let mark of marks) {
-                        if (mark.classList.contains('tsk_stg-item--mrk-active')) {
-
-                            let prMarks = convert.FromJson(project.data.project.marks);
-                            for (let prMark of prMarks) {
-                                if (prMark.Num === mark.getAttribute('name').substring(4)) {
-                                    newMarks[newMarks.length] = prMark;
-                                }
-                            }
+                    let prMarks = convert.FromJson(project.data.project.marks);
+                    for (let prMark of prMarks) {
+                        if (prMark.Num === mark.getAttribute('name').substring(4)) {
+                            newMarks[newMarks.length] = prMark;
                         }
                     }
+                }
+            }
 
-                    item.marks = convert.ToJson(newMarks);
+            // Обновление задачи в свойстве проекта.
+            for (let pTask of project.data.tasks) {
+                if (pTask.id === task.settings.current.id) {
+                    pTask = task.settings.current;
                     break;
                 }
             }
 
-            let tasks = app.getElementsByClassName('Task');
-            for (let task of tasks) {
-                if (task.getElementsByClassName('TaskId')[0].value === taskId) {
-                    let mWrapper = task.getElementsByClassName('TaskMarks')[0];
+            data["Title"] = fData.Title;
+            data["Description"] = fData.Description;
+            data["TaskSettingsState"] = fData.TaskSettingsState;
+            data["FinishDate"] = fData.FinishDate;
+            data["Marks"] = convert.ToJson(newMarks);
 
+
+            // Обновление данных задачи на доске.
+            for (let item of app.getElementsByClassName('Task')) {
+                if (Number(item.getElementsByClassName('TaskId')[0].value) === task.settings.current.id) {
+
+                    item.getElementsByClassName('TaskName')[0].innerText = data.Title;
+                    item.getElementsByClassName('TaskDateTime')[0].innerText = new Date(task.settings.current.createdDate).toLocaleString() + '—' + new Date(data.FinishDate).toLocaleString();
+                    item.getElementsByClassName('TaskDescription')[0].innerText = data.Description;
+
+                    let mWrapper = item.getElementsByClassName('TaskMarks')[0];
                     mWrapper.innerHTML = '';
                     for (let mark of newMarks) {
                         mWrapper.insertAdjacentHTML('beforeend', '<div class="tsks-item--mrk ' + mark.Color + '">' + mark.Text + '<div>');
@@ -634,6 +646,8 @@ var task = {
                     break;
                 }
             }
+
+            let response = ajax.SendAndRecive(convert.ToJson(data), 'Data', '/task/' + task.settings.current.id + '/api/Update');
         },
 
         ChoicheMark: function (click) {

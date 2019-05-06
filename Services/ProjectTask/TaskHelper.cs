@@ -36,5 +36,20 @@ namespace Services.ProjectTask
             _service.Add(_task);
             return Codes.States.Success;
         }
+
+        public Codes.States Update(string dataStr, int id)
+        {
+            Dictionary<string, string> data = _json.From(dataStr);
+
+            Infrastructure.Entities.ProjectTask upTask = _service.GetTask(id);
+
+            upTask.Title = data["Title"];
+            upTask.Description = data["Description"];
+            upTask.FinishDate = DateTime.Parse(data["FinishDate"]);
+            upTask.Marks = data["Marks"];
+
+            _service.Update(upTask);
+            return Codes.States.Success;
+        }
     }
 }
