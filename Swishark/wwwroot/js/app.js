@@ -1,5 +1,7 @@
 ﻿'use strict';
 
+
+
 const ENUMS = {
     States: {
         Success: '200',
@@ -23,6 +25,21 @@ const ENUMS = {
 
         Project: '21',
         ProjectAdd: '22'
+    },
+
+    Project: {
+        Marks: {
+            Yellow: 1,
+            Orange1: 2,
+            Orange2: 3,
+            Red: 4,
+            Green1: 5,
+            Green2: 6,
+            Blue1: 7,
+            Blue2: 8,
+            Pink1: 9,
+            Pink2: 10,
+        }
     }
 };
 
@@ -178,7 +195,10 @@ var convert = {
 		return JSON.stringify(data);
 	},
 
-	FromJson: function(data){
+    FromJson: function (data) {
+        if (data === null) {
+            return null;
+        }
 		return JSON.parse(data);
 	}
 };
@@ -425,7 +445,7 @@ var project = {
             },
             response = ajax.SendAndRecive(convert.ToJson(dataTo), 'Data', 'api/GetItem');
 
-        let data = convert.FromJson(response);
+        let data = project.data = convert.FromJson(response);
         if (data !== null) {
             var body = app.getElementsByClassName('TasksBody')[0],
                 name = app.getElementsByClassName('TaskProjectName')[0],
@@ -435,9 +455,13 @@ var project = {
             description.innerText = data.project.description;
 
             for (let a = 0; data.tasks.length > a; a++) {
-                var ss = new Date(data.tasks[a].finishDate);
+                body.insertAdjacentHTML('afterbegin', '<div class="tsks-item Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.tasks[a].title + '</div><div class="tsks-item-ttl--dt TaskDateTime">' + new Date(data.tasks[a].createdDate).toLocaleString() + ' — ' + new Date(data.tasks[a].finishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.tasks[a].description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div><input class="ds-n TaskId" value="' + data.tasks[a].id + '"></div>');
 
-                body.insertAdjacentHTML('afterbegin', '<div class="tsks-item Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.tasks[a].title + '</div><div class="tsks-item-ttl--dt TaskDateTime">' + new Date(data.tasks[a].createdDate).toLocaleString() + ' — ' + new Date(data.tasks[a].finishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.tasks[a].description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div></div>');
+                if (data.tasks[a].marks !== null) {
+                    for (let mark of convert.FromJson(data.tasks[a].marks)) {
+                        body.getElementsByClassName('Task')[0].getElementsByClassName('TaskMarks')[0].insertAdjacentHTML('beforeend', '<div class="tsks-item--mrk ' + mark.Color + '">' + mark.Text + '<div>');
+                    }
+                }
             }
         }
     },
@@ -518,37 +542,139 @@ var settings = {
 
 
 var task = {
-    OpenSettings: function (click) {
-        let item = click.target.searchParent('Task');
 
-        popUp.Open('Редактирование задачи',
-            '<div class="fm" data-controller="task" data-method="Edit"><div class="fm-item"><label class="fm-item--lb">Заголовок задачи<input class="inp TaskSettingsTitle" name="Title" type="text" value="' + item.getElementsByClassName('TaskName')[0].innerText + '"></label></div><div class="fm-item"><div class="fm-item-l"><label class="fm-item--lb">Состояние<select class="inp TaskSettingsState"><option>Не выполнено</option><option>Выполнено</option></select></label></div><div class="fm-item-r"><label class="fm-item--lb">Дата окончания<input class="inp TaskSettingsFinishDate" name="FinishDate" type="datetime-local"></label></div></div><div class="fm-item"><label class="fm-item--lb">Описание<textarea class="inp fm-item--tta TaskSettingsDescription" name="Description">' + item.getElementsByClassName('TaskDescription')[0].innerText + '</textarea></label></div><div class="fm-item tsk_stg-item"><label class="fm-item--lb">Mark</label><div class="tsk_stg-item--mrks"><div class="tsk_stg-item--mrks_bd tsk_stg-item--mrks_bd1"><input class="inp tsk_stg-item--mrk bcg-clr--yellow TaskMarkYellow" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--orange1 TaskMarkOrange1" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--orange2 TaskMarkorange2" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--red TaskMarkRed" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--pink1 TaskMarkPink1" name="Mark" type="text" disabled></div><div class="tsk_stg-item--mrks_bd tsk_stg-item--mrks_bd2"><input class="inp tsk_stg-item--mrk bcg-clr--green1 TaskMarkGreen1" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--green2 TaskMarkGreen2" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--blue1 TaskMarkBlue1" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--blue2 TaskMarkBlue2" name="Mark" type="text" disabled><input class="inp tsk_stg-item--mrk bcg-clr--pink2 TaskMarkPink2" name="Mark" type="text" disabled></div></div></div></div>',
-            task.Edit);
-    },
+    settings: {
+        current: {},
 
-    OpenPopUpForm: function () {
-        popUp.Open('Добавление задачи',
-            '<div class="fm" data-controller="task" data-method="Add"><div class="fm-item InputWrapper"><label class="fm-item--lb">Заголовок задачи<input class="inp" name="Title" type="text"></label></div><div class="fm-item tsk_stg-item InputWrapper"><label class="fm-item--lb">Дата окончания<input class="inp" name="FinishDate" type="datetime-local"></label></div><div class="fm-item InputWrapper"><label class="fm-item--lb">Описание<textarea class="inp fm-item--tta" name="Description"></textarea></label></div></div>',
-            task.Add);
-    },
+        OpenForm: function (click) {
+            var taskItem = click.target.searchParent('Task');
 
-    Add: function (click) {
-        let form = document.getElementById('popUp').getElementsByClassName('fm')[0],
-            data = formData.Build(form);
+            for (let item of project.data.tasks) {
+                if (item.id === Number(taskItem.getElementsByClassName('TaskId')[0].value)) {
+                    task.settings.current = item;
+                    break;
+                }
+            }
 
-        data['ProjectId'] = location.pathname.split('/')[location.pathname.split('/').length - 1];
+            popUp.Open('Редактирование задачи',
+                '<div class="fm ProjectTaskEditWrapper" data-controller="task" data-method="Edit"><div class="fm-item"><label class="fm-item--lb">Заголовок задачи<input class="inp TaskSettingsTitle" name="Title" type="text" value="' + task.settings.current.title + '"></label></div><div class="fm-item"><div class="fm-item-l"><label class="fm-item--lb">Состояние<select class="inp TaskSettingsState" name="State"><option value="0">Не выполнено</option><option value="1">Выполнено</option></select></label></div><div class="fm-item-r"><label class="fm-item--lb">Дата окончания<input class="inp TaskSettingsFinishDate" name="FinishDate" type="datetime-local" value="' + task.settings.current.finishDate + '"></label></div></div><div class="fm-item"><label class="fm-item--lb">Описание<textarea class="inp fm-item--tta TaskSettingsDescription" name="Description">' + task.settings.current.description + '</textarea></label></div><div class="fm-item tsk_stg-item ProjectTaskMarksWrapper"><label class="fm-item--lb">Mark</label><div class="tsk_stg-item--mrks"><div class="tsk_stg-item--mrks_bd tsk_stg-item--mrks_bd1"><input class="inp tsk_stg-item--mrk TaskMark Yellow" name="Mark1" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Orange1" name="Mark2" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Orange2" name="Mark3" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Red" name="Mark4" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Pink1" name="Mark9" type="text" readonly></div><div class="tsk_stg-item--mrks_bd tsk_stg-item--mrks_bd2"><input class="inp tsk_stg-item--mrk TaskMark Green1" name="Mark5" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Green2" name="Mark6" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Blue1" name="Mark7" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Blue2" name="Mark8" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Pink2" name="Mark10" type="text" readonly></div></div></div><input class="ds-n TaskEditId" value="' + task.settings.current.id + '"></div>',
+                task.settings.CloseForm);
 
-        let response = ajax.SendAndRecive(convert.ToJson(data), 'Data', '/task/api/AddItem');
+            let wrapper = app.getElementsByClassName('ProjectTaskEditWrapper')[0],
+                marks = wrapper.getElementsByClassName('TaskMark');
 
-        if (response === ENUMS.States.Success) {
-            var body = app.getElementsByClassName('TasksBody')[0];
+            wrapper.getElementsByClassName('TaskSettingsState')[0].value = task.settings.current.state;
 
-            body.insertAdjacentHTML('afterbegin', '<div class="tsks-item Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.Title + '</div><div class="tsks-item-ttl--dt TaskDateTime">' + new Date(data.CreatedDate).toLocaleString() + ' — ' + new Date(data.FinishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.Description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div></div>');
+            for (let mark of marks) {
+
+                // Перебор по маркам проекта.
+                let pMarks = convert.FromJson(project.data.project.marks);
+                for (let pMark of pMarks) {
+                    if (mark.classList.contains(pMark.Color)) {
+                        mark.value = pMark.Text;
+
+                        break;
+                    }
+                }
+
+                // Перебор по маркам задачи.
+                let tMarks = convert.FromJson(task.settings.current.marks);
+                if (tMarks !== null) {
+                    for (let tMark of tMarks) {
+                        if (mark.classList.contains(tMark.Color)) {
+                            mark.classList.add('tsk_stg-item--mrk-active');
+
+                            break;
+                        }
+                    }
+                }
+
+                mark.addEventListener('click', task.settings.ChoicheMark);
+            }
+        },
+
+        CloseForm: function () {
+            let wrapper = app.getElementsByClassName('ProjectTaskEditWrapper')[0],
+                data = {},
+                fData = formData.Build(wrapper);
+
+            let newMarks = [],
+                marks = wrapper.getElementsByClassName('TaskMark');
+
+            // Сбор выделенных марок.
+            for (let mark of marks) {
+                if (mark.classList.contains('tsk_stg-item--mrk-active')) {
+
+                    let prMarks = convert.FromJson(project.data.project.marks);
+                    for (let prMark of prMarks) {
+                        if (prMark.Num === Number(mark.getAttribute('name').substring(4))) {
+                            newMarks[newMarks.length] = prMark;
+                        }
+                    }
+                }
+            }
+
+            data["Title"] = task.settings.current.title = fData.Title;
+            data["Description"] = task.settings.current.description = fData.Description;
+            data["State"] = task.settings.current.state = Number(fData.State);
+            data["FinishDate"] = task.settings.current.finishDate = fData.FinishDate;
+            data["Marks"] = task.settings.current.marks = convert.ToJson(newMarks);
+
+            // Обновление задачи в свойстве проекта.
+            for (let pTask of project.data.tasks) {
+                if (pTask.id === task.settings.current.id) {
+                    pTask = task.settings.current;
+                    break;
+                }
+            }
+
+            // Обновление данных задачи на доске.
+            for (let item of app.getElementsByClassName('Task')) {
+                if (Number(item.getElementsByClassName('TaskId')[0].value) === task.settings.current.id) {
+
+                    item.getElementsByClassName('TaskName')[0].innerText = data.Title;
+                    item.getElementsByClassName('TaskDateTime')[0].innerText = new Date(task.settings.current.createdDate).toLocaleString() + '—' + new Date(data.FinishDate).toLocaleString();
+                    item.getElementsByClassName('TaskDescription')[0].innerText = data.Description;
+
+                    let mWrapper = item.getElementsByClassName('TaskMarks')[0];
+                    mWrapper.innerHTML = '';
+                    for (let mark of newMarks) {
+                        mWrapper.insertAdjacentHTML('beforeend', '<div class="tsks-item--mrk ' + mark.Color + '">' + mark.Text + '<div>');
+                    }
+
+                    break;
+                }
+            }
+
+            let response = ajax.SendAndRecive(convert.ToJson(data), 'Data', '/task/' + task.settings.current.id + '/api/Update');
+        },
+
+        ChoicheMark: function (click) {
+            click.target.classList.toggle('tsk_stg-item--mrk-active');
         }
     },
 
-    Edit: function () {
+    add: {
+        OpenForm: function () {
+            popUp.Open('Добавление задачи',
+                '<div class="fm" data-controller="task" data-method="Add"><div class="fm-item InputWrapper"><label class="fm-item--lb">Заголовок задачи<input class="inp" name="Title" type="text"></label></div><div class="fm-item tsk_stg-item InputWrapper"><label class="fm-item--lb">Дата окончания<input class="inp" name="FinishDate" type="datetime-local"></label></div><div class="fm-item InputWrapper"><label class="fm-item--lb">Описание<textarea class="inp fm-item--tta" name="Description"></textarea></label></div></div>',
+                task.add.CloseForm);
+        },
 
+        CloseForm: function () {
+            let form = document.getElementById('popUp').getElementsByClassName('fm')[0],
+                data = formData.Build(form);
+
+            data['ProjectId'] = location.pathname.split('/')[location.pathname.split('/').length - 1];
+
+            let response = ajax.SendAndRecive(convert.ToJson(data), 'Data', '/task/api/AddItem');
+
+            if (response === ENUMS.States.Success) {
+                var body = app.getElementsByClassName('TasksBody')[0];
+
+                body.insertAdjacentHTML('afterbegin', '<div class="tsks-item Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.Title + '</div><div class="tsks-item-ttl--dt TaskDateTime">' + new Date(data.CreatedDate).toLocaleString() + ' — ' + new Date(data.FinishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.Description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div></div>');
+            }
+        }
     }
 };
 

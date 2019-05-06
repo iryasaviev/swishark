@@ -2,6 +2,7 @@
 using Infrastructure.Enums;
 using Services.ProjectTask;
 using Services.Validation;
+using System;
 using System.Collections.Generic;
 
 namespace Services.Project
@@ -24,7 +25,7 @@ namespace Services.Project
 
         class Marks
         {
-            public string Num { get; set; }
+            public int Num { get; set; }
             public string Color { get; set; }
             public string Text { get; set; }
         }
@@ -43,6 +44,50 @@ namespace Services.Project
             _project.Name = data["Name"];
             _project.Description = data["Description"];
             _project.UserId = user.Id;
+
+            List<object> marks = new List<object>();
+            for (int a = 1; 10 >= a; a++)
+            {
+                Marks mark = new Marks
+                {
+                    Num = a,
+                    Text = ""
+                };
+
+                if (a == (int)Infrastructure.Enums.Project.Marks.Yellow)
+                    mark.Color = Infrastructure.Enums.Project.Marks.Yellow.ToString();
+
+                if (a == (int)Infrastructure.Enums.Project.Marks.Orange1)
+                    mark.Color = Infrastructure.Enums.Project.Marks.Orange1.ToString();
+
+                if (a == (int)Infrastructure.Enums.Project.Marks.Orange2)
+                    mark.Color = Infrastructure.Enums.Project.Marks.Orange2.ToString();
+
+                if (a == (int)Infrastructure.Enums.Project.Marks.Red)
+                    mark.Color = Infrastructure.Enums.Project.Marks.Red.ToString();
+
+                if (a == (int)Infrastructure.Enums.Project.Marks.Green1)
+                    mark.Color = Infrastructure.Enums.Project.Marks.Green1.ToString();
+
+                if (a == (int)Infrastructure.Enums.Project.Marks.Green2)
+                    mark.Color = Infrastructure.Enums.Project.Marks.Green2.ToString();
+
+                if (a == (int)Infrastructure.Enums.Project.Marks.Blue1)
+                    mark.Color = Infrastructure.Enums.Project.Marks.Blue1.ToString();
+
+                if (a == (int)Infrastructure.Enums.Project.Marks.Blue2)
+                    mark.Color = Infrastructure.Enums.Project.Marks.Blue2.ToString();
+
+                if (a == (int)Infrastructure.Enums.Project.Marks.Pink1)
+                    mark.Color = Infrastructure.Enums.Project.Marks.Pink1.ToString();
+
+                if (a == (int)Infrastructure.Enums.Project.Marks.Pink2)
+                    mark.Color = Infrastructure.Enums.Project.Marks.Pink2.ToString();
+
+                marks.Add(mark);
+            }
+
+            _project.Marks = _json.To(marks);
 
             _service.Add(_project);
             return Codes.States.Success;
@@ -72,10 +117,11 @@ namespace Services.Project
                 foreach (var m in data)
                     if (m.Key != "Form")
                     {
-                        Marks mark = new Marks();
-
-                        mark.Num = m.Key.Substring(4);
-                        mark.Text = m.Value;
+                        Marks mark = new Marks
+                        {
+                            Num = Convert.ToInt32(m.Key.Substring(4)),
+                            Text = m.Value
+                        };
 
                         switch (m.Key)
                         {

@@ -12,6 +12,7 @@ namespace Infrastructure.Entities
         public DateTime FinishDate { get; set; }
         public string Members { get; set; }
         public int State { get; set; }
+        public string Marks { get; set; }
 
         public int CretedUserId { get; set; }
 
