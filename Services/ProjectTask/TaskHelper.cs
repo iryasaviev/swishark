@@ -47,6 +47,7 @@ namespace Services.ProjectTask
             upTask.Description = data["Description"];
             upTask.FinishDate = DateTime.Parse(data["FinishDate"]);
             upTask.Marks = data["Marks"];
+            upTask.State = Convert.ToInt32(data["State"]);
 
             _service.Update(upTask);
             return Codes.States.Success;

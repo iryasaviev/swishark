@@ -557,11 +557,13 @@ var task = {
             }
 
             popUp.Open('Редактирование задачи',
-                '<div class="fm ProjectTaskEditWrapper" data-controller="task" data-method="Edit"><div class="fm-item"><label class="fm-item--lb">Заголовок задачи<input class="inp TaskSettingsTitle" name="Title" type="text" value="' + task.settings.current.title + '"></label></div><div class="fm-item"><div class="fm-item-l"><label class="fm-item--lb">Состояние<select class="inp TaskSettingsState"><option>Не выполнено</option><option>Выполнено</option></select></label></div><div class="fm-item-r"><label class="fm-item--lb">Дата окончания<input class="inp TaskSettingsFinishDate" name="FinishDate" type="datetime-local" value="' + task.settings.current.finishDate + '"></label></div></div><div class="fm-item"><label class="fm-item--lb">Описание<textarea class="inp fm-item--tta TaskSettingsDescription" name="Description">' + task.settings.current.description + '</textarea></label></div><div class="fm-item tsk_stg-item ProjectTaskMarksWrapper"><label class="fm-item--lb">Mark</label><div class="tsk_stg-item--mrks"><div class="tsk_stg-item--mrks_bd tsk_stg-item--mrks_bd1"><input class="inp tsk_stg-item--mrk TaskMark Yellow" name="Mark1" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Orange1" name="Mark2" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Orange2" name="Mark3" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Red" name="Mark4" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Pink1" name="Mark9" type="text" readonly></div><div class="tsk_stg-item--mrks_bd tsk_stg-item--mrks_bd2"><input class="inp tsk_stg-item--mrk TaskMark Green1" name="Mark5" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Green2" name="Mark6" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Blue1" name="Mark7" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Blue2" name="Mark8" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Pink2" name="Mark10" type="text" readonly></div></div></div><input class="ds-n TaskEditId" value="' + task.settings.current.id + '"></div>',
+                '<div class="fm ProjectTaskEditWrapper" data-controller="task" data-method="Edit"><div class="fm-item"><label class="fm-item--lb">Заголовок задачи<input class="inp TaskSettingsTitle" name="Title" type="text" value="' + task.settings.current.title + '"></label></div><div class="fm-item"><div class="fm-item-l"><label class="fm-item--lb">Состояние<select class="inp TaskSettingsState" name="State"><option value="0">Не выполнено</option><option value="1">Выполнено</option></select></label></div><div class="fm-item-r"><label class="fm-item--lb">Дата окончания<input class="inp TaskSettingsFinishDate" name="FinishDate" type="datetime-local" value="' + task.settings.current.finishDate + '"></label></div></div><div class="fm-item"><label class="fm-item--lb">Описание<textarea class="inp fm-item--tta TaskSettingsDescription" name="Description">' + task.settings.current.description + '</textarea></label></div><div class="fm-item tsk_stg-item ProjectTaskMarksWrapper"><label class="fm-item--lb">Mark</label><div class="tsk_stg-item--mrks"><div class="tsk_stg-item--mrks_bd tsk_stg-item--mrks_bd1"><input class="inp tsk_stg-item--mrk TaskMark Yellow" name="Mark1" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Orange1" name="Mark2" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Orange2" name="Mark3" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Red" name="Mark4" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Pink1" name="Mark9" type="text" readonly></div><div class="tsk_stg-item--mrks_bd tsk_stg-item--mrks_bd2"><input class="inp tsk_stg-item--mrk TaskMark Green1" name="Mark5" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Green2" name="Mark6" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Blue1" name="Mark7" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Blue2" name="Mark8" type="text" readonly><input class="inp tsk_stg-item--mrk TaskMark Pink2" name="Mark10" type="text" readonly></div></div></div><input class="ds-n TaskEditId" value="' + task.settings.current.id + '"></div>',
                 task.settings.CloseForm);
 
             let wrapper = app.getElementsByClassName('ProjectTaskEditWrapper')[0],
                 marks = wrapper.getElementsByClassName('TaskMark');
+
+            wrapper.getElementsByClassName('TaskSettingsState')[0].value = task.settings.current.state;
 
             for (let mark of marks) {
 
@@ -599,20 +601,24 @@ var task = {
             let newMarks = [],
                 marks = wrapper.getElementsByClassName('TaskMark');
 
-            task.settings.current.marks = [];
-
             // Сбор выделенных марок.
             for (let mark of marks) {
                 if (mark.classList.contains('tsk_stg-item--mrk-active')) {
 
                     let prMarks = convert.FromJson(project.data.project.marks);
                     for (let prMark of prMarks) {
-                        if (prMark.Num === mark.getAttribute('name').substring(4)) {
+                        if (prMark.Num === Number(mark.getAttribute('name').substring(4))) {
                             newMarks[newMarks.length] = prMark;
                         }
                     }
                 }
             }
+
+            data["Title"] = task.settings.current.title = fData.Title;
+            data["Description"] = task.settings.current.description = fData.Description;
+            data["State"] = task.settings.current.state = Number(fData.State);
+            data["FinishDate"] = task.settings.current.finishDate = fData.FinishDate;
+            data["Marks"] = task.settings.current.marks = convert.ToJson(newMarks);
 
             // Обновление задачи в свойстве проекта.
             for (let pTask of project.data.tasks) {
@@ -621,13 +627,6 @@ var task = {
                     break;
                 }
             }
-
-            data["Title"] = fData.Title;
-            data["Description"] = fData.Description;
-            data["TaskSettingsState"] = fData.TaskSettingsState;
-            data["FinishDate"] = fData.FinishDate;
-            data["Marks"] = convert.ToJson(newMarks);
-
 
             // Обновление данных задачи на доске.
             for (let item of app.getElementsByClassName('Task')) {
