@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Entities;
 using Infrastructure.Enums;
+using Services.ProjectMember;
 using Services.ProjectTask;
 using Services.Validation;
 using System;
@@ -86,11 +87,19 @@ namespace Services.Project
 
                 marks.Add(mark);
             }
-
             _project.Marks = _json.To(marks);
-
             _service.Add(_project);
-            return Codes.States.Success;
+
+            Codes.States mHelperResult = new MemberHelper().Create(_project.Id, user);
+            if (mHelperResult == Codes.States.Success)
+            {
+                return Codes.States.Success;
+            }
+            else
+            {
+                // TODO: Переделать номер ошибки.
+                return Codes.States.ErrorAccountDoesNotExist;
+            }
         }
 
         /// <summary>

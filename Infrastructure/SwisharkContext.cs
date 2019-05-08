@@ -8,6 +8,7 @@ namespace Infrastructure
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<ProjectTask> ProjectTasks { get; set; }
+        public virtual DbSet<ProjectMember> ProjectMembers { get; set; }
 
         public SwisharkContext() { }
 

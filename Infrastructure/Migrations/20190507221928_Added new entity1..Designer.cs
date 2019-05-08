@@ -3,15 +3,17 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(SwisharkContext))]
-    partial class SwisharkContextModelSnapshot : ModelSnapshot
+    [Migration("20190507221928_Added new entity1.")]
+    partial class Addednewentity1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,6 +29,8 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Description");
 
                     b.Property<string>("Marks");
+
+                    b.Property<string>("Members");
 
                     b.Property<string>("Name");
 
@@ -44,15 +48,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Photo");
-
                     b.Property<int>("ProjectId");
 
-                    b.Property<string>("UserFirstName");
-
                     b.Property<int>("UserId");
-
-                    b.Property<string>("UserLastName");
 
                     b.HasKey("Id");
 
@@ -111,8 +109,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("MiddleName");
 
                     b.Property<string>("Password");
-
-                    b.Property<string>("Photo");
 
                     b.Property<string>("Role");
 

@@ -3,15 +3,17 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(SwisharkContext))]
-    partial class SwisharkContextModelSnapshot : ModelSnapshot
+    [Migration("20190507221754_Added new entity.")]
+    partial class Addednewentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,6 +30,8 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Marks");
 
+                    b.Property<string>("Members");
+
                     b.Property<string>("Name");
 
                     b.Property<int>("UserId");
@@ -37,30 +41,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Projects");
-                });
-
-            modelBuilder.Entity("Infrastructure.Entities.ProjectMember", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Photo");
-
-                    b.Property<int>("ProjectId");
-
-                    b.Property<string>("UserFirstName");
-
-                    b.Property<int>("UserId");
-
-                    b.Property<string>("UserLastName");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ProjectMembers");
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.ProjectTask", b =>
@@ -112,8 +92,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Password");
 
-                    b.Property<string>("Photo");
-
                     b.Property<string>("Role");
 
                     b.HasKey("Id");
@@ -125,19 +103,6 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Infrastructure.Entities.User", "User")
                         .WithMany("Projects")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Infrastructure.Entities.ProjectMember", b =>
-                {
-                    b.HasOne("Infrastructure.Entities.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Infrastructure.Entities.User", "User")
-                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
