@@ -78,23 +78,20 @@ var ajax = {
         xhr.send(data);
     },
 
-    Get: function (modelProperty, method) {
-
+    Get: function (method) {
         var xhr = this.XHR();
 
-        //data = modelProperty + '=' + encodeURIComponent(data);
-
         // ('Запрос', 'Строка, метод')
-        xhr.open('GET', method);
-        xhr.setRequestHeader('Content-Type', 'XMLHttpRequest');
+        xhr.open('GET', method, false);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.send();
 
-        if (xhr.status !== 200) {
-            // обработать ошибку
-            //alert(xhr.status + ': ' + xhr.statusText); // пример вывода: 404: Not Found
-        } else {
-            // вывести результат
-            //alert(xhr.responseText); // responseText -- текст ответа.
+        if (xhr.status != 200) {
+            console.log("ERROR! Code: 'ErrorNumber' - Ajax. Ошибка сервера.");
+            return xhr.status + ': ' + xhr.statusText;
+        }
+        else {
+            return xhr.responseText;
         }
     },
 
@@ -424,6 +421,10 @@ var account = {
 var project = {
 
     data: {},
+
+    GetMembers: function () {
+        let response = ajax.Get(location.href.split('/')[location.href.split('/').length - 1] + '/api/GetMembers');
+    },
 
     /**
     * @function project.Add

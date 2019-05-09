@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Account;
 using Services.Project;
+using Services.ProjectMember;
 using Swishark.Models;
 
 namespace Swishark.Controllers
@@ -105,15 +106,12 @@ namespace Swishark.Controllers
             return new JsonResult("");
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("{id:int}/api/GetMembers")]
         [Authorize]
         public JsonResult GetMembers(PageModel pModel, int id)
         {
-            ProjectHelper helper = new ProjectHelper();
-            helper.Update(pModel.Data, id);
-
-            return new JsonResult("");
+            return new JsonResult(new MemberService().GetItems(id));
         }
     }
 }
