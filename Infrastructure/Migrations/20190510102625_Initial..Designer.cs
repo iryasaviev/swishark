@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(SwisharkContext))]
-    [Migration("20190509202821_Upd1.")]
-    partial class Upd1
+    [Migration("20190510102625_Initial.")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

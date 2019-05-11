@@ -113,5 +113,13 @@ namespace Swishark.Controllers
         {
             return new JsonResult(new MemberService().GetItems(id));
         }
+
+        [HttpPost]
+        [Route("{id:int}/api/AddMember")]
+        [Authorize]
+        public JsonResult AddMember(PageModel pModel, int id)
+        {
+            return new JsonResult(new MemberHelper().AddToProject(pModel.Data, id));
+        }
     }
 }

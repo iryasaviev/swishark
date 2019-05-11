@@ -86,7 +86,7 @@ var ajax = {
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.send();
 
-        if (xhr.status != 200) {
+        if (xhr.status !== 200) {
             console.log("ERROR! Code: 'ErrorNumber' - Ajax. Ошибка сервера.");
             return xhr.status + ': ' + xhr.statusText;
         }
@@ -422,8 +422,55 @@ var project = {
 
     data: {},
 
-    GetMembers: function () {
-        let response = ajax.Get(location.href.split('/')[location.href.split('/').length - 1] + '/api/GetMembers');
+    member: {
+        add: {
+            OpenPopUpForm: function () {
+                popUp.Open('Добавление нового участника', '<div class="fm ProjectTaskEditWrapper" data-controller="task" data-method="Edit"><div class="fm-item"><label class="fm-item--lb">Идентификатор (id) участника<input class="inp ProjectMemberId" name="Id" type="number"></label></div><div class="fm-item"><label class="fm-item--lb">Роль<select class="inp ProjectMemberRole" name="Role"><option value="0">Без роли</option><option value="1">Программист</option><option value="2">Менеджер</option><option value="3">Уборщик</option></select></label></div></div>', project.member.add.ClosePopUpForm);
+
+                let pp = document.getElementById('popUp'),
+                    idInput = pp.getElementsByClassName('ProjectMemberId')[0];
+            },
+
+            ClosePopUpForm: function () {
+                let wrapper = app.getElementsByClassName('ProjectTaskEditWrapper')[0],
+                    data = formData.Build(wrapper),
+                    response = ajax.SendAndRecive(convert.ToJson(data), 'Data', location.href[location.href.length - 1] + '/api/AddMember');
+
+            }
+        },
+
+        GetItem: function () {
+            return ajax.Get(location.href.split('/')[location.href.split('/').length - 1] + '/api/GetMember');
+        },
+
+        GetItems: function () {
+            return ajax.Get(location.href.split('/')[location.href.split('/').length - 1] + '/api/GetMembers');
+        },
+
+        Output: function () {
+            let wrapper = app.getElementsByClassName('app_wr-usrs_wr')[0],
+                body = wrapper.getElementsByClassName('AppUsersBody')[0];
+
+            if (!app.classList.contains('app_wr-usrs-active')) {
+                app.classList.add('app_wr-usrs-active');
+            }
+
+            let data = convert.FromJson(project.member.GetItems());
+
+            for (let item of data) {
+
+                let fName = '', lName = '';
+
+                if (item.firstName !== null)
+                    fName = item.firstName;
+
+                if (item.lastName !== null)
+                    lName = item.lastName;
+
+
+                body.insertAdjacentHTML('afterbegin', '<div class="app_wr-usrs_bd-item_wr app_wr-usrs_bd-item-work AppUserWrapper"><a href="#"><div class="app_wr-usrs_bd-item_bd"><img class="app_wr-usrs_bd-item--img"><div class="app_wr-usrs_bd-item--txt AppUserName">' + fName + ' ' + lName + '</div><div class="app_wr-usrs_bd-item-wrk AppUserTask">Выполняет:</div></div></a></div>');
+            }
+        }
     },
 
     /**
@@ -456,7 +503,7 @@ var project = {
             description.innerText = data.project.description;
 
             for (let a = 0; data.tasks.length > a; a++) {
-                body.insertAdjacentHTML('afterbegin', '<div class="tsks-item Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.tasks[a].title + '</div><div class="tsks-item-ttl--dt TaskDateTime">' + new Date(data.tasks[a].createdDate).toLocaleString() + ' — ' + new Date(data.tasks[a].finishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.tasks[a].description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div><input class="ds-n TaskId" value="' + data.tasks[a].id + '"></div>');
+                body.insertAdjacentHTML('afterbegin', '<div class="tsks-item Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.tasks[a].title + '</div><div class="tsks-item-ttl--dt TaskDateTime">Выполнить до ' + new Date(data.tasks[a].finishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.tasks[a].description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div><input class="ds-n TaskId" value="' + data.tasks[a].id + '"></div>');
 
                 if (data.tasks[a].marks !== null) {
                     for (let mark of convert.FromJson(data.tasks[a].marks)) {
@@ -634,7 +681,7 @@ var task = {
                 if (Number(item.getElementsByClassName('TaskId')[0].value) === task.settings.current.id) {
 
                     item.getElementsByClassName('TaskName')[0].innerText = data.Title;
-                    item.getElementsByClassName('TaskDateTime')[0].innerText = new Date(task.settings.current.createdDate).toLocaleString() + '—' + new Date(data.FinishDate).toLocaleString();
+                    item.getElementsByClassName('TaskDateTime')[0].innerText ='Выполнить до' + new Date(data.FinishDate).toLocaleString();
                     item.getElementsByClassName('TaskDescription')[0].innerText = data.Description;
 
                     let mWrapper = item.getElementsByClassName('TaskMarks')[0];

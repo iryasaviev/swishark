@@ -24,6 +24,11 @@
     document.addEventListener("DOMContentLoaded", function () {
         project.Get();
 
+        if (document.getElementsByClassName('AppUsersWrapper').length > 0) {
+            document.getElementsByClassName('AppUsersAddBtn')[0].onclick = project.member.add.OpenPopUpForm;
+        }
+
+
         if (document.getElementById('tasksWrapper').getElementsByClassName('TaskName') !== null) {
             let items = document.getElementById('tasksWrapper').getElementsByClassName('TaskName');
             for (let item of items) {
@@ -34,5 +39,7 @@
         if (document.getElementById('tasksWrapper').getElementsByClassName('TaskAddBtn') !== null) {
             document.getElementById('tasksWrapper').getElementsByClassName('TaskAddBtn')[0].onclick = task.add.OpenForm;
         }
+
+        project.member.Output();
     });
 </script>

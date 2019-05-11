@@ -172,16 +172,20 @@ a{
     padding:20px;
     position:absolute;
     top:0;
-    right:210px;
+    right:0;
     left:60px;
 }
-@media only screen and (max-width: 767px){
+.app_wr-usrs-active .app_bd{
+    right:210px;
+}
+@media only screen and (max-width: 767px) {
     .app_bd{
         padding:5px;
     }
 }
 .pp-active .app_bd{
     bottom:0;
+    overflow:hidden;
 }
 .app_bd_hd{
     overflow:hidden;
@@ -276,6 +280,7 @@ a{
 }
 
 .app_wr-usrs_wr{
+    display:none;
     position:fixed;
     top:0;
     bottom:0;
@@ -286,15 +291,20 @@ a{
     border-left:1px solid #eee;
     padding:5px;
 }
+.app_wr-usrs-active .app_wr-usrs_wr{
+    display:block;
+}
 .app_wr-usrs_bd{
     width:100%;
     height:100%;
+    text-align:center;
 }
 .app_wr-usrs_bd-item_wr{
     overflow:hidden;
     cursor:pointer;
     transition:0.05s;
     margin-bottom:15px;
+    text-align:left;
 }
 .app_wr-usrs_bd-item_bd{
     padding:6px;
@@ -325,6 +335,10 @@ a{
 .app_wr-usrs_bd-item-wrk{
     color:#8e8e8e;
     font-size:11px;
+}
+.app_wr-usrs--btn{
+    height:30px;
+    margin:0 auto;
 }
 
 
@@ -399,6 +413,13 @@ a{
     float:right;
     width:50%;
     padding:0 0 0 5px;
+}
+.fm-item_ft{
+    padding-top:5px;
+}
+.fm-item_ft--btn {
+    height: 30px;
+    float: right;
 }
 
 .Green1{

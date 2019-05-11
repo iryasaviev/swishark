@@ -36,6 +36,14 @@ namespace Services.Account
         }
 
         /// <summary>
+        /// Возвращает пользователя по id.
+        /// </summary>
+        public User GetUser(int id)
+        {
+            return _repo.GetItems<User>().FirstOrDefault(x => x.Id.Equals(id));
+        }
+
+        /// <summary>
         /// Проверяет наличие пользователя в базе.
         /// </summary>
         /// <param name="email"></param>
