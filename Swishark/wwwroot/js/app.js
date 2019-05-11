@@ -436,6 +436,7 @@ var project = {
                     data = formData.Build(wrapper),
                     response = ajax.SendAndRecive(convert.ToJson(data), 'Data', location.href[location.href.length - 1] + '/api/AddMember');
 
+                project.member.Output();
             }
         },
 
@@ -455,6 +456,10 @@ var project = {
                 app.classList.add('app_wr-usrs-active');
             }
 
+            for (let item of body.getElementsByClassName('AppUserItemWrapper')) {
+                item.remove();
+            }
+
             let data = convert.FromJson(project.member.GetItems());
 
             for (let item of data) {
@@ -468,7 +473,7 @@ var project = {
                     lName = item.lastName;
 
 
-                body.insertAdjacentHTML('afterbegin', '<div class="app_wr-usrs_bd-item_wr app_wr-usrs_bd-item-work AppUserWrapper"><a href="#"><div class="app_wr-usrs_bd-item_bd"><img class="app_wr-usrs_bd-item--img"><div class="app_wr-usrs_bd-item--txt AppUserName">' + fName + ' ' + lName + '</div><div class="app_wr-usrs_bd-item-wrk AppUserTask">Выполняет:</div></div></a></div>');
+                body.insertAdjacentHTML('afterbegin', '<div class="app_wr-usrs_bd-item_wr app_wr-usrs_bd-item-work AppUserItemWrapper"><a href="#"><div class="app_wr-usrs_bd-item_bd"><img class="app_wr-usrs_bd-item--img"><div class="app_wr-usrs_bd-item--txt AppUserName">' + fName + ' ' + lName + '</div><div class="app_wr-usrs_bd-item-wrk AppUserTask">Выполняет:</div></div></a></div>');
             }
         }
     },

@@ -50,6 +50,11 @@ namespace Services.ProjectMember
 
             User user = new Account.AccountService().GetUser(Convert.ToInt32(data["Id"]));
 
+            if (user == null)
+            {
+                return Codes.States.ErrorAccountDoesNotExist;
+            }
+
             _member.UserId = user.Id;
             _member.FirstName = user.FirstName;
             _member.LastName = user.LastName;
