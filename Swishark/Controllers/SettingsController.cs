@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Services.Project;
 
 namespace Swishark.Controllers
 {
@@ -17,8 +18,11 @@ namespace Swishark.Controllers
         [HttpGet]
         [Route("project/{id:int}")]
         [Authorize]
-        public ActionResult Project()
+        public ActionResult Project(int id)
         {
+            if(!new ProjectService().CheckProject(id))
+                return RedirectToAction("NotFoundPage", "Error");
+
             return View();
         }
     }

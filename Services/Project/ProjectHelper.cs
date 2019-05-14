@@ -82,7 +82,7 @@ namespace Services.Project
                 if (a == (int)Infrastructure.Enums.Project.Marks.Pink1)
                     mark.Color = Infrastructure.Enums.Project.Marks.Pink1.ToString();
 
-                if (a == (int)Infrastructure.Enums.Project.Marks.Pink2)
+                if (a == (int)Infrastructure.Enums.Project.Marks.Pink2) 
                     mark.Color = Infrastructure.Enums.Project.Marks.Pink2.ToString();
 
                 marks.Add(mark);

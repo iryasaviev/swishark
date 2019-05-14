@@ -289,7 +289,7 @@ a{
     width:210px;
     background:#fff;
     border-left:1px solid #eee;
-    padding:5px;
+    padding:5px 10px;
 }
 .app_wr-usrs-active .app_wr-usrs_wr{
     display:block;
