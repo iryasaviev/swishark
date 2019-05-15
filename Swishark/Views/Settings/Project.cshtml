@@ -42,20 +42,28 @@
         <div class="fm stg-fm ProjectSettingsMembersRolesWrapper" data-controller="project" data-method="Update">
             <div class="fm_hd">
                 <div class="fm_hd-h">Роли проекта</div>
-                <div class="fm_hd-dsc">Редактирование ролей участников проекта</div>
+                <div class="fm_hd-dsc">Выберите цвет роли, введите название и нажмите Space или Enter</div>
             </div>
             <div class="fm_bd">
-                <div class="pr_stg-rls ProjectSettingsMembersRoles">
-                    <div class="pr_stg-rls--item ProjectSettingsMembersRole Red">
-                        <span>Программист</span>
-                        <div class="pr_stg-rls--item--btn ProjectSettingsMembersRoleDelBtn"></div>
-                    </div>
-                </div>
                 <div class="fm-item">
+                    <label class="fm-item--lb">Роли проекта</label>
+                    <div class="pr_stg-rls ProjectSettingsMembersRoles"></div>
+                </div>
+                <div class="fm-item pr_stg-rls--inp_wr">
                     <label class="fm-item--lb">
                         Роль
-                        <input class="inp ProjectSettingsUserRole" name="Role" type="text">
+                        <input class="inp ProjectSettingsUserRole ColorNone" name="Role" type="text">
                     </label>
+                </div>
+                <div class="fm-item pr_stg-rls--clrs_wr">
+                    <div class="pr_stg-rls--clrs_bd">
+                        <div class="pr_stg-rls--clr ProjectSettingsUserRoleColor Orange1" title="Оранжевый"></div>
+                        <div class="pr_stg-rls--clr ProjectSettingsUserRoleColor Green2" title="Залёный"></div>
+                        <div class="pr_stg-rls--clr ProjectSettingsUserRoleColor Red" title="Красный"></div>
+                        <div class="pr_stg-rls--clr ProjectSettingsUserRoleColor Blue2" title="Синий"></div>
+                        <div class="pr_stg-rls--clr ProjectSettingsUserRoleColor Pink2" title="Розовый"></div>
+                        <div class="pr_stg-rls--clr ProjectSettingsUserRoleColor ColorNone pr_stg-rls--clr-none" title="Без цвета"></div>
+                    </div>
                 </div>
                 <div class="fm-item">
                     <button class="btn fm--btn fl-r ButtonTarget" data-target="Update">Сохранить</button>
@@ -97,5 +105,13 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         settings.project.GetItem();
+
+        for (let colorItem of document.getElementsByClassName('ProjectSettingsUserRoleColor')) {
+            colorItem.onclick = settings.project.memberRole.ColorChoose;
+        }
+
+        if (document.getElementsByClassName('ProjectSettingsUserRole').length > 0) {
+            document.getElementsByClassName('ProjectSettingsUserRole')[0].onkeydown = settings.project.memberRole.Add;
+        }
     });
 </script>

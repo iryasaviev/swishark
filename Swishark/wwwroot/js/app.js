@@ -587,6 +587,38 @@ var settings = {
                     }
                 }
             }
+        },
+
+        memberRole: {
+            Add: function () {
+                let wrapper,
+                    body,
+                    color = this.classList[2];
+
+                if (event.keyCode === 32 || event.keyCode === 13) {
+                    wrapper = app.getElementsByClassName('ProjectSettingsMembersRolesWrapper')[0];
+                    body = wrapper.getElementsByClassName('ProjectSettingsMembersRoles')[0];
+                    
+                    body.insertAdjacentHTML('beforeend', '<div class="pr_stg-rls--item ProjectSettingsMembersRole  ' + color + '"><span>' + this.value + '</span><div class="pr_stg-rls--item--btn ProjectSettingsMembersRoleDelBtn"></div></div>');
+
+                    this.value = '';
+                }
+            },
+
+            ColorChoose: function (click) {
+                click = click.target;
+
+                let wrapper = app.getElementsByClassName('ProjectSettingsMembersRolesWrapper')[0],
+                    input = wrapper.getElementsByClassName('ProjectSettingsUserRole')[0];
+
+                for (let a = 0; input.classList.length > a; a++) {
+                    if (input.classList[a] !== 'inp' && input.classList[a] !== 'ProjectSettingsUserRole') {
+                        input.classList.remove(input.classList[a]);
+                    }
+                }
+
+                input.classList.add(click.classList[2]);
+            }
         }
     }
 };

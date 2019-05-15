@@ -75,6 +75,8 @@
     padding:10px 0;
     border-radius:4px;
     overflow:hidden;
+    background:#eee;
+    margin-top:5px;
 }
 .pr_stg-rls--item{
     height:30px;
@@ -96,41 +98,69 @@
     top:0;
     bottom:0;
     height:30px;
-    width:30px;
+    width:20px;
 }
 
-.pr_stg-rls .Orange1{
+.pr_stg-rls .Orange1,
+.pr_stg-rls--inp_wr .Orange1{
     color:orange;
 }
 .pr_stg-rls .Orange1:hover{
     color:orange;
     background:rgba(255, 165, 0, 0.15);
 }
-.pr_stg-rls .Green2{
+.pr_stg-rls .Green2,
+.pr_stg-rls--inp_wr .Green2{
     color:green;
 }
 .pr_stg-rls .Green2:hover{
     color:green;
     background:rgba(0, 128, 0, 0.15);
 }
-.pr_stg-rls .Red{
+.pr_stg-rls .Red,
+.pr_stg-rls--inp_wr .Red{
     color:red;
 }
 .pr_stg-rls .Red:hover{
     color:red;
     background:rgba(255, 0, 0, 0.15);
 }
-.pr_stg-rls .Blue2{
+.pr_stg-rls .Blue2,
+.pr_stg-rls--inp_wr .Blue2{
     color:blue;
 }
 .pr_stg-rls .Blue2:hover{
     color:blue;
     background:rgba(0, 0, 255, 0.15);
 }
-.pr_stg-rls .Pink2{
+.pr_stg-rls .Pink2,
+.pr_stg-rls--inp_wr .Pink2{
     color:deeppink;
 }
 .pr_stg-rls .Pink2:hover{
     color:deeppink;
     background:rgba(255, 20, 147, 0.15);
+}
+.pr_stg-rls--clrs_wr{
+    padding:0px 15px 12px 15px;
+}
+.pr_stg-rls--clrs_bd{
+    overflow:hidden;
+}
+.pr_stg-rls--clr{
+    float:left;
+    width:30px;
+    height:20px;
+    margin-right:32px;
+    cursor:pointer;
+    border-radius:2px;
+}
+.pr_stg-rls--clr-none{
+    background:#fff;
+    border:1px solid #eee;
+    margin-right:0;
+}
+
+.pr_stg-rls--inp_wr .inp{
+    background:#fff;
 }
