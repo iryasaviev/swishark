@@ -613,7 +613,18 @@ var settings = {
             },
 
             GetItems: function () {
+                let wrapper = app.getElementsByClassName('ProjectSettingsMembersRolesWrapper')[0],
+                    body = wrapper.getElementsByClassName('ProjectSettingsMembersRoles')[0];
 
+                let data = ajax.Get('/project/' + location.pathname.split('/')[location.pathname.split('/').length - 1] + '/api/GetRoles');
+
+                data = convert.FromJson(data);
+
+                if (data.length > 0) {
+                    for (let item of data) {
+                        body.insertAdjacentHTML('beforeend', '<div class="pr_stg-rls--item ProjectSettingsMembersRole ' + item.color + '"><span class="ProjectSettingsMembersRoleTxt">' + item.name + '</span><div class="pr_stg-rls--item--btn ProjectSettingsMembersRoleDelBtn"></div><input class="ds-n ProjectSettingsMembersRoleId" value"" /></div>');
+                    }
+                }
             },
 
             ColorChoose: function (click) {

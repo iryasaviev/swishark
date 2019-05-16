@@ -130,5 +130,13 @@ namespace Swishark.Controllers
         {
             return new JsonResult(new RoleHelper().Update(pModel.Data, id, new AccountService().GetCurrentUser(User.Identity.Name)));
         }
+
+        [HttpGet]
+        [Route("{id:int}/api/GetRoles")]
+        [Authorize]
+        public JsonResult GetRoles(PageModel pModel, int id)
+        {
+            return new JsonResult(new RoleService().GetItems(id));
+        }
     }
 }
