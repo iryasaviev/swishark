@@ -121,6 +121,11 @@ namespace Services.Project
 
             if (data["Form"] == "1")
             {
+
+            }
+
+            if (data["Form"] == "2")
+            {
                 List<object> marks = new List<object>();
 
                 foreach (var m in data)

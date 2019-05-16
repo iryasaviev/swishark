@@ -536,7 +536,7 @@ var project = {
             }
         }
     },
-
+        
     Update: function (click) {
         let form = click.searchParent('fm'),
             data = formData.Build(form);
@@ -544,11 +544,16 @@ var project = {
         if (form.classList.contains('ProjectSettingsDataWrapper'))
             data['Form'] = 0;
 
-        if (form.classList.contains('ProjectSettingsMarksWrapper')) {
-            data['Form'] = 1;
-        }
+        if (form.classList.contains('ProjectSettingsMarksWrapper'))
+            data['Form'] = 2;
 
         let response = ajax.SendAndRecive(convert.ToJson(data), 'Data', '/project/' + project.data.project.id + '/api/Update');
+    },
+
+    UpdateRoles: function () {
+        let data = settings.project.memberRole.Build();
+
+        let response = ajax.SendAndRecive(convert.ToJson(data), 'Data', '/project/' + project.data.project.id + '/api/UpdateRoles');
     }
 };
 
@@ -590,6 +595,8 @@ var settings = {
         },
 
         memberRole: {
+            data: {},
+
             Add: function () {
                 let wrapper,
                     body,
@@ -599,10 +606,14 @@ var settings = {
                     wrapper = app.getElementsByClassName('ProjectSettingsMembersRolesWrapper')[0];
                     body = wrapper.getElementsByClassName('ProjectSettingsMembersRoles')[0];
                     
-                    body.insertAdjacentHTML('beforeend', '<div class="pr_stg-rls--item ProjectSettingsMembersRole  ' + color + '"><span>' + this.value + '</span><div class="pr_stg-rls--item--btn ProjectSettingsMembersRoleDelBtn"></div></div>');
+                    body.insertAdjacentHTML('beforeend', '<div class="pr_stg-rls--item ProjectSettingsMembersRole ' + color + '"><span class="ProjectSettingsMembersRoleTxt">' + this.value + '</span><div class="pr_stg-rls--item--btn ProjectSettingsMembersRoleDelBtn"></div><input class="ds-n ProjectSettingsMembersRoleId" value"" /></div>');
 
                     this.value = '';
                 }
+            },
+
+            GetItems: function () {
+
             },
 
             ColorChoose: function (click) {
@@ -618,6 +629,23 @@ var settings = {
                 }
 
                 input.classList.add(click.classList[2]);
+            },
+
+            Build: function () {
+                let body = app.getElementsByClassName('ProjectSettingsMembersRoles')[0],
+                    items = body.getElementsByClassName('ProjectSettingsMembersRole');
+
+                let roles = [];
+                for (let item of items) {
+                    let role = {
+                        Id: item.getElementsByClassName('ProjectSettingsMembersRoleId')[0].value,
+                        Name: item.getElementsByClassName('ProjectSettingsMembersRoleTxt')[0].innerText,
+                        Color: item.classList[2]
+                    };
+                    roles[roles.length] = role;
+                }
+
+                return roles;
             }
         }
     }

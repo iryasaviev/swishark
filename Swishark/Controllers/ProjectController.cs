@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services.Account;
 using Services.Project;
 using Services.ProjectMember;
+using Services.ProjectMemberRole;
 using Swishark.Models;
 
 namespace Swishark.Controllers
@@ -120,6 +121,14 @@ namespace Swishark.Controllers
         public JsonResult AddMember(PageModel pModel, int id)
         {
             return new JsonResult(new MemberHelper().AddToProject(pModel.Data, id));
+        }
+
+        [HttpPost]
+        [Route("{id:int}/api/UpdateRoles")]
+        [Authorize]
+        public JsonResult UpdateRoles(PageModel pModel, int id)
+        {
+            return new JsonResult(new RoleHelper().Update(pModel.Data, id, new AccountService().GetCurrentUser(User.Identity.Name)));
         }
     }
 }
