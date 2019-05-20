@@ -29,6 +29,14 @@ namespace Services.ProjectMember
         }
 
         /// <summary>
+        /// Возвращает участника.
+        /// </summary>
+        public Infrastructure.Entities.ProjectMember GetItem(int id)
+        {
+            return _repo.GetItems<Infrastructure.Entities.ProjectMember>().FirstOrDefault(x => x.Id.Equals(id));
+        }
+
+        /// <summary>
         /// Возвращает участников проекта.
         /// </summary>
         public List<Infrastructure.Entities.ProjectMember> GetItems(int projectId)

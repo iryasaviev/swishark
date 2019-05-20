@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Entities;
 using Infrastructure.Enums;
 using Services.ProjectMember;
+using Services.ProjectMemberRole;
 using Services.ProjectTask;
 using Services.Validation;
 using System;
@@ -90,12 +91,33 @@ namespace Services.Project
             _project.Marks = _json.To(marks);
             _service.Add(_project);
 
-            Codes.States mHelperResult = new MemberHelper().Create(_project.Id, user);
-            if (mHelperResult == Codes.States.Success)
+            try
             {
+                MemberHelper memberHelper = new MemberHelper();
+                
+                // Создание пользователя проекта
+                memberHelper.Create(_project.Id, user);
+                
+                // Добавление роли "Создатель"
+                Codes.States rHelper = new RoleHelper().AddToProject(
+                   new RoleHelper.Role
+                   {
+                       Name = "Создатель",
+                       Color = "ColorNone"
+                   },
+                   _project.Id,
+                   user);
+
+
+                if (memberHelper.UpdateRole(user, _project.Id) != Codes.States.Success)
+                {
+                    // TODO: Переделать номер ошибки.
+                    return Codes.States.ErrorAccountDoesNotExist;
+                }
+
                 return Codes.States.Success;
             }
-            else
+            catch
             {
                 // TODO: Переделать номер ошибки.
                 return Codes.States.ErrorAccountDoesNotExist;

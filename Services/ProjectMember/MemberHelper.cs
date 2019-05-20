@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Entities;
 using Infrastructure.Enums;
+using Services.ProjectMemberRole;
 using System;
 using System.Collections.Generic;
 
@@ -21,7 +22,7 @@ namespace Services.ProjectMember
 
 
         /// <summary>
-        /// 
+        /// Создает нового участника.
         /// </summary>
         /// <param name="dataStr"></param>
         /// <param name="user"></param>
@@ -39,7 +40,7 @@ namespace Services.ProjectMember
         }
 
         /// <summary>
-        /// 
+        /// Добавляет нового участника в проект.
         /// </summary>
         /// <param name="dataStr"></param>
         /// <param name="projectId"></param>
@@ -71,6 +72,40 @@ namespace Services.ProjectMember
                 // TODO: Сделать вывод ошибки.
                 return Codes.States.Success;
             }
+        }
+
+        /// <summary>
+        /// Обновляет роль участника при создании проекта.
+        /// Роль участника называется "СОздатель" и имеет постоянно у каждого проекта уникальный id.
+        /// </summary>
+        /// <param name="user">Пользователь</param>
+        /// <param name="projectId">Id проекта</param>
+        /// <returns>Возвращает рузельтат выполнения.</returns>
+        public Codes.States UpdateRole(User user, int projectId)
+        {
+            Infrastructure.Entities.ProjectMember member = new Infrastructure.Entities.ProjectMember();
+
+            // Поиск участника проекта
+            foreach (var m in _service.GetItems(projectId))
+            {
+                if (m.UserId == user.Id)
+                {
+                    member = m;
+                    break;
+                }
+            }
+
+            // Поиск роли участника
+            foreach (var r in new RoleService().GetItems(projectId))
+            {
+                member.RoleId = r.Id;
+                _service.Update(member);
+
+                return Codes.States.Success;
+            }
+
+            // TODO: Переделать вывод ошибки!
+            return Codes.States.ErrorAccountDoesNotExist;
         }
     }
 }

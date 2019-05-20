@@ -467,7 +467,13 @@ var project = {
                 item.remove();
             }
 
-            let data = convert.FromJson(project.member.GetItems());
+            let data = convert.FromJson(project.member.GetItems()),
+                roles = convert.FromJson(ajax.Get(location.href[location.href.length - 1] + '/api/GetRoles'));
+
+            for (let role of roles) {
+                console.log(role);
+            }
+
 
             for (let item of data) {
 
@@ -479,7 +485,7 @@ var project = {
                 if (item.lastName !== null)
                     lName = item.lastName;
 
-
+                console.log(item);
                 body.insertAdjacentHTML('afterbegin', '<div class="app_wr-usrs_bd-item_wr app_wr-usrs_bd-item-work AppUserItemWrapper"><a href="/' + item.userId + '"><div class="app_wr-usrs_bd-item_bd"><img class="app_wr-usrs_bd-item--img"><div class="app_wr-usrs_bd-item--txt AppUserName">' + fName + ' ' + lName + '</div><div class="app_wr-usrs_bd-item-wrk AppUserTask">Выполняет:</div></div></a></div>');
             }
         }
