@@ -452,3 +452,44 @@ a{
 .Blue2{
     background:blue;
 }
+
+.BackgroundOffColorOn .Green1{
+    background:none;
+    color:greenyellow;
+}
+.BackgroundOffColorOn .Green2{
+    background:none;
+    color:green;
+}
+.BackgroundOffColorOn .Yellow{
+    background:none;
+    color:yellow;
+}
+.BackgroundOffColorOn .Orange1{
+    background:none;
+    color:orange;
+}
+.BackgroundOffColorOn .Orange2{
+    background:none;
+    color:orangered;
+}
+.BackgroundOffColorOn .Red{
+    background:none;
+    color:red;
+}
+.BackgroundOffColorOn .Pink1{
+    background:none;
+    color:hotpink;
+}
+.BackgroundOffColorOn .Pink2{
+    background:none;
+    color:deeppink;
+}
+.BackgroundOffColorOn .Blue1{
+    background:none;
+    color:dodgerblue;
+}
+.BackgroundOffColorOn .Blue2{
+    background:none;
+    color:blue;
+}

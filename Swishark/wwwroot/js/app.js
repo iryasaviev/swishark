@@ -424,10 +424,18 @@ var project = {
     member: {
         add: {
             OpenPopUpForm: function () {
-                popUp.Open('Добавление нового участника', '<div class="fm ProjectTaskEditWrapper" data-controller="task" data-method="Edit"><div class="fm-item"><label class="fm-item--lb">Идентификатор (id) участника<input class="inp ProjectMemberId" name="Id" type="number"></label></div><div class="fm-item"><label class="fm-item--lb">Роль<select class="inp ProjectMemberRole" name="Role"><option value="0">Без роли</option><option value="1">Программист</option><option value="2">Менеджер</option><option value="3">Уборщик</option></select></label></div></div>', project.member.add.ClosePopUpForm);
+                let data = convert.FromJson(ajax.Get(location.href[location.href.length - 1] + '/api/GetRoles'));
+
+                popUp.Open('Добавление нового участника', '<div class="fm ProjectTaskEditWrapper" data-controller="task" data-method="Edit"><div class="fm-item"><label class="fm-item--lb">Идентификатор (id) участника<input class="inp ProjectMemberId" name="Id" type="number"></label></div><div class="fm-item"><label class="fm-item--lb">Роль<select class="inp BackgroundOffColorOn ProjectMemberRole" name="Role"><option value="0">Без роли</option></select></label></div></div>', project.member.add.ClosePopUpForm);
 
                 let pp = document.getElementById('popUp'),
-                    idInput = pp.getElementsByClassName('ProjectMemberId')[0];
+                    idInput = pp.getElementsByClassName('ProjectMemberId')[0],
+                    rolesSelect = pp.getElementsByClassName('ProjectMemberRole')[0];
+
+                for (let item of data) {
+                    rolesSelect.insertAdjacentHTML('beforeend', '<option class="' + item.color + '" value="' + item.id + '">' + item.name + '</option>');
+                }
+
             },
 
             ClosePopUpForm: function () {
