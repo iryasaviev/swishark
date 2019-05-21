@@ -430,7 +430,6 @@ var project = {
                 popUp.Open('Добавление нового участника', '<div class="fm ProjectTaskEditWrapper" data-controller="task" data-method="Edit"><div class="fm-item"><label class="fm-item--lb">Идентификатор (id) участника<input class="inp ProjectMemberId" name="Id" type="number"></label></div><div class="fm-item"><label class="fm-item--lb">Роль<select class="inp BackgroundOffColorOn ProjectMemberRole" name="Role"><option value="0">Без роли</option></select></label></div></div>', project.member.add.ClosePopUpForm);
 
                 let pp = document.getElementById('popUp'),
-                    idInput = pp.getElementsByClassName('ProjectMemberId')[0],
                     rolesSelect = pp.getElementsByClassName('ProjectMemberRole')[0];
 
                 for (let item of data) {
@@ -445,7 +444,8 @@ var project = {
             ClosePopUpForm: function () {
                 let wrapper = app.getElementsByClassName('ProjectTaskEditWrapper')[0],
                     data = formData.Build(wrapper),
-                    response = ajax.SendAndRecive(convert.ToJson(data), 'Data', location.href[location.href.length - 1] + '/api/AddMember');
+                    path = location.href.split('/')[location.href.split('/').length - 1] + '/api/AddMember',
+                    response = ajax.SendAndRecive(convert.ToJson(data), 'Data', path);
 
                 project.member.Output();
             }
@@ -471,26 +471,47 @@ var project = {
                 item.remove();
             }
 
-            let data = convert.FromJson(project.member.GetItems()),
-                roles = convert.FromJson(ajax.Get(location.href[location.href.length - 1] + '/api/GetRoles'));
+            let users = convert.FromJson(project.member.GetItems()),
+                path = location.href.split('/')[location.href.split('/').length - 1] + '/api/GetRoles',
+                roles = convert.FromJson(ajax.Get(path));
 
-            //for (let role of roles) {
-                
-            //}
+            let data = {
+                None: []
+            };
+
+            for (let role of roles) {
+                for (let user of users) {
+                    if (role.id === user.roleId) {
+                        if (data[role.name] === undefined) {
+                            data[role.name] = [];
+                            data[role.name][0] = user;
+                        }
+                        else {
+                            data[role.name][data[role.name].length] = user;
+                        }
+                    }
+                }
+            }
+
+            for (let role of roles) {
+                if (data[role.name] !== undefined) {
+                    body.insertAdjacentHTML('afterbegin', '<div class="AppUserRoleItemWrapper"><h3>' + role.name + '</h3><input class="ds-n AppUserRoleItemId" value="' + role.id + '" /></div>');
+
+                    for (let user of data[role.name]) {
+                        let fName = '', lName = '';
+
+                        if (user.firstName !== null)
+                            fName = user.firstName;
+
+                        if (user.lastName !== null)
+                            lName = user.lastName;
 
 
-            for (let item of data) {
+                        let roleItem = body.getElementsByClassName('AppUserRoleItemWrapper')[0];
 
-                let fName = '', lName = '';
-
-                if (item.firstName !== null)
-                    fName = item.firstName;
-
-                if (item.lastName !== null)
-                    lName = item.lastName;
-
-                //console.log(item);
-                body.insertAdjacentHTML('afterbegin', '<div class="app_wr-usrs_bd-item_wr app_wr-usrs_bd-item-work AppUserItemWrapper"><a href="/' + item.userId + '"><div class="app_wr-usrs_bd-item_bd"><img class="app_wr-usrs_bd-item--img"><div class="app_wr-usrs_bd-item--txt AppUserName">' + fName + ' ' + lName + '</div><div class="app_wr-usrs_bd-item-wrk AppUserTask">Выполняет:</div></div></a></div>');
+                        roleItem.insertAdjacentHTML('beforeend', '<div class="app_wr-usrs_bd-item_wr app_wr-usrs_bd-item-work AppUserItemWrapper"><a href="/' + user.userId + '"><div class="app_wr-usrs_bd-item_bd"><img class="app_wr-usrs_bd-item--img"><div class="app_wr-usrs_bd-item--txt AppUserName">' + fName + ' ' + lName + '</div><div class="app_wr-usrs_bd-item-wrk AppUserTask">Выполняет:</div></div></a></div>');
+                    }
+                }
             }
         }
     },

@@ -44,7 +44,7 @@ namespace Infrastructure.Enums
             /// <summary>
             /// Неприемлемая ошибка клиента, конфликт.
             /// </summary>
-            ErrorAccountEmailIsBusy = 4609,
+            ErrorAccountIdIsBusy = 4609,
 
             /// <summary>
             /// Неверный пароль.

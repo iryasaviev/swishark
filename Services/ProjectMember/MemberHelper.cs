@@ -50,17 +50,23 @@ namespace Services.ProjectMember
             Dictionary<string, string> data = _json.From(dataStr);
 
             User user = new Account.AccountService().GetUser(Convert.ToInt32(data["Id"]));
-
+            
+            // Если аккаунт пользвателя с таким Id не создан
             if (user == null)
             {
                 return Codes.States.ErrorAccountDoesNotExist;
             }
 
+            // Если пользователь с таким Id уже добавлен в проект
+            if (_service.GetItem(user.Id) != null)
+                return Codes.States.ErrorAccountIdIsBusy;
+            
             _member.UserId = user.Id;
             _member.FirstName = user.FirstName;
             _member.LastName = user.LastName;
             _member.Photo = user.Photo;
             _member.ProjectId = projectId;
+            _member.RoleId = new Guid(data["Role"]);
 
             try
             {

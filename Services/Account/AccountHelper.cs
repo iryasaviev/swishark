@@ -73,7 +73,7 @@ namespace Services.Account
                 return Codes.States.ErrorValidationEmail;
 
             if (_service.CheckEmail(data["Email"]))
-                return Codes.States.ErrorAccountEmailIsBusy;
+                return Codes.States.ErrorAccountIdIsBusy;
 
             _user.Email = data["Email"];
 
