@@ -24,6 +24,7 @@ namespace Services.ProjectMemberRole
 
         /// <summary>
         /// Возвращает список ролей проекта.
+        /// Если 'creator' == true, то выводим его тоже, если false то не выводим.
         /// </summary>
         public List<Infrastructure.Entities.ProjectMemberRole> GetItems(int projectId)
         {

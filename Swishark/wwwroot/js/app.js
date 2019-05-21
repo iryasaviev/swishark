@@ -424,7 +424,8 @@ var project = {
     member: {
         add: {
             OpenPopUpForm: function () {
-                let data = convert.FromJson(ajax.Get(location.href[location.href.length - 1] + '/api/GetRoles'));
+                let path = location.href.split('/')[location.href.split('/').length - 1] + '/api/GetRoles',
+                    data = convert.FromJson(ajax.Get(path));
 
                 popUp.Open('Добавление нового участника', '<div class="fm ProjectTaskEditWrapper" data-controller="task" data-method="Edit"><div class="fm-item"><label class="fm-item--lb">Идентификатор (id) участника<input class="inp ProjectMemberId" name="Id" type="number"></label></div><div class="fm-item"><label class="fm-item--lb">Роль<select class="inp BackgroundOffColorOn ProjectMemberRole" name="Role"><option value="0">Без роли</option></select></label></div></div>', project.member.add.ClosePopUpForm);
 
@@ -433,7 +434,10 @@ var project = {
                     rolesSelect = pp.getElementsByClassName('ProjectMemberRole')[0];
 
                 for (let item of data) {
-                    rolesSelect.insertAdjacentHTML('beforeend', '<option class="' + item.color + '" value="' + item.id + '">' + item.name + '</option>');
+
+                    if (item.name !== 'Создатель') {
+                        rolesSelect.insertAdjacentHTML('beforeend', '<option class="' + item.color + '" value="' + item.id + '">' + item.name + '</option>');
+                    }
                 }
 
             },
@@ -470,9 +474,9 @@ var project = {
             let data = convert.FromJson(project.member.GetItems()),
                 roles = convert.FromJson(ajax.Get(location.href[location.href.length - 1] + '/api/GetRoles'));
 
-            for (let role of roles) {
-                console.log(role);
-            }
+            //for (let role of roles) {
+                
+            //}
 
 
             for (let item of data) {
@@ -485,7 +489,7 @@ var project = {
                 if (item.lastName !== null)
                     lName = item.lastName;
 
-                console.log(item);
+                //console.log(item);
                 body.insertAdjacentHTML('afterbegin', '<div class="app_wr-usrs_bd-item_wr app_wr-usrs_bd-item-work AppUserItemWrapper"><a href="/' + item.userId + '"><div class="app_wr-usrs_bd-item_bd"><img class="app_wr-usrs_bd-item--img"><div class="app_wr-usrs_bd-item--txt AppUserName">' + fName + ' ' + lName + '</div><div class="app_wr-usrs_bd-item-wrk AppUserTask">Выполняет:</div></div></a></div>');
             }
         }
@@ -636,7 +640,7 @@ var settings = {
 
                 if (data.length > 0) {
                     for (let item of data) {
-                        body.insertAdjacentHTML('beforeend', '<div class="pr_stg-rls--item ProjectSettingsMembersRole ' + item.color + '"><span class="ProjectSettingsMembersRoleTxt">' + item.name + '</span><div class="pr_stg-rls--item--btn ProjectSettingsMembersRoleDelBtn"></div><input class="ds-n ProjectSettingsMembersRoleId" value"" /></div>');
+                        body.insertAdjacentHTML('beforeend', '<div class="pr_stg-rls--item ProjectSettingsMembersRole ' + item.color + '"><span class="ProjectSettingsMembersRoleTxt">' + item.name + '</span><div class="pr_stg-rls--item--btn ProjectSettingsMembersRoleDelBtn"></div><input class="ds-n ProjectSettingsMembersRoleId" value="' + item.id + '" /></div>');
                     }
                 }
             },
