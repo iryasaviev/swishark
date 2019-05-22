@@ -495,10 +495,10 @@ var project = {
 
             for (let role of roles) {
                 if (data[role.name] !== undefined) {
-                    body.insertAdjacentHTML('afterbegin', '<div class="AppUserRoleItemWrapper"><h3>' + role.name + '</h3><input class="ds-n AppUserRoleItemId" value="' + role.id + '" /></div>');
+                    body.insertAdjacentHTML('afterbegin', '<div class="app_wr-usrs_bd-role_wr AppUserRoleItemWrapper"><div class="app_wr-usrs_bd-role--txt">' + role.name + '</div><input class="ds-n AppUserRoleItemId" value="' + role.id + '" /></div>');
 
                     for (let user of data[role.name]) {
-                        let fName = '', lName = '';
+                        let fName = '', lName = '', doesTaskId = '';
 
                         if (user.firstName !== null)
                             fName = user.firstName;
@@ -507,9 +507,19 @@ var project = {
                             lName = user.lastName;
 
 
-                        let roleItem = body.getElementsByClassName('AppUserRoleItemWrapper')[0];
+                        let roleItem = body.getElementsByClassName('AppUserRoleItemWrapper')[0],
+                            item = '<div class="app_wr-usrs_bd-item_wr AppUserItemWrapper"><a href="/' + user.userId + '"><div class="app_wr-usrs_bd-item_bd"><img class="app_wr-usrs_bd-item--img"><div class="app_wr-usrs_bd-item--txt AppUserName">' + fName + ' ' + lName + '</div></div></a></div>';
 
-                        roleItem.insertAdjacentHTML('beforeend', '<div class="app_wr-usrs_bd-item_wr app_wr-usrs_bd-item-work AppUserItemWrapper"><a href="/' + user.userId + '"><div class="app_wr-usrs_bd-item_bd"><img class="app_wr-usrs_bd-item--img"><div class="app_wr-usrs_bd-item--txt AppUserName">' + fName + ' ' + lName + '</div><div class="app_wr-usrs_bd-item-wrk AppUserTask">Выполняет:</div></div></a></div>');
+
+                        if (user.doesTaskId !== 0) {
+                            doesTaskId = user.doesTaskId;
+
+                            let task = convert.FromJson(ajax.Get('/task' + doesTaskId + '/api/GetItem'));
+
+                            item = '<div class="app_wr-usrs_bd-item_wr app_wr-usrs_bd-item-work AppUserItemWrapper"><a href="/' + user.userId + '"><div class="app_wr-usrs_bd-item_bd"><img class="app_wr-usrs_bd-item--img"><div class="app_wr-usrs_bd-item--txt AppUserName">' + fName + ' ' + lName + '</div><div class="app_wr-usrs_bd-item-wrk AppUserTask">Выполняет:' + task.name + '</div></div></a></div>';
+                        }
+                        
+                        roleItem.insertAdjacentHTML('beforeend', item);
                     }
                 }
             }
