@@ -58,15 +58,22 @@ namespace Services.ProjectMember
             }
 
             // Если пользователь с таким Id уже добавлен в проект
+            var member = _service.GetItem(user.Id);
             if (_service.GetItem(user.Id) != null)
-                return Codes.States.ErrorAccountIdIsBusy;
+            {
+                if (member.ProjectId == projectId)
+                    return Codes.States.ErrorAccountIdIsBusy;
+            }
             
             _member.UserId = user.Id;
             _member.FirstName = user.FirstName;
             _member.LastName = user.LastName;
             _member.Photo = user.Photo;
             _member.ProjectId = projectId;
-            _member.RoleId = new Guid(data["Role"]);
+            if (data["Role"] != "0")
+            {
+                _member.RoleId = new Guid(data["Role"]);
+            }
 
             try
             {

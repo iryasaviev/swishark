@@ -389,6 +389,9 @@ var leftMenu = {
             body = wrapper.getElementsByClassName('AppLeftMenuBody')[0],
             projects = convert.FromJson(ajax.Get('/project/api/GetItems'));
 
+        body.innerHTML = '';
+        body.insertAdjacentHTML('afterbegin', '<a href="/project/add"><div class="app_wr-mn_bd-item_wr"><div class="btn app_wr-mn_bd-item app_wr-mn_bd-item-add"></div></div></a>');
+
         for (let project of projects) {
             body.insertAdjacentHTML('beforeend', '<a href="/project/' + project.id + '"><div class="app_wr-mn_bd-item_wr" title="' + project.name + '"><div class="btn app_wr-mn_bd-item"></div></div></a>');
         }
@@ -497,7 +500,7 @@ var project = {
                 app.classList.add('app_wr-usrs-active');
             }
 
-            for (let item of body.getElementsByClassName('AppUserItemWrapper')) {
+            for (let item of body.getElementsByClassName('AppUserRoleItemWrapper')) {
                 item.remove();
             }
 
@@ -521,6 +524,10 @@ var project = {
                         }
                     }
                 }
+            }
+
+            for (let item of body.getElementsByClassName('AppUserRoleItemWrapper')) {
+                item.remove();
             }
 
             for (let role of roles) {
@@ -567,6 +574,8 @@ var project = {
         let form = target,
             data = formData.Build(form),
             response = ajax.SendAndRecive(convert.ToJson(data), 'Data', 'api/AddItem');
+
+        leftMenu.OutputProjects();
     },
 
     Get: function () {
