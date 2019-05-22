@@ -556,7 +556,14 @@ var project = {
             description.innerText = data.project.description;
 
             for (let a = 0; data.tasks.length > a; a++) {
-                body.insertAdjacentHTML('afterbegin', '<div class="tsks-item Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.tasks[a].title + '</div><div class="tsks-item-ttl--dt TaskDateTime">Выполнить до ' + new Date(data.tasks[a].finishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.tasks[a].description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div><input class="ds-n TaskId" value="' + data.tasks[a].id + '"></div>');
+
+                if (data.tasks[a].state === 1) {
+                    body.insertAdjacentHTML('afterbegin', '<div class="tsks-item tsks-item-done Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.tasks[a].title + '</div><div class="tsks-item-ttl--dt TaskDateTime">Выполнить до ' + new Date(data.tasks[a].finishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.tasks[a].description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div><input class="ds-n TaskId" value="' + data.tasks[a].id + '"></div>');
+                }
+                else {
+                    body.insertAdjacentHTML('afterbegin', '<div class="tsks-item Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.tasks[a].title + '</div><div class="tsks-item-ttl--dt TaskDateTime">Выполнить до ' + new Date(data.tasks[a].finishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.tasks[a].description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div><input class="ds-n TaskId" value="' + data.tasks[a].id + '"></div>');
+                }
+                
 
                 if (data.tasks[a].marks !== null) {
                     for (let mark of convert.FromJson(data.tasks[a].marks)) {
