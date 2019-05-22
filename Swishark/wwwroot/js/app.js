@@ -370,7 +370,7 @@ var leftMenu = {
     TryVsisible: function () {
         let visible = document.getElementById('leftMenuActive').value;
 
-        if (Boolean(visible) === true) {
+        if (visible === 'true') {
             if (app.classList.contains('app_wr-mn-inactive')) {
                 app.classList.remove('app_wr-mn-inactive');
             }
