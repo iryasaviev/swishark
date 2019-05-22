@@ -83,17 +83,12 @@ namespace Swishark.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("api/GetItems")]
         [Authorize]
-        public JsonResult GetItems(PageModel pModel)
+        public JsonResult GetItems()
         {
-            ProjectService service = new ProjectService();
-            Services.Json json = new Services.Json();
-
-            List<Project> items = service.GetProjects(new AccountService().GetCurrentUser(User.Identity.Name).Id);
-
-            return new JsonResult(items);
+            return new JsonResult(new ProjectService().GetProjects(new AccountService().GetCurrentUser(User.Identity.Name).Id));
         }
 
         [HttpPost]

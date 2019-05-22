@@ -366,6 +366,36 @@ var formData = {
 };
 
 
+var leftMenu = {
+    TryVsisible: function () {
+        let visible = document.getElementById('leftMenuActive').value;
+
+        if (Boolean(visible) === true) {
+            if (app.classList.contains('app_wr-mn-inactive')) {
+                app.classList.remove('app_wr-mn-inactive');
+            }
+
+            leftMenu.OutputProjects();
+        }
+        else {
+            if (!app.classList.contains('app_wr-mn-inactive')) {
+                app.classList.add('app_wr-mn-inactive');
+            }
+        }
+    },
+
+    OutputProjects: function () {
+        let wrapper = document.getElementById('appLeftMenu'),
+            body = wrapper.getElementsByClassName('AppLeftMenuBody')[0],
+            projects = convert.FromJson(ajax.Get('/project/api/GetItems'));
+
+        for (let project of projects) {
+            body.insertAdjacentHTML('beforeend', '<a href="/project/' + project.id + '"><div class="app_wr-mn_bd-item_wr" title="' + project.name + '"><div class="btn app_wr-mn_bd-item"></div></div></a>');
+        }
+    }
+};
+
+
 
 var account = {
     /**
@@ -575,13 +605,8 @@ var project = {
     },
 
     GetItems: function () {
-        var url = location.pathname.split('/'),
-            dataTo = {
-                id: url[url.length - 1]
-            },
-            response = ajax.SendAndRecive(convert.ToJson(dataTo), 'Data', 'api/GetItems');
-
-        let data = convert.FromJson(response);
+        var data = convert.FromJson(ajax.Get('api/GetItems'));
+        
         if (data !== null) {
             project.data = data;
 
@@ -861,4 +886,5 @@ var task = {
 
 document.addEventListener("DOMContentLoaded", function () {
     validation.SetEvents();
+    leftMenu.TryVsisible();
 });
