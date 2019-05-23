@@ -78,23 +78,20 @@ var ajax = {
         xhr.send(data);
     },
 
-    Get: function (modelProperty, method) {
-
+    Get: function (method) {
         var xhr = this.XHR();
 
-        //data = modelProperty + '=' + encodeURIComponent(data);
-
         // ('Запрос', 'Строка, метод')
-        xhr.open('GET', method);
-        xhr.setRequestHeader('Content-Type', 'XMLHttpRequest');
+        xhr.open('GET', method, false);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.send();
 
         if (xhr.status !== 200) {
-            // обработать ошибку
-            //alert(xhr.status + ': ' + xhr.statusText); // пример вывода: 404: Not Found
-        } else {
-            // вывести результат
-            //alert(xhr.responseText); // responseText -- текст ответа.
+            console.log("ERROR! Code: 'ErrorNumber' - Ajax. Ошибка сервера.");
+            return xhr.status + ': ' + xhr.statusText;
+        }
+        else {
+            return xhr.responseText;
         }
     },
 
@@ -369,6 +366,38 @@ var formData = {
 };
 
 
+var leftMenu = {
+    TryVsisible: function () {
+        let visible = document.getElementById('leftMenuActive').value;
+
+        if (visible === 'true') {
+            if (app.classList.contains('app_wr-mn-inactive')) {
+                app.classList.remove('app_wr-mn-inactive');
+            }
+
+            leftMenu.OutputProjects();
+        }
+        else {
+            if (!app.classList.contains('app_wr-mn-inactive')) {
+                app.classList.add('app_wr-mn-inactive');
+            }
+        }
+    },
+
+    OutputProjects: function () {
+        let wrapper = document.getElementById('appLeftMenu'),
+            body = wrapper.getElementsByClassName('AppLeftMenuBody')[0],
+            projects = convert.FromJson(ajax.Get('/project/api/GetItems'));
+
+        body.innerHTML = '';
+        body.insertAdjacentHTML('afterbegin', '<a href="/project/add"><div class="app_wr-mn_bd-item_wr"><div class="btn app_wr-mn_bd-item app_wr-mn_bd-item-add"></div></div></a>');
+
+        for (let project of projects) {
+            body.insertAdjacentHTML('beforeend', '<a href="/project/' + project.id + '"><div class="app_wr-mn_bd-item_wr" title="' + project.name + '"><div class="btn app_wr-mn_bd-item"></div></div></a>');
+        }
+    }
+};
+
 
 
 var account = {
@@ -425,6 +454,115 @@ var project = {
 
     data: {},
 
+    member: {
+        add: {
+            OpenPopUpForm: function () {
+                let path = location.href.split('/')[location.href.split('/').length - 1] + '/api/GetRoles',
+                    data = convert.FromJson(ajax.Get(path));
+
+                popUp.Open('Добавление нового участника', '<div class="fm ProjectTaskEditWrapper" data-controller="task" data-method="Edit"><div class="fm-item"><label class="fm-item--lb">Идентификатор (id) участника<input class="inp ProjectMemberId" name="Id" type="number"></label></div><div class="fm-item"><label class="fm-item--lb">Роль<select class="inp BackgroundOffColorOn ProjectMemberRole" name="Role"><option value="0">Без роли</option></select></label></div></div>', project.member.add.ClosePopUpForm);
+
+                let pp = document.getElementById('popUp'),
+                    rolesSelect = pp.getElementsByClassName('ProjectMemberRole')[0];
+
+                for (let item of data) {
+
+                    if (item.name !== 'Создатель') {
+                        rolesSelect.insertAdjacentHTML('beforeend', '<option class="' + item.color + '" value="' + item.id + '">' + item.name + '</option>');
+                    }
+                }
+
+            },
+
+            ClosePopUpForm: function () {
+                let wrapper = app.getElementsByClassName('ProjectTaskEditWrapper')[0],
+                    data = formData.Build(wrapper),
+                    path = location.href.split('/')[location.href.split('/').length - 1] + '/api/AddMember',
+                    response = ajax.SendAndRecive(convert.ToJson(data), 'Data', path);
+
+                project.member.Output();
+            }
+        },
+
+        GetItem: function () {
+            return ajax.Get(location.href.split('/')[location.href.split('/').length - 1] + '/api/GetMember');
+        },
+
+        GetItems: function () {
+            return ajax.Get(location.href.split('/')[location.href.split('/').length - 1] + '/api/GetMembers');
+        },
+
+        Output: function () {
+            let wrapper = app.getElementsByClassName('app_wr-usrs_wr')[0],
+                body = wrapper.getElementsByClassName('AppUsersBody')[0];
+
+            if (!app.classList.contains('app_wr-usrs-active')) {
+                app.classList.add('app_wr-usrs-active');
+            }
+
+            for (let item of body.getElementsByClassName('AppUserRoleItemWrapper')) {
+                item.remove();
+            }
+
+            let users = convert.FromJson(project.member.GetItems()),
+                path = location.href.split('/')[location.href.split('/').length - 1] + '/api/GetRoles',
+                roles = convert.FromJson(ajax.Get(path));
+
+            let data = {
+                None: []
+            };
+
+            for (let role of roles) {
+                for (let user of users) {
+                    if (role.id === user.roleId) {
+                        if (data[role.name] === undefined) {
+                            data[role.name] = [];
+                            data[role.name][0] = user;
+                        }
+                        else {
+                            data[role.name][data[role.name].length] = user;
+                        }
+                    }
+                }
+            }
+
+            for (let item of body.getElementsByClassName('AppUserRoleItemWrapper')) {
+                item.remove();
+            }
+
+            for (let role of roles) {
+                if (data[role.name] !== undefined) {
+                    body.insertAdjacentHTML('afterbegin', '<div class="app_wr-usrs_bd-role_wr AppUserRoleItemWrapper"><div class="app_wr-usrs_bd-role--txt">' + role.name + '</div><input class="ds-n AppUserRoleItemId" value="' + role.id + '" /></div>');
+
+                    for (let user of data[role.name]) {
+                        let fName = '', lName = '', doesTaskId = '';
+
+                        if (user.firstName !== null)
+                            fName = user.firstName;
+
+                        if (user.lastName !== null)
+                            lName = user.lastName;
+
+
+                        let roleItem = body.getElementsByClassName('AppUserRoleItemWrapper')[0],
+                            item = '<div class="app_wr-usrs_bd-item_wr AppUserItemWrapper"><a href="/' + user.userId + '"><div class="app_wr-usrs_bd-item_bd"><img class="app_wr-usrs_bd-item--img"><div class="app_wr-usrs_bd-item--txt AppUserName">' + fName + ' ' + lName + '</div></div></a></div>';
+
+
+                        if (user.doesTaskId !== 0) {
+                            doesTaskId = user.doesTaskId;
+
+                            let task = convert.FromJson(ajax.Get('/task' + doesTaskId + '/api/GetItem'));
+
+                            item = '<div class="app_wr-usrs_bd-item_wr app_wr-usrs_bd-item-work AppUserItemWrapper"><a href="/' + user.userId + '"><div class="app_wr-usrs_bd-item_bd"><img class="app_wr-usrs_bd-item--img"><div class="app_wr-usrs_bd-item--txt AppUserName">' + fName + ' ' + lName + '</div><div class="app_wr-usrs_bd-item-wrk AppUserTask">Выполняет:' + task.name + '</div></div></a></div>';
+                        }
+                        
+                        roleItem.insertAdjacentHTML('beforeend', item);
+                    }
+                }
+            }
+        }
+    },
+
     /**
     * @function project.Add
     * @description отправка данных с формы добавления проекта
@@ -436,6 +574,8 @@ var project = {
         let form = target,
             data = formData.Build(form),
             response = ajax.SendAndRecive(convert.ToJson(data), 'Data', 'api/AddItem');
+
+        leftMenu.OutputProjects();
     },
 
     Get: function () {
@@ -455,7 +595,14 @@ var project = {
             description.innerText = data.project.description;
 
             for (let a = 0; data.tasks.length > a; a++) {
-                body.insertAdjacentHTML('afterbegin', '<div class="tsks-item Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.tasks[a].title + '</div><div class="tsks-item-ttl--dt TaskDateTime">' + new Date(data.tasks[a].createdDate).toLocaleString() + ' — ' + new Date(data.tasks[a].finishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.tasks[a].description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div><input class="ds-n TaskId" value="' + data.tasks[a].id + '"></div>');
+
+                if (data.tasks[a].state === 1) {
+                    body.insertAdjacentHTML('afterbegin', '<div class="tsks-item tsks-item-done Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.tasks[a].title + '</div><div class="tsks-item-ttl--dt TaskDateTime">Выполнить до ' + new Date(data.tasks[a].finishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.tasks[a].description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div><input class="ds-n TaskId" value="' + data.tasks[a].id + '"></div>');
+                }
+                else {
+                    body.insertAdjacentHTML('afterbegin', '<div class="tsks-item Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.tasks[a].title + '</div><div class="tsks-item-ttl--dt TaskDateTime">Выполнить до ' + new Date(data.tasks[a].finishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.tasks[a].description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div><input class="ds-n TaskId" value="' + data.tasks[a].id + '"></div>');
+                }
+                
 
                 if (data.tasks[a].marks !== null) {
                     for (let mark of convert.FromJson(data.tasks[a].marks)) {
@@ -467,13 +614,8 @@ var project = {
     },
 
     GetItems: function () {
-        var url = location.pathname.split('/'),
-            dataTo = {
-                id: url[url.length - 1]
-            },
-            response = ajax.SendAndRecive(convert.ToJson(dataTo), 'Data', 'api/GetItems');
-
-        let data = convert.FromJson(response);
+        var data = convert.FromJson(ajax.Get('api/GetItems'));
+        
         if (data !== null) {
             project.data = data;
 
@@ -484,7 +626,7 @@ var project = {
             }
         }
     },
-
+        
     Update: function (click) {
         let form = click.searchParent('fm'),
             data = formData.Build(form);
@@ -492,11 +634,16 @@ var project = {
         if (form.classList.contains('ProjectSettingsDataWrapper'))
             data['Form'] = 0;
 
-        if (form.classList.contains('ProjectSettingsMarksWrapper')) {
-            data['Form'] = 1;
-        }
+        if (form.classList.contains('ProjectSettingsMarksWrapper'))
+            data['Form'] = 2;
 
         let response = ajax.SendAndRecive(convert.ToJson(data), 'Data', '/project/' + project.data.project.id + '/api/Update');
+    },
+
+    UpdateRoles: function () {
+        let data = settings.project.memberRole.Build();
+
+        let response = ajax.SendAndRecive(convert.ToJson(data), 'Data', '/project/' + project.data.project.id + '/api/UpdateRoles');
     }
 };
 
@@ -534,6 +681,72 @@ var settings = {
                         }
                     }
                 }
+            }
+        },
+
+        memberRole: {
+            data: {},
+
+            Add: function () {
+                let wrapper,
+                    body,
+                    color = this.classList[2];
+
+                if (event.keyCode === 32 || event.keyCode === 13) {
+                    wrapper = app.getElementsByClassName('ProjectSettingsMembersRolesWrapper')[0];
+                    body = wrapper.getElementsByClassName('ProjectSettingsMembersRoles')[0];
+                    
+                    body.insertAdjacentHTML('beforeend', '<div class="pr_stg-rls--item ProjectSettingsMembersRole ' + color + '"><span class="ProjectSettingsMembersRoleTxt">' + this.value + '</span><div class="pr_stg-rls--item--btn ProjectSettingsMembersRoleDelBtn"></div><input class="ds-n ProjectSettingsMembersRoleId" value"" /></div>');
+
+                    this.value = '';
+                }
+            },
+
+            GetItems: function () {
+                let wrapper = app.getElementsByClassName('ProjectSettingsMembersRolesWrapper')[0],
+                    body = wrapper.getElementsByClassName('ProjectSettingsMembersRoles')[0];
+
+                let data = ajax.Get('/project/' + location.pathname.split('/')[location.pathname.split('/').length - 1] + '/api/GetRoles');
+
+                data = convert.FromJson(data);
+
+                if (data.length > 0) {
+                    for (let item of data) {
+                        body.insertAdjacentHTML('beforeend', '<div class="pr_stg-rls--item ProjectSettingsMembersRole ' + item.color + '"><span class="ProjectSettingsMembersRoleTxt">' + item.name + '</span><div class="pr_stg-rls--item--btn ProjectSettingsMembersRoleDelBtn"></div><input class="ds-n ProjectSettingsMembersRoleId" value="' + item.id + '" /></div>');
+                    }
+                }
+            },
+
+            ColorChoose: function (click) {
+                click = click.target;
+
+                let wrapper = app.getElementsByClassName('ProjectSettingsMembersRolesWrapper')[0],
+                    input = wrapper.getElementsByClassName('ProjectSettingsUserRole')[0];
+
+                for (let a = 0; input.classList.length > a; a++) {
+                    if (input.classList[a] !== 'inp' && input.classList[a] !== 'ProjectSettingsUserRole') {
+                        input.classList.remove(input.classList[a]);
+                    }
+                }
+
+                input.classList.add(click.classList[2]);
+            },
+
+            Build: function () {
+                let body = app.getElementsByClassName('ProjectSettingsMembersRoles')[0],
+                    items = body.getElementsByClassName('ProjectSettingsMembersRole');
+
+                let roles = [];
+                for (let item of items) {
+                    let role = {
+                        Id: item.getElementsByClassName('ProjectSettingsMembersRoleId')[0].value,
+                        Name: item.getElementsByClassName('ProjectSettingsMembersRoleTxt')[0].innerText,
+                        Color: item.classList[2]
+                    };
+                    roles[roles.length] = role;
+                }
+
+                return roles;
             }
         }
     }
@@ -633,7 +846,7 @@ var task = {
                 if (Number(item.getElementsByClassName('TaskId')[0].value) === task.settings.current.id) {
 
                     item.getElementsByClassName('TaskName')[0].innerText = data.Title;
-                    item.getElementsByClassName('TaskDateTime')[0].innerText = new Date(task.settings.current.createdDate).toLocaleString() + '—' + new Date(data.FinishDate).toLocaleString();
+                    item.getElementsByClassName('TaskDateTime')[0].innerText ='Выполнить до' + new Date(data.FinishDate).toLocaleString();
                     item.getElementsByClassName('TaskDescription')[0].innerText = data.Description;
 
                     let mWrapper = item.getElementsByClassName('TaskMarks')[0];
@@ -672,7 +885,7 @@ var task = {
             if (response === ENUMS.States.Success) {
                 var body = app.getElementsByClassName('TasksBody')[0];
 
-                body.insertAdjacentHTML('afterbegin', '<div class="tsks-item Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.Title + '</div><div class="tsks-item-ttl--dt TaskDateTime">' + new Date(data.CreatedDate).toLocaleString() + ' — ' + new Date(data.FinishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.Description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div></div>');
+                body.insertAdjacentHTML('afterbegin', '<div class="tsks-item Task"><div class="tsks-item-ttl"><div class="tsks-item-ttl--nm TaskName">' + data.Title + '</div><div class="tsks-item-ttl--dt TaskDateTime">Выполнить до ' + new Date(data.FinishDate).toLocaleString() + '</div></div><div class="tsks-item--dsc TaskDescription">' + data.Description + '</div><div class="tsks-item_ft"><div class="tsks-item_ft-usrs TaskUsers"></div><div class="tsks-item--mrks TaskMarks"></div></div></div>');
             }
         }
     }
@@ -682,4 +895,5 @@ var task = {
 
 document.addEventListener("DOMContentLoaded", function () {
     validation.SetEvents();
+    leftMenu.TryVsisible();
 });

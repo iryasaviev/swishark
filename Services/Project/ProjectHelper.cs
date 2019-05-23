@@ -1,5 +1,7 @@
 ﻿using Infrastructure.Entities;
 using Infrastructure.Enums;
+using Services.ProjectMember;
+using Services.ProjectMemberRole;
 using Services.ProjectTask;
 using Services.Validation;
 using System;
@@ -81,16 +83,45 @@ namespace Services.Project
                 if (a == (int)Infrastructure.Enums.Project.Marks.Pink1)
                     mark.Color = Infrastructure.Enums.Project.Marks.Pink1.ToString();
 
-                if (a == (int)Infrastructure.Enums.Project.Marks.Pink2)
+                if (a == (int)Infrastructure.Enums.Project.Marks.Pink2) 
                     mark.Color = Infrastructure.Enums.Project.Marks.Pink2.ToString();
 
                 marks.Add(mark);
             }
-
             _project.Marks = _json.To(marks);
-
             _service.Add(_project);
-            return Codes.States.Success;
+
+            try
+            {
+                MemberHelper memberHelper = new MemberHelper();
+                
+                // Создание пользователя проекта
+                memberHelper.Create(_project.Id, user);
+                
+                // Добавление роли "Создатель"
+                Codes.States rHelper = new RoleHelper().AddToProject(
+                   new RoleHelper.Role
+                   {
+                       Name = "Создатель",
+                       Color = "ColorNone"
+                   },
+                   _project.Id,
+                   user);
+
+
+                if (memberHelper.UpdateRole(user, _project.Id) != Codes.States.Success)
+                {
+                    // TODO: Переделать номер ошибки.
+                    return Codes.States.ErrorAccountDoesNotExist;
+                }
+
+                return Codes.States.Success;
+            }
+            catch
+            {
+                // TODO: Переделать номер ошибки.
+                return Codes.States.ErrorAccountDoesNotExist;
+            }
         }
 
         /// <summary>
@@ -110,7 +141,7 @@ namespace Services.Project
                 upProject.Description = data["Description"];
             }
 
-            if (data["Form"] == "1")
+            if (data["Form"] == "2")
             {
                 List<object> marks = new List<object>();
 
@@ -183,6 +214,7 @@ namespace Services.Project
                 return Codes.States.Success;
             }
         }
+
 
 
         public object Get(int id)

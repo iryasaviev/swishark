@@ -13,6 +13,9 @@
     margin:0 10px 20px 10px;
     overflow:hidden;
 }
+.tsks-item-done{
+    opacity:0.7;
+}
 .tsks-item-ttl{
     line-height:18px;
     margin-bottom:8px;

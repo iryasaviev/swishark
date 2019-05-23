@@ -23,16 +23,11 @@ namespace Swishark.Controllers
         }
 
         [HttpPost]
-        [Route("api/GetItem")]
+        [Route("{id:int}/api/GetItem")]
         [Authorize]
-        public JsonResult GetItem(PageModel pModel)
+        public JsonResult GetItem(PageModel pModel, int id)
         {
-            TaskHelper helper = new TaskHelper();
-            AccountService aService = new AccountService();
-
-            var code = helper.Create(pModel.Data, aService.GetCurrentUser(User.Identity.Name));
-
-            return new JsonResult(code);
+            return new JsonResult(new TaskService().GetTask(id));
         }
 
         [HttpPost]

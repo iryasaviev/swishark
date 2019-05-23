@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Account;
 using Services.Project;
+using Services.ProjectMember;
+using Services.ProjectMemberRole;
 using Swishark.Models;
 
 namespace Swishark.Controllers
@@ -81,17 +83,12 @@ namespace Swishark.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("api/GetItems")]
         [Authorize]
-        public JsonResult GetItems(PageModel pModel)
+        public JsonResult GetItems()
         {
-            ProjectService service = new ProjectService();
-            Services.Json json = new Services.Json();
-
-            List<Project> items = service.GetProjects(new AccountService().GetCurrentUser(User.Identity.Name).Id);
-
-            return new JsonResult(items);
+            return new JsonResult(new ProjectService().GetProjects(new AccountService().GetCurrentUser(User.Identity.Name).Id));
         }
 
         [HttpPost]
@@ -103,6 +100,38 @@ namespace Swishark.Controllers
             helper.Update(pModel.Data, id);
 
             return new JsonResult("");
+        }
+
+        [HttpGet]
+        [Route("{id:int}/api/GetMembers")]
+        [Authorize]
+        public JsonResult GetMembers(PageModel pModel, int id)
+        {
+            return new JsonResult(new MemberService().GetItems(id));
+        }
+
+        [HttpPost]
+        [Route("{id:int}/api/AddMember")]
+        [Authorize]
+        public JsonResult AddMember(PageModel pModel, int id)
+        {
+            return new JsonResult(new MemberHelper().AddToProject(pModel.Data, id));
+        }
+
+        [HttpPost]
+        [Route("{id:int}/api/UpdateRoles")]
+        [Authorize]
+        public JsonResult UpdateRoles(PageModel pModel, int id)
+        {
+            return new JsonResult(new RoleHelper().Update(pModel.Data, id, new AccountService().GetCurrentUser(User.Identity.Name)));
+        }
+
+        [HttpGet]
+        [Route("{id:int}/api/GetRoles")]
+        [Authorize]
+        public JsonResult GetRoles(PageModel pModel, int id)
+        {
+            return new JsonResult(new RoleService().GetItems(id));
         }
     }
 }
