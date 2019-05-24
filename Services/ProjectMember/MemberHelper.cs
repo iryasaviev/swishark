@@ -70,10 +70,7 @@ namespace Services.ProjectMember
             _member.LastName = user.LastName;
             _member.Photo = user.Photo;
             _member.ProjectId = projectId;
-            if (data["Role"] != "0")
-            {
-                _member.RoleId = new Guid(data["Role"]);
-            }
+            _member.RoleId = new Guid(data["Role"]);
 
             try
             {

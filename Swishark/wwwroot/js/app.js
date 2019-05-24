@@ -460,7 +460,7 @@ var project = {
                 let path = location.href.split('/')[location.href.split('/').length - 1] + '/api/GetRoles',
                     data = convert.FromJson(ajax.Get(path));
 
-                popUp.Open('Добавление нового участника', '<div class="fm ProjectTaskEditWrapper" data-controller="task" data-method="Edit"><div class="fm-item"><label class="fm-item--lb">Идентификатор (id) участника<input class="inp ProjectMemberId" name="Id" type="number"></label></div><div class="fm-item"><label class="fm-item--lb">Роль<select class="inp BackgroundOffColorOn ProjectMemberRole" name="Role"><option value="0">Без роли</option></select></label></div></div>', project.member.add.ClosePopUpForm);
+                popUp.Open('Добавление нового участника', '<div class="fm ProjectTaskEditWrapper" data-controller="task" data-method="Edit"><div class="fm-item"><label class="fm-item--lb">Идентификатор (id) участника<input class="inp ProjectMemberId" name="Id" type="number"></label></div><div class="fm-item"><label class="fm-item--lb">Роль<select class="inp BackgroundOffColorOn ProjectMemberRole" name="Role"></select></label></div></div>', project.member.add.ClosePopUpForm);
 
                 let pp = document.getElementById('popUp'),
                     rolesSelect = pp.getElementsByClassName('ProjectMemberRole')[0];
@@ -500,17 +500,11 @@ var project = {
                 app.classList.add('app_wr-usrs-active');
             }
 
-            for (let item of body.getElementsByClassName('AppUserRoleItemWrapper')) {
-                item.remove();
-            }
-
             let users = convert.FromJson(project.member.GetItems()),
                 path = location.href.split('/')[location.href.split('/').length - 1] + '/api/GetRoles',
                 roles = convert.FromJson(ajax.Get(path));
 
-            let data = {
-                None: []
-            };
+            let data = {};
 
             for (let role of roles) {
                 for (let user of users) {
@@ -545,7 +539,7 @@ var project = {
 
 
                         let roleItem = body.getElementsByClassName('AppUserRoleItemWrapper')[0],
-                            item = '<div class="app_wr-usrs_bd-item_wr AppUserItemWrapper"><a href="/' + user.userId + '"><div class="app_wr-usrs_bd-item_bd"><img class="app_wr-usrs_bd-item--img"><div class="app_wr-usrs_bd-item--txt AppUserName">' + fName + ' ' + lName + '</div></div></a></div>';
+                            item = '<div class="app_wr-usrs_bd-item_wr AppUserItemWrapper"><a href="/user/' + user.userId + '"><div class="app_wr-usrs_bd-item_bd"><img class="app_wr-usrs_bd-item--img"><div class="app_wr-usrs_bd-item--txt AppUserName">' + fName + ' ' + lName + '</div></div></a></div>';
 
 
                         if (user.doesTaskId !== 0) {
@@ -553,7 +547,7 @@ var project = {
 
                             let task = convert.FromJson(ajax.Get('/task' + doesTaskId + '/api/GetItem'));
 
-                            item = '<div class="app_wr-usrs_bd-item_wr app_wr-usrs_bd-item-work AppUserItemWrapper"><a href="/' + user.userId + '"><div class="app_wr-usrs_bd-item_bd"><img class="app_wr-usrs_bd-item--img"><div class="app_wr-usrs_bd-item--txt AppUserName">' + fName + ' ' + lName + '</div><div class="app_wr-usrs_bd-item-wrk AppUserTask">Выполняет:' + task.name + '</div></div></a></div>';
+                            item = '<div class="app_wr-usrs_bd-item_wr app_wr-usrs_bd-item-work AppUserItemWrapper"><a href="/user/' + user.userId + '"><div class="app_wr-usrs_bd-item_bd"><img class="app_wr-usrs_bd-item--img"><div class="app_wr-usrs_bd-item--txt AppUserName">' + fName + ' ' + lName + '</div><div class="app_wr-usrs_bd-item-wrk AppUserTask">Выполняет:' + task.name + '</div></div></a></div>';
                         }
                         
                         roleItem.insertAdjacentHTML('beforeend', item);

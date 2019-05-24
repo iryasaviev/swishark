@@ -97,16 +97,24 @@ namespace Services.Project
                 
                 // Создание пользователя проекта
                 memberHelper.Create(_project.Id, user);
-                
+
                 // Добавление роли "Создатель"
-                Codes.States rHelper = new RoleHelper().AddToProject(
-                   new RoleHelper.Role
-                   {
-                       Name = "Создатель",
-                       Color = "ColorNone"
-                   },
-                   _project.Id,
-                   user);
+                List<RoleHelper.Role> roles = new List<RoleHelper.Role>
+                {
+                    new RoleHelper.Role
+                    {
+                        Name = "Создатель",
+                        Color = "ColorNone"
+                    },
+
+                    new RoleHelper.Role
+                    {
+                        Name = "Без роли",
+                        Color = "ColorNone"
+                    }
+                };
+                foreach (var role in roles)
+                    new RoleHelper().AddToProject(role, _project.Id, user);
 
 
                 if (memberHelper.UpdateRole(user, _project.Id) != Codes.States.Success)
