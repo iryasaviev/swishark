@@ -1,8 +1,8 @@
 ﻿using Infrastructure.Entities;
 using Infrastructure.Enums;
+using Services.Mark;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Services.ProjectTask
 {
@@ -32,12 +32,15 @@ namespace Services.ProjectTask
             _task.FinishDate = DateTime.Parse(data["FinishDate"]);
             _task.CretedUserId = user.Id;
             _task.ProjectId = Convert.ToInt32(data["ProjectId"]);
+            _task.State = Convert.ToInt32(data["State"]);
+
+            new MarkHelper().CreateTaskMark(data["Marks"], _task.ProjectId, _task.Id);
 
             _service.Add(_task);
             return Codes.States.Success;
         }
 
-        public Codes.States Update(string dataStr, int id)
+        public Codes.States Update(string dataStr, Guid id)
         {
             Dictionary<string, string> data = _json.From(dataStr);
 
@@ -46,7 +49,6 @@ namespace Services.ProjectTask
             upTask.Title = data["Title"];
             upTask.Description = data["Description"];
             upTask.FinishDate = DateTime.Parse(data["FinishDate"]);
-            upTask.Marks = data["Marks"];
             upTask.State = Convert.ToInt32(data["State"]);
 
             _service.Update(upTask);

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Account;
+using Services.Mark;
 using Services.ProjectTask;
 using Swishark.Models;
+using System;
 
 namespace Swishark.Controllers
 {
@@ -14,33 +16,41 @@ namespace Swishark.Controllers
         [Authorize]
         public JsonResult Add(PageModel pModel)
         {
-            TaskHelper helper = new TaskHelper();
-            AccountService aService = new AccountService();
-
-            var code = helper.Create(pModel.Data, aService.GetCurrentUser(User.Identity.Name));
-
-            return new JsonResult(code);
+            return new JsonResult(new TaskHelper().Create(pModel.Data, new AccountService().GetCurrentUser(User.Identity.Name)));
         }
 
-        [HttpPost]
-        [Route("{id:int}/api/GetItem")]
+        [HttpGet]
+        [Route("{id}/api/GetItem")]
         [Authorize]
-        public JsonResult GetItem(PageModel pModel, int id)
+        public JsonResult GetItem(string id)
         {
-            return new JsonResult(new TaskService().GetTask(id));
+            if (id != "null")
+                return new JsonResult(new TaskService().GetTask(new Guid(id)));
+
+            return new JsonResult(null);
         }
 
         [HttpPost]
-        [Route("{id:int}/api/Update")]
+        [Route("{id}/api/Update")]
         [Authorize]
-        public JsonResult Update(PageModel pModel, int id)
+        public JsonResult Update(PageModel pModel, string id)
         {
             TaskHelper helper = new TaskHelper();
             AccountService aService = new AccountService();
 
-            var code = helper.Update(pModel.Data, id);
+            var code = helper.Update(pModel.Data, new Guid(id));
 
             return new JsonResult(code);
+        }
+
+
+
+        [HttpGet]
+        [Route("{id}/api/GetMarks")]
+        [Authorize]
+        public JsonResult GetMarks(string id)
+        {
+            return new JsonResult(new MarkService().GetItemsOnTasks(new Guid(id)));
         }
     }
 }

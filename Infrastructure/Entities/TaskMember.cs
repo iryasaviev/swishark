@@ -12,8 +12,8 @@ namespace Infrastructure.Entities
         public int UserId { get; set; }
         public User User { get; set; }
 
-        public int TaskId { get; set; }
-        public ProjectTask Task   { get; set; }
+        public Guid TaskId { get; set; }
+        public ProjectTask Task { get; set; }
 
         public int ProjectId { get; set; }
         public Project Project { get; set; }

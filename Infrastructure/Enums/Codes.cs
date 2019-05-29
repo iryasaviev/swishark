@@ -12,6 +12,11 @@ namespace Infrastructure.Enums
             /// </summary>
             Success = 200,
 
+            /// <summary>
+            /// Неизвестная ошибка сервера.
+            /// </summary>
+            ServerError = 500,
+
 
 
             /// <summary>

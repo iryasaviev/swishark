@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Services.ProjectTask
@@ -30,7 +31,7 @@ namespace Services.ProjectTask
         /// <summary>
         /// Возвращает задачу.
         /// </summary>
-        public Infrastructure.Entities.ProjectTask GetTask(int id)
+        public Infrastructure.Entities.ProjectTask GetTask(Guid id)
         {
             return _repo.GetItems<Infrastructure.Entities.ProjectTask>().FirstOrDefault(x => x.Id.Equals(id));
         }

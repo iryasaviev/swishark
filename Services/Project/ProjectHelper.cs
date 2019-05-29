@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Entities;
 using Infrastructure.Enums;
+using Services.Mark;
 using Services.ProjectMember;
 using Services.ProjectMemberRole;
 using Services.ProjectTask;
@@ -25,12 +26,6 @@ namespace Services.Project
             _project = new Infrastructure.Entities.Project();
         }
 
-        class Marks
-        {
-            public int Num { get; set; }
-            public string Color { get; set; }
-            public string Text { get; set; }
-        }
 
 
         /// <summary>
@@ -47,59 +42,25 @@ namespace Services.Project
             _project.Description = data["Description"];
             _project.UserId = user.Id;
 
-            List<object> marks = new List<object>();
-            for (int a = 1; 10 >= a; a++)
-            {
-                Marks mark = new Marks
-                {
-                    Num = a,
-                    Text = ""
-                };
-
-                if (a == (int)Infrastructure.Enums.Project.Marks.Yellow)
-                    mark.Color = Infrastructure.Enums.Project.Marks.Yellow.ToString();
-
-                if (a == (int)Infrastructure.Enums.Project.Marks.Orange1)
-                    mark.Color = Infrastructure.Enums.Project.Marks.Orange1.ToString();
-
-                if (a == (int)Infrastructure.Enums.Project.Marks.Orange2)
-                    mark.Color = Infrastructure.Enums.Project.Marks.Orange2.ToString();
-
-                if (a == (int)Infrastructure.Enums.Project.Marks.Red)
-                    mark.Color = Infrastructure.Enums.Project.Marks.Red.ToString();
-
-                if (a == (int)Infrastructure.Enums.Project.Marks.Green1)
-                    mark.Color = Infrastructure.Enums.Project.Marks.Green1.ToString();
-
-                if (a == (int)Infrastructure.Enums.Project.Marks.Green2)
-                    mark.Color = Infrastructure.Enums.Project.Marks.Green2.ToString();
-
-                if (a == (int)Infrastructure.Enums.Project.Marks.Blue1)
-                    mark.Color = Infrastructure.Enums.Project.Marks.Blue1.ToString();
-
-                if (a == (int)Infrastructure.Enums.Project.Marks.Blue2)
-                    mark.Color = Infrastructure.Enums.Project.Marks.Blue2.ToString();
-
-                if (a == (int)Infrastructure.Enums.Project.Marks.Pink1)
-                    mark.Color = Infrastructure.Enums.Project.Marks.Pink1.ToString();
-
-                if (a == (int)Infrastructure.Enums.Project.Marks.Pink2) 
-                    mark.Color = Infrastructure.Enums.Project.Marks.Pink2.ToString();
-
-                marks.Add(mark);
-            }
-            _project.Marks = _json.To(marks);
             _service.Add(_project);
 
-            try
-            {
-                MemberHelper memberHelper = new MemberHelper();
-                
-                // Создание пользователя проекта
-                memberHelper.Create(_project.Id, user);
+            // - Создание меток проекта.
+            // Если не удалось создать метки у проекта.
+            // Прерывается. Ошибка 500.
+            if (new MarkHelper().CreateProjectMark(_project.Id) != Codes.States.Success)
+                return Codes.States.ServerError;
 
-                // Добавление роли "Создатель"
-                List<RoleHelper.Role> roles = new List<RoleHelper.Role>
+
+            MemberHelper memberHelper = new MemberHelper();
+
+            // - Создание пользователя проекта.
+            // Если не удалось создать метки у проекта.
+            // Прерывается. Ошибка 500.
+            if (memberHelper.Create(_project.Id, user) != Codes.States.Success)
+                return Codes.States.ServerError;
+
+            // - Добавление роли "Создатель"
+            foreach (var role in new List<RoleHelper.Role>
                 {
                     new RoleHelper.Role
                     {
@@ -112,24 +73,15 @@ namespace Services.Project
                         Name = "Без роли",
                         Color = "ColorNone"
                     }
-                };
-                foreach (var role in roles)
-                    new RoleHelper().AddToProject(role, _project.Id, user);
+                })
+                new RoleHelper().AddToProject(role, _project.Id, user);
 
+            // Если не удалось обновить роль у пользователя.
+            // Прерывается. Ошибка 500.
+            if (memberHelper.UpdateRole(user, _project.Id) != Codes.States.Success)
+                return Codes.States.ServerError;
 
-                if (memberHelper.UpdateRole(user, _project.Id) != Codes.States.Success)
-                {
-                    // TODO: Переделать номер ошибки.
-                    return Codes.States.ErrorAccountDoesNotExist;
-                }
-
-                return Codes.States.Success;
-            }
-            catch
-            {
-                // TODO: Переделать номер ошибки.
-                return Codes.States.ErrorAccountDoesNotExist;
-            }
+            return Codes.States.Success;
         }
 
         /// <summary>
@@ -143,73 +95,8 @@ namespace Services.Project
             Dictionary<string, string> data = _json.From(dataStr);
             var upProject = _service.GetProject(id);
 
-            if (data["Form"] == "0")
-            {
-                upProject.Name = data["Name"];
-                upProject.Description = data["Description"];
-            }
-
-            if (data["Form"] == "2")
-            {
-                List<object> marks = new List<object>();
-
-                foreach (var m in data)
-                    if (m.Key != "Form")
-                    {
-                        Marks mark = new Marks
-                        {
-                            Num = Convert.ToInt32(m.Key.Substring(4)),
-                            Text = m.Value
-                        };
-
-                        switch (m.Key)
-                        {
-                            case "Mark1":
-                                mark.Color = Infrastructure.Enums.Project.Marks.Yellow.ToString();
-                                break;
-
-                            case "Mark2":
-                                mark.Color = Infrastructure.Enums.Project.Marks.Orange1.ToString();
-                                break;
-
-                            case "Mark3":
-                                mark.Color = Infrastructure.Enums.Project.Marks.Orange2.ToString();
-                                break;
-
-                            case "Mark4":
-                                mark.Color = Infrastructure.Enums.Project.Marks.Red.ToString();
-                                break;
-
-                            case "Mark5":
-                                mark.Color = Infrastructure.Enums.Project.Marks.Green1.ToString();
-                                break;
-
-                            case "Mark6":
-                                mark.Color = Infrastructure.Enums.Project.Marks.Green2.ToString();
-                                break;
-
-                            case "Mark7":
-                                mark.Color = Infrastructure.Enums.Project.Marks.Blue1.ToString();
-                                break;
-
-                            case "Mark8":
-                                mark.Color = Infrastructure.Enums.Project.Marks.Blue2.ToString();
-                                break;
-
-                            case "Mark9":
-                                mark.Color = Infrastructure.Enums.Project.Marks.Pink1.ToString();
-                                break;
-
-                            case "Mark10":
-                                mark.Color = Infrastructure.Enums.Project.Marks.Pink2.ToString();
-                                break;
-                        }
-
-                        marks.Add(mark);
-                    }
-
-                upProject.Marks = _json.To(marks);
-            }
+            upProject.Name = data["Name"];
+            upProject.Description = data["Description"];
 
             try
             {

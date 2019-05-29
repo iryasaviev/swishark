@@ -4,6 +4,7 @@ using Infrastructure.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Account;
+using Services.Mark;
 using Services.Project;
 using Services.ProjectMember;
 using Services.ProjectMemberRole;
@@ -132,6 +133,22 @@ namespace Swishark.Controllers
         public JsonResult GetRoles(PageModel pModel, int id)
         {
             return new JsonResult(new RoleService().GetItems(id));
+        }
+
+        [HttpGet]
+        [Route("{id:int}/api/GetMarks")]
+        [Authorize]
+        public JsonResult GetMarks(int id)
+        {
+            return new JsonResult(new MarkService().GetItemsOnProject(id));
+        }
+
+        [HttpPost]
+        [Route("{id:int}/api/UpdateMarks")]
+        [Authorize]
+        public JsonResult UpdateMarks(PageModel pModel, int id)
+        {
+            return new JsonResult(new MarkHelper().UpdateProjectMark(pModel.Data, id));
         }
     }
 }
